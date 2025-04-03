@@ -46,7 +46,7 @@ public class Main {
                     System.out.println("Committees:");
                     printStringArray(committee);
                 default:
-                    System.out.println("Wrong input:");
+                    System.out.println("Wrong input");
             }
         }
     }
