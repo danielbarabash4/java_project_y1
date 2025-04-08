@@ -45,6 +45,7 @@ public class Main {
                 case '8':
                     System.out.println("Committees:");
                     printStringArray(committee);
+                    break;
                 default:
                     System.out.println("Wrong input");
             }
