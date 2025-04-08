@@ -8,7 +8,7 @@ public class Lecturer {
         private double salary;
         private Department department;
         private Committee[]commitees;
-        public Lecturer(String name,int id,String degree,String degreeName,double salary,department department){
+        public Lecturer(String name,int id,String degree,String degreeName,double salary,Department department){
             setId(id);
             setName(name);
             setDegree(degree);
@@ -58,11 +58,11 @@ public class Lecturer {
         this.salary = salary;
     }
 
-    public department getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(department department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 
