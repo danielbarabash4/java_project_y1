@@ -11,9 +11,8 @@ public class Collage {
         String lecName, comName;
         System.out.print("Choose a department: ");
         comName = scn.nextLine();
-        Department department=new Department();
         Lecturer lecturer=new Lecturer(StringInput("lecturer name"),IntInput("id"),StringInput("degree"),
-                StringInput("degree name"),DoubleInput("lecturer salary"),AddDepartment("Department name:"));
+                StringInput("degree name"),DoubleInput("lecturer salary"),AddDepartmentToLecturer("Department name:"));
 
 
 
@@ -25,15 +24,31 @@ public class Collage {
         }
     }
 
-    private static Department AddDepartment(String s) {
-        if(checkForName(studyDepartment,s)){
-            return studyDepartment[findIndex(studyDepartment,s)]
+    private static Department AddDepartmentToLecturer(String s) {
+        if(findDepIndex(s)!=-1){
+            return studyDepartment[findDepIndex(s)];
+        }
+        else{
+            return studyDepartment=AddDepartment(s);
         }
     }
+    public static void AddDepartment(String s){
+        Lecturer[] lec=new Lecturer[1];
+        Department res= new Department(StringInput("department"),IntInput("amount of sudents"),lec);
 
-    private static int findIndex(String[] arr, String s) {
-        for(int i=0;i<arr.length;i++){
-            if(arr[i]==s)
+        ///  להוסיף לSTUDYDEPARTMENT
+
+    }
+
+    private static Object AddLecturer(String lecturerName) {
+    }
+
+    private static int findDepIndex( String s) {
+        for(int i=0;i<studyDepartment.length;i++){
+            if(studyDepartment[i]==null)
+                continue;
+            //return 2
+            if(studyDepartment[i].getDepartmentName()==s)
                 return i;
         }
         return -1;
