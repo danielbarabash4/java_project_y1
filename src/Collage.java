@@ -8,20 +8,23 @@ public class Collage {
     private static Department[] studyDepartment = new Department[1];
 
     private static void lecturerToCollage() {
-        String lecName, comName;
-        System.out.print("Choose a department: ");
-        comName = scn.nextLine();
         Lecturer lecturer=new Lecturer(StringInput("lecturer name"),IntInput("id"),StringInput("degree"),
                 StringInput("degree name"),DoubleInput("lecturer salary"),AddDepartmentToLecturer("Department name:"));
+        addLecturerToArr(lecturer);
+    }
 
-
-
-        if (checkForName(lecturers, lecName)) {
-            System.out.println("this lecture does not exist");
+    private static Lecturer[] addLecturerToArr(Lecturer lecturer) {
+        int temp=lecturers.length;
+        for (int i=0;i<lecturers.length;i++){
+            if(lecturers[i]==null){
+                lecturers[i]=lecturer;
+                return lecturers;
+            }
         }
-        if (checkForName(committee, comName)) {
-            System.out.println("this committee does not exist");
-        }
+        lecturers=extendLecturer();
+        lecturers[temp+1]=lecturer;
+
+        return lecturers;
     }
 
     private static Department AddDepartmentToLecturer(String s) {
@@ -29,31 +32,20 @@ public class Collage {
             return studyDepartment[findDepIndex(s)];
         }
         else{
-            return studyDepartment=AddDepartment(s);
+            System.out.println("Department does'nt exist");
+            return null;
         }
-    }
-    public static void AddDepartment(String s){
-        Lecturer[] lec=new Lecturer[1];
-        Department res= new Department(StringInput("department"),IntInput("amount of sudents"),lec);
-
-        ///  להוסיף לSTUDYDEPARTMENT
-
-    }
-
-    private static Object AddLecturer(String lecturerName) {
     }
 
     private static int findDepIndex( String s) {
         for(int i=0;i<studyDepartment.length;i++){
             if(studyDepartment[i]==null)
                 continue;
-            //return 2
             if(studyDepartment[i].getDepartmentName()==s)
                 return i;
         }
         return -1;
     }
-
 
     private static double DoubleInput(String word) {
         System.out.println("Choose a "+word+":");
@@ -106,10 +98,10 @@ public class Collage {
         return true;
     }
 
-    private static String[] extendArray(String[] arr) {
-        String[] newArr = new String[arr.length * 2];
-        for (int i = 0; i < arr.length; i++) {
-            newArr[i] = arr[i];
+    private static Lecturer[] extendLecturer() {
+        Lecturer[] newArr = new Lecturer[lecturers.length * 2];
+        for (int i = 0; i < lecturers.length; i++) {
+            newArr[i] = lecturers[i];
         }
         return newArr;
     }
