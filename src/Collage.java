@@ -3,16 +3,17 @@ import java.util.Scanner;
 public class Collage {
     private String name;
     static Scanner scn = new Scanner(System.in);
-    private static String[] lecturers = new String[1];
-    private static String[] committee = new String[1];
-    private static String[] studyDepartment = new String[1];
+    private static Lecturer[] lecturers = new Lecturer[1];
+    private static Committee[] committee = new Committee[1];
+    private static Department[] studyDepartment = new Department[1];
 
-    private static void lectureToCommittee() {
+    private static void lecturerToCollage() {
         String lecName, comName;
-        System.out.print("Choose a lecture: ");
-        lecName = scn.nextLine();
-        System.out.print("Choose a committee: ");
+        System.out.print("Choose a department: ");
         comName = scn.nextLine();
+        Department department=new Department();
+        Lecturer lecturer=new Lecturer(StringInput("lecturer name"),IntInput("id"),StringInput("degree"),
+                StringInput("degree name"),DoubleInput("lecturer salary"),AddDepartment("Department name:"));
 
 
 
@@ -22,6 +23,40 @@ public class Collage {
         if (checkForName(committee, comName)) {
             System.out.println("this committee does not exist");
         }
+    }
+
+    private static Department AddDepartment(String s) {
+        if(checkForName(studyDepartment,s)){
+            return studyDepartment[findIndex(studyDepartment,s)]
+        }
+    }
+
+    private static int findIndex(String[] arr, String s) {
+        for(int i=0;i<arr.length;i++){
+            if(arr[i]==s)
+                return i;
+        }
+        return -1;
+    }
+
+
+    private static double DoubleInput(String word) {
+        System.out.println("Choose a "+word+":");
+        double res= scn.nextDouble();
+        scn.nextLine();
+        return res;
+    }
+
+    public static String StringInput(String word){
+        System.out.println("Choose a "+word+":");
+        String res= scn.nextLine();
+        return res;
+    }
+    public static int IntInput(String word){
+        System.out.println("Choose a "+word+":");
+        int res= scn.nextInt();
+        scn.nextLine();
+        return res;
     }
 
     private static String[] addArrName(String[] arr, String type) {
