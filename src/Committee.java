@@ -1,9 +1,9 @@
 public class Committee {
     String CommitteeName;
-    lecturer[] committeeMembers;
-    lecturer headOfCommittee;
+    Lecturer[] committeeMembers;
+    Lecturer headOfCommittee;
 
-    public Committee(String committeeName, lecturer[] committeeMembers, lecturer headOfCommittee) {
+    public Committee(String committeeName, Lecturer[] committeeMembers, Lecturer headOfCommittee) {
         setCommitteeName(committeeName);
         setCommitteeMembers(committeeMembers);
         setHeadOfCommittee(headOfCommittee);
@@ -13,11 +13,11 @@ public class Committee {
         CommitteeName = committeeName;
     }
 
-    public void setCommitteeMembers(lecturer[] committeeMembers) {
+    public void setCommitteeMembers(Lecturer[] committeeMembers) {
         this.committeeMembers = committeeMembers;
     }
 
-    public void setHeadOfCommittee(lecturer headOfCommittee) {
+    public void setHeadOfCommittee(Lecturer headOfCommittee) {
         this.headOfCommittee = headOfCommittee;
     }
 
@@ -25,11 +25,11 @@ public class Committee {
         return CommitteeName;
     }
 
-    public lecturer[] getCommitteeMembers() {
+    public Lecturer[] getCommitteeMembers() {
         return committeeMembers;
     }
 
-    public lecturer getHeadOfCommittee() {
+    public Lecturer getHeadOfCommittee() {
         return headOfCommittee;
     }
 }
