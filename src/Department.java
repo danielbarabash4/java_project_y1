@@ -27,6 +27,11 @@ public class Department {
     }
 
     private void lecturerAdd(Lecturer lecturer) {
+        for (int i = 0; i < lecturers.length; i++) {
+            if(lecturers[i]==null)
+                lecturers[i]=lecturer;
+
+        }
     }
 
     private boolean isFull(Lecturer[] lecturers) {
