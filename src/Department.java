@@ -30,6 +30,7 @@ public class Department {
         for (int i = 0; i < lecturers.length; i++) {
             if(lecturers[i]==null)
                 lecturers[i]=lecturer;
+                break;
 
         }
     }

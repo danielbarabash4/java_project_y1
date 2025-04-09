@@ -15,6 +15,7 @@ public class Collage {
        }
        else {
            addLecturerToDepartment(lecturer);
+           if(lecturer.getDepartment()!=null)
            lecturer.getDepartment().AddNewLecturer(lecturer);
        }
     }
@@ -36,7 +37,7 @@ public class Collage {
             }
         }
         lecturers=extendLecturer();
-        lecturers[temp+1]=lecturer;
+        lecturers[temp]=lecturer;
 
         return lecturers;
     }
