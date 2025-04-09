@@ -10,10 +10,24 @@ public class Collage {
     private static void lecturerToCollage() {
         Lecturer lecturer=new Lecturer(StringInput("lecturer name"),IntInput("id"),StringInput("degree"),
                 StringInput("degree name"),DoubleInput("lecturer salary"),AddDepartmentToLecturer("Department name:"));
-        addLecturerToArr(lecturer);
+       if( isLecturerExist(lecturer)){
+           System.out.println("Lecturer is already in the system");
+       }
+       else {
+           addLecturerToDepartment(lecturer);
+           lecturer.getDepartment().AddNewLecturer(lecturer);
+       }
     }
 
-    private static Lecturer[] addLecturerToArr(Lecturer lecturer) {
+    private static boolean isLecturerExist(Lecturer lecturer) {
+        for (int i = 0; i < lecturers.length; i++) {
+            if(lecturers[i].equals(lecturer))
+                return true;
+        }
+        return false;
+    }
+
+    private static Lecturer[] addLecturerToDepartment(Lecturer lecturer) {
         int temp=lecturers.length;
         for (int i=0;i<lecturers.length;i++){
             if(lecturers[i]==null){

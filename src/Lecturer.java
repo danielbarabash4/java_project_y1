@@ -80,7 +80,7 @@ public class Lecturer {
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null) return false;
         Lecturer lecturer = (Lecturer) o;
         return id == lecturer.id;
     }
