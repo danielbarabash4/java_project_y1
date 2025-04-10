@@ -5,7 +5,7 @@ public class Committee {
 
     public Committee(String committeeName, Lecturer[] committeeMembers, Lecturer headOfCommittee) {
         setCommitteeName(committeeName);
-        setCommitteeMembers(committeeMembers);
+        this.committeeMembers = new Lecturer[1];
         setHeadOfCommittee(headOfCommittee);
     }
 
@@ -32,4 +32,6 @@ public class Committee {
     public Lecturer getHeadOfCommittee() {
         return headOfCommittee;
     }
+    //update for liser
+
 }
