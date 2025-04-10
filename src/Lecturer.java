@@ -2,13 +2,13 @@ import java.util.Objects;
 
 public class Lecturer {
         private String name;
-        private String id;
+        private int id;
         private String degree;
         private String degreeName;
         private double salary;
-        private String department;
+        private Department department;
         private Committee[]commitees;
-        public Lecturer(String name,String id,String degree,String degreeName,double salary,String department){
+        public Lecturer(String name,int id,String degree,String degreeName,double salary,Department department){
             setId(id);
             setName(name);
             setDegree(degree);
@@ -26,11 +26,11 @@ public class Lecturer {
         this.name = name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -58,23 +58,23 @@ public class Lecturer {
         this.salary = salary;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 
     @Override
     public String toString() {
         return "lecturer{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
-                ", degree='" + degree + '\'' +
-                ", degreeName='" + degreeName + '\'' +
-                ", salary=" + salary +
-                ", department=" + department +
+                "name=' " + name + '\'' +
+                ", id= " + id +
+                ", degree=' " + degree + '\'' +
+                ", degreeName=' " + degreeName + '\'' +
+                ", salary=v" + salary +
+                ", department= " + department +
                 '}';
     }
 

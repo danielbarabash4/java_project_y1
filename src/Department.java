@@ -1,9 +1,11 @@
+import java.util.Arrays;
+
 public class Department {
     private String DepartmentName;
     private int studentsNum;
-    private String lecturers;
+    private Lecturer[] lecturers;
 
-    public Department(String departmentName, int studentsNum, String lecturers) {
+    public Department(String departmentName, int studentsNum, Lecturer[] lecturers) {
         setDepartmentName(departmentName);
         setStudentsNum(studentsNum);
         setLecturers(lecturers);
@@ -52,7 +54,7 @@ public class Department {
         this.studentsNum = studentsNum;
     }
 
-    public void setLecturers(String lecturers) {
+    public void setLecturers(Lecturer[] lecturers) {
         this.lecturers = lecturers;
     }
 
@@ -64,8 +66,16 @@ public class Department {
         return studentsNum;
     }
 
-    public String getLecturers() {
+    public Lecturer[] getLecturers() {
         return lecturers;
     }
 
+    @Override
+    public String toString() {
+        return "Department{" +
+                "Department name:= '" + DepartmentName + '\'' +
+                ", Number of students= " + studentsNum +
+                ", lecturers: =" + Arrays.toString(lecturers) +
+                '}';
+    }
 }

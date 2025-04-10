@@ -7,7 +7,7 @@ public class Collage {
     private static Committee[] committee = new Committee[1];
     private static Department[] studyDepartment = new Department[1];
 
-    private static void lecturerToCollage() {
+    private static void lecturerToCollage() {// option 1
         Lecturer lecturer=new Lecturer(StringInput("lecturer name"),IntInput("id"),StringInput("degree"),
                 StringInput("degree name"),DoubleInput("lecturer salary"),AddDepartmentToLecturer("Department name:"));
        if( isLecturerExist(lecturer)){
@@ -60,6 +60,31 @@ public class Collage {
                 return i;
         }
         return -1;
+    }
+    public static double showAvgSalPerDep(Department department){//option 8
+        int counter=0;
+        double sum =0;
+        for (int i = 0; i < lecturers.length; i++) {
+            sum+=lecturers[i].getSalary();
+            counter++;
+        }
+        return sum/counter;
+    }
+    public static void showAllLecturers(){//option 9
+        System.out.println("--------------");
+        for (int i = 0; i < lecturers.length; i++) {
+            if(lecturers[i]!=null)
+                System.out.println(lecturers[i]);
+        }
+        System.out.println("--------------");
+    }
+    public static void showAllDepartments(){//option 10
+        System.out.println("--------------");
+        for (int i=0;i<studyDepartment.length;i++){
+            if(studyDepartment[i]!=null)
+            System.out.println(studyDepartment[i]);
+            System.out.println("--------------");
+        }
     }
 
     private static double DoubleInput(String word) {
