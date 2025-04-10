@@ -1,9 +1,9 @@
 public class Department {
     private String DepartmentName;
     private int studentsNum;
-    private Lecturer[] lecturers;
+    private String lecturers;
 
-    public Department(String departmentName, int studentsNum, Lecturer[] lecturers) {
+    public Department(String departmentName, int studentsNum, String lecturers) {
         setDepartmentName(departmentName);
         setStudentsNum(studentsNum);
         setLecturers(lecturers);
@@ -52,7 +52,7 @@ public class Department {
         this.studentsNum = studentsNum;
     }
 
-    public void setLecturers(Lecturer[] lecturers) {
+    public void setLecturers(String lecturers) {
         this.lecturers = lecturers;
     }
 
@@ -64,7 +64,7 @@ public class Department {
         return studentsNum;
     }
 
-    public Lecturer[] getLecturers() {
+    public String getLecturers() {
         return lecturers;
     }
 
