@@ -32,4 +32,6 @@ public class Committee {
     public Lecturer getHeadOfCommittee() {
         return headOfCommittee;
     }
+    //update for liser
+
 }
