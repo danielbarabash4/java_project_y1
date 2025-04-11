@@ -1,9 +1,12 @@
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Committee {
     String CommitteeName;
     Lecturer[] committeeMembers;
     Lecturer headOfCommittee;
 
-    public Committee(String committeeName, Lecturer[] committeeMembers, Lecturer headOfCommittee) {
+    public Committee(String committeeName, Lecturer headOfCommittee) {
         setCommitteeName(committeeName);
         this.committeeMembers = new Lecturer[1];
         setHeadOfCommittee(headOfCommittee);
@@ -32,6 +35,16 @@ public class Committee {
     public Lecturer getHeadOfCommittee() {
         return headOfCommittee;
     }
-    //update for liser
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Committee committee = (Committee) o;
+        return Objects.equals(CommitteeName, committee.CommitteeName) && Objects.deepEquals(committeeMembers, committee.committeeMembers) && Objects.equals(headOfCommittee, committee.headOfCommittee);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(CommitteeName, Arrays.hashCode(committeeMembers), headOfCommittee);
+    }
 }

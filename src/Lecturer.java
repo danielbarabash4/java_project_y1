@@ -2,13 +2,13 @@ import java.util.Objects;
 
 public class Lecturer {
         private String name;
-        private int id;
+        private String id;
         private String degree;
         private String degreeName;
         private double salary;
         private Department department;
         private Committee[]commitees;
-        public Lecturer(String name,int id,String degree,String degreeName,double salary,Department department){
+        public Lecturer(String name,String id,String degree,String degreeName,double salary,Department department){
             setId(id);
             setName(name);
             setDegree(degree);
@@ -26,11 +26,11 @@ public class Lecturer {
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
