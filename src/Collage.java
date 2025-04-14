@@ -106,13 +106,26 @@ public class Collage {
         }
         return -1;
     }
+    public static void showAvgSal(){
+        int counter=0;
+        double sum=0;
+    }
 
-    public static double showAvgSalPerDep(Department department) {//option 8
+    public static double showAvgSalPerDep(Department department) {//option 7+8
         int counter = 0;
         double sum = 0;
-        for (int i = 0; i < lecturers.length; i++) {
-            sum += lecturers[i].getSalary();
-            counter++;
+        if(department!=null) {
+            for (int i = 0; i < department.getLecturers().length; i++) {
+                sum += department.getLecturers()[i].getSalary();
+                counter++;
+            }
+        }
+        else{
+            for (int i = 0; i <lecturers.length; i++) {
+                sum+=lecturers[i].getSalary();
+                counter++;
+            }
+
         }
         return sum / counter;
     }
@@ -126,11 +139,10 @@ public class Collage {
         System.out.println("--------------");
     }
 
-    public static void showAllDepartments() {//option 10
+    public static void showAllCommitees() {//option 10
         System.out.println("--------------");
-        for (int i = 0; i < studyDepartment.length; i++) {
-            if (studyDepartment[i] != null)
-                System.out.println(studyDepartment[i]);
+        for (int i = 0; i < committees.length && committees[i]!=null; i++) {
+                System.out.println(committees[i]);
             System.out.println("--------------");
         }
     }
