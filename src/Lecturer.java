@@ -15,11 +15,21 @@ public class Lecturer {
             setDegreeName(degreeName);
             setSalary(salary);
             setDepartment(department);
-            this.commitees=new Committee[1];
+            commitees=new Committee[1];
         }
 
     public String getName() {
         return name;
+    }
+
+    public String getCommittees(){
+            String res="";
+        for (int i = 0; i <commitees.length ; i++) {
+            if(commitees[i]!=null){
+                res+=commitees[i].getCommitteeName()+" ";
+            }
+        }
+        return res;
     }
 
     public void setName(String name) {
@@ -75,7 +85,7 @@ public class Lecturer {
                 ", degreeName=' " + degreeName + '\'' +
                 ", salary=v" + salary +
                 ", department= " + department +
-                '}';
+                '}'+getCommittees() ;
     }
 
     @Override

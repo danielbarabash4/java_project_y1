@@ -4,11 +4,18 @@ import java.util.Scanner;
 public class Collage {
     private String name;
     static Scanner scn = new Scanner(System.in);
-    private static Lecturer[] lecturers = new Lecturer[1];
-    private static Committee[] committees = new Committee[1];
-    private static Department[] studyDepartment = new Department[1];
+    private Lecturer[] lecturers;
+    private Committee[] committees;
+    private Department[] studyDepartment;
 
-    private static void lecturerToCollage() {
+    public Collage(String name){
+        this.name=name;
+        lecturers=new Lecturer[1];
+        committees = new Committee[1];
+        studyDepartment = new Department[1];
+    }
+
+    public void lecturerToCollage() {
         Lecturer lecturer = new Lecturer(stringInput("lecturer name"), stringInput("id"), stringInput("degree"),
                 stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer("Department name:"));
         if (isLecturerExist(lecturer)) {
@@ -21,7 +28,7 @@ public class Collage {
         }
     }
 
-    private static boolean isLecturerExist(Lecturer lecturer) {
+    public boolean isLecturerExist(Lecturer lecturer) {
         for (int i = 0; i < lecturers.length; i++) {
             if (lecturers[i].equals(lecturer))
                 return true;
@@ -29,7 +36,7 @@ public class Collage {
         return false;
     }
 
-    private static Lecturer[] addLecturerToDepartment(Lecturer lecturer) {
+    public Lecturer[] addLecturerToDepartment(Lecturer lecturer) {
         int temp = lecturers.length;
         for (int i = 0; i < lecturers.length; i++) {
             if (lecturers[i] == null) {
@@ -43,7 +50,7 @@ public class Collage {
         return lecturers;
     }
 
-    private static void committeeToCollage() {
+    public void committeeToCollage() {
         Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("lecturer id")));
         if (committeeExist(committee)) {
             System.out.println("Committee is already in the system");
@@ -52,7 +59,7 @@ public class Collage {
         }
     }
 
-    private static void addNewCommittee(Committee committee) {
+    public void addNewCommittee(Committee committee) {
         int i = 0;
         for (; i < committees.length && committees[i] != null; ) {
             i++;
@@ -63,7 +70,7 @@ public class Collage {
     committees[i] = committee;
     }
 
-    private static void extendCommittees() {
+    public void extendCommittees() {
         Committee[] newArr = new Committee[committees.length*2];
         for(int i = 0;i< committees.length;i++){
             newArr[i] = committees[i];
@@ -71,7 +78,7 @@ public class Collage {
         committees = newArr;
     }
 
-    private static boolean committeeExist(Committee c) {
+    public boolean committeeExist(Committee c) {
         for (int i = 0; i < committees.length && committees[i] != null; i++) {
             if (committees[i].equals(c)) {
                 return true;
@@ -80,7 +87,7 @@ public class Collage {
         return false;
     }
 
-    private static Lecturer addHeadOf(String s) {
+    public Lecturer addHeadOf(String s) {
         for (int i = 0; i < lecturers.length && lecturers[i] != null; i++) {
             if (lecturers[i].getId().equals(s)) {
                 return lecturers[i];
@@ -90,7 +97,7 @@ public class Collage {
         return null;
     }
 
-    private static Department AddDepartmentToLecturer(String s) {
+    public Department AddDepartmentToLecturer(String s) {
         if (findDepIndex(s) != -1) {
             return studyDepartment[findDepIndex(s)];
         } else {
@@ -99,19 +106,15 @@ public class Collage {
         }
     }
 
-    private static int findDepIndex(String s) {
+    public int findDepIndex(String s) {
         for (int i = 0; i < studyDepartment.length; i++) {
             if (studyDepartment[i] != null && studyDepartment[i].getDepartmentName() == s)
                 return i;
         }
         return -1;
     }
-    public static void showAvgSal(){
-        int counter=0;
-        double sum=0;
-    }
 
-    public static double showAvgSalPerDep(Department department) {//option 7+8
+    public double showAvgSalPerDep(Department department) {//option 7+8
         int counter = 0;
         double sum = 0;
         if(department!=null) {
@@ -130,7 +133,7 @@ public class Collage {
         return sum / counter;
     }
 
-    public static void showAllLecturers() {//option 9
+    public void showAllLecturers() {//option 9
         System.out.println("--------------");
         for (int i = 0; i < lecturers.length; i++) {
             if (lecturers[i] != null)
@@ -139,7 +142,7 @@ public class Collage {
         System.out.println("--------------");
     }
 
-    public static void showAllCommitees() {//option 10
+    public void showAllCommitees() {//option 10
         System.out.println("--------------");
         for (int i = 0; i < committees.length && committees[i]!=null; i++) {
                 System.out.println(committees[i]);
@@ -147,20 +150,20 @@ public class Collage {
         }
     }
 
-    private static double doubleInput(String word) {
+    private double doubleInput(String word) {
         System.out.println("Choose a " + word + ":");
         double res = scn.nextDouble();
         scn.nextLine();
         return res;
     }
 
-    public static String stringInput(String word) {
+    public String stringInput(String word) {
         System.out.println("Choose a " + word + ":");
         String res = scn.nextLine();
         return res;
     }
 
-    public static int intInput(String word) {
+    public int intInput(String word) {
         System.out.println("Choose a " + word + ":");
         int res = scn.nextInt();
         scn.nextLine();
@@ -182,7 +185,7 @@ public class Collage {
 //        return arr;
 //    }
 
-    private static int lastPlace(Objects[] arr) {
+    private int lastPlace(Objects[] arr) {
         int i = 0;
         for (; i < arr.length && arr[i] != null; ) {
             i++;
@@ -190,7 +193,7 @@ public class Collage {
         return i;
     }
 
-    private static boolean checkForName(String[] arr, String name) {
+    private boolean checkForName(String[] arr, String name) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] != null && arr[i].equals(name)) {
                 return false;
@@ -199,7 +202,7 @@ public class Collage {
         return true;
     }
 
-    private static Lecturer[] extendLecturer() {
+    private Lecturer[] extendLecturer() {
         Lecturer[] newArr = new Lecturer[lecturers.length * 2];
         for (int i = 0; i < lecturers.length; i++) {
             newArr[i] = lecturers[i];
@@ -207,7 +210,7 @@ public class Collage {
         return newArr;
     }
 
-    private static void printStringArray(String[] arr) {
+    private void printStringArray(String[] arr) {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] != null) {
                 System.out.print(arr[i] + " ");
