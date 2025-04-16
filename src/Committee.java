@@ -12,6 +12,13 @@ public class Committee {
         setHeadOfCommittee(headOfCommittee);
     }
 
+    public void removeLecFromMembers(Lecturer removeLec) {
+        for (int i = 0; i < committeeMembers.length; i++) {
+            if (committeeMembers[i] != null && committeeMembers[i].equals(removeLec))
+                committeeMembers[i] = null;
+        }
+    }
+
     public void setCommitteeName(String committeeName) {
         CommitteeName = committeeName;
     }
@@ -34,6 +41,15 @@ public class Committee {
 
     public Lecturer getHeadOfCommittee() {
         return headOfCommittee;
+    }
+
+    @Override
+    public String toString() {
+        return "Committee{" +
+                "CommitteeName='" + CommitteeName + '\'' +
+                ", committeeMembers=" + Arrays.toString(committeeMembers) +
+                ", headOfCommittee=" + headOfCommittee +
+                '}';
     }
 
     @Override

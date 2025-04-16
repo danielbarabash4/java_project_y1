@@ -26,25 +26,25 @@ public class Main {
                     collage.committeeToCollage();
                     break;
                 case "3":
-                    //
+                    collage.lecturerToCommittee();
                     break;
                 case "4":
-                    //
+                    collage.updateComHead();
                     break;
                 case "5":
-                    //
+                    collage.removeLecFromCom();
                     break;
                 case "6":
-                    //
+                    collage.addDepToCollege();
                     break;
                 case "7":
-                    collage.showAvgSalPerDep(null);
+                    System.out.println(collage.showAvgSalPerDep(null));
                     break;
                 case "8":
                     System.out.println("Choose a deparment");
                     String res=scn.nextLine();
                     if(collage.AddDepartmentToLecturer(res)!=null){
-                        collage.showAvgSalPerDep(collage.AddDepartmentToLecturer(res));
+                        System.out.println(collage.showAvgSalPerDep(collage.AddDepartmentToLecturer(res)));
                     }
                     else{
                         System.out.println("Department name doesnt exist");

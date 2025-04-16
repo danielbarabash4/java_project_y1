@@ -1,32 +1,34 @@
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Lecturer {
-        private String name;
-        private String id;
-        private String degree;
-        private String degreeName;
-        private double salary;
-        private Department department;
-        private Committee[]commitees;
-        public Lecturer(String name,String id,String degree,String degreeName,double salary,Department department){
-            setId(id);
-            setName(name);
-            setDegree(degree);
-            setDegreeName(degreeName);
-            setSalary(salary);
-            setDepartment(department);
-            commitees=new Committee[1];
-        }
+    private String name;
+    private String id;
+    private String degree;
+    private String degreeName;
+    private double salary;
+    private Department department;
+    private Committee[] commitees;
+
+    public Lecturer(String name, String id, String degree, String degreeName, double salary, Department department) {
+        setId(id);
+        setName(name);
+        setDegree(degree);
+        setDegreeName(degreeName);
+        setSalary(salary);
+        setDepartment(department);
+        commitees = new Committee[1];
+    }
 
     public String getName() {
         return name;
     }
 
-    public String getCommittees(){
-            String res="";
-        for (int i = 0; i <commitees.length ; i++) {
-            if(commitees[i]!=null){
-                res+=commitees[i].getCommitteeName()+" ";
+    public String getCommittees() {
+        String res = "";
+        for (int i = 0; i < commitees.length; i++) {
+            if (commitees[i] != null) {
+                res += commitees[i].getCommitteeName() + " ";
             }
         }
         return res;
@@ -85,14 +87,14 @@ public class Lecturer {
                 ", degreeName=' " + degreeName + '\'' +
                 ", salary=v" + salary +
                 ", department= " + department +
-                '}'+getCommittees() ;
+                '}' + getCommittees();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
         Lecturer lecturer = (Lecturer) o;
-        return id == lecturer.id;
+        return id.equals(lecturer.id);
     }
 
     @Override

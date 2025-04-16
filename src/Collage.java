@@ -8,20 +8,20 @@ public class Collage {
     private Committee[] committees;
     private Department[] studyDepartment;
 
-    public Collage(String name){
-        this.name=name;
-        lecturers=new Lecturer[1];
+    public Collage(String name) {
+        this.name = name;
+        lecturers = new Lecturer[1];
         committees = new Committee[1];
         studyDepartment = new Department[1];
     }
 
     public void lecturerToCollage() {
         Lecturer lecturer = new Lecturer(stringInput("lecturer name"), stringInput("id"), stringInput("degree"),
-                stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer("Department name:"));
+                stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer(stringInput("department name")));
         if (isLecturerExist(lecturer)) {
             System.out.println("Lecturer is already in the system");
         } else {
-            lecturers = addLecturerToDepartment(lecturer);
+            lecturers = addLecturerToLecArr(lecturer, lecturers);
             if (lecturer.getDepartment() != null) {
                 lecturer.getDepartment().AddNewLecturer(lecturer);
             }
@@ -30,31 +30,33 @@ public class Collage {
 
     public boolean isLecturerExist(Lecturer lecturer) {
         for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i].equals(lecturer))
+            if (lecturers[i] != null && lecturers[i].equals(lecturer))
                 return true;
         }
         return false;
     }
 
-    public Lecturer[] addLecturerToDepartment(Lecturer lecturer) {
-        int temp = lecturers.length;
-        for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] == null) {
-                lecturers[i] = lecturer;
-                return lecturers;
+    public Lecturer[] addLecturerToLecArr(Lecturer lecturer, Lecturer[] lecArr) {
+        int temp = lecArr.length;
+        for (int i = 0; i < lecArr.length; i++) {
+            if (lecArr[i] == null) {
+                lecArr[i] = lecturer;
+                return lecArr;
             }
         }
-        lecturers = extendLecturer();
-        lecturers[temp] = lecturer;
+        lecArr = extendLecturer(lecArr);
+        lecArr[temp] = lecturer;
 
-        return lecturers;
+        return lecArr;
     }
 
     public void committeeToCollage() {
-        Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("lecturer id")));
+        Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("head lecturer id")));
         if (committeeExist(committee)) {
             System.out.println("Committee is already in the system");
-        } else {
+        } else if( committee.getHeadOfCommittee() == null){
+            System.out.println("no head of committee");
+        } else{
             addNewCommittee(committee);
         }
     }
@@ -64,23 +66,23 @@ public class Collage {
         for (; i < committees.length && committees[i] != null; ) {
             i++;
         }
-        if( i >= committees.length){
+        if (i >= committees.length) {
             extendCommittees();
         }
-    committees[i] = committee;
+        committees[i] = committee;
     }
 
     public void extendCommittees() {
-        Committee[] newArr = new Committee[committees.length*2];
-        for(int i = 0;i< committees.length;i++){
+        Committee[] newArr = new Committee[committees.length * 2];
+        for (int i = 0; i < committees.length; i++) {
             newArr[i] = committees[i];
         }
         committees = newArr;
     }
 
     public boolean committeeExist(Committee c) {
-        for (int i = 0; i < committees.length && committees[i] != null; i++) {
-            if (committees[i].equals(c)) {
+        for (int i = 0; i < committees.length; i++) {
+            if (committees[i] != null && committees[i].getCommitteeName().equals(c.getCommitteeName())) {
                 return true;
             }
         }
@@ -90,11 +92,116 @@ public class Collage {
     public Lecturer addHeadOf(String s) {
         for (int i = 0; i < lecturers.length && lecturers[i] != null; i++) {
             if (lecturers[i].getId().equals(s)) {
-                return lecturers[i];
+                if (lecturers[i].getDegree().equals("prof") || lecturers[i].getDegree().equals("dr")) {
+                    return lecturers[i];
+                } else {
+                    System.out.println("Lecturer doesn't meet the criterion");
+                    return null;
+                }
             }
         }
         System.out.println("Lecturer doesn't exit");
         return null;
+    }
+
+    public int findLecIndex(String lecName) {
+        for (int i = 0; i < lecturers.length; i++) {
+            if (lecturers[i] != null && lecturers[i].getName().equals(lecName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int findComIndex(String comName) {
+        for (int i = 0; i < committees.length; i++) {
+            if (committees[i] != null && committees[i].getCommitteeName().equals(comName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void lecturerToCommittee() {
+        int comIndex = findComIndex(stringInput("committee to add a lecturer"));
+        int lecIndex = findLecIndex(stringInput("lecturer id to add"));
+        if (comIndex != -1 && lecIndex != -1) {
+            committees[comIndex].setCommitteeMembers(addLecturerToLecArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers()));
+        }
+    }
+
+    public void updateComHead() {
+        int comIndex = findComIndex(stringInput("committee to update: "));
+        Lecturer newHead = findLec(stringInput("new head of committee id: "));
+        if (comIndex != -1 && newHead != null) {
+            committees[comIndex].setHeadOfCommittee(newHead);
+            if (hasLec(committees[comIndex], newHead) != -1) {
+                committees[comIndex].removeLecFromMembers(newHead);
+            }
+        }
+    }
+
+    public void removeLecFromCom() {
+        int comUpdate = findComIndex(stringInput("committee to update"));
+        Lecturer removeLec = findLec(stringInput("id of a lecturer to remove: "));
+        if (comUpdate != -1 && removeLec != null) {
+            committees[comUpdate].removeLecFromMembers(removeLec);
+        }
+    }
+
+    private int hasLec(Committee checkCom, Lecturer checkHead) {
+        for (int i = 0; i < checkCom.getCommitteeMembers().length; i++) {
+            if (checkCom.getCommitteeMembers()[i] != null & checkCom.getCommitteeMembers()[i].equals(checkHead)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private Lecturer findLec(String lecId) {
+        for (int i = 0; i < lecturers.length; i++) {
+            if (lecturers[i] != null && lecturers[i].getId().equals(lecId)) {
+                return lecturers[i];
+            }
+        }
+        return null;
+    }
+
+    public void addDepToCollege() {
+        Department newDep = new Department(chooseDepName(), intInput("number of students: "));
+        addDepartment(newDep);
+    }
+
+    private void addDepartment(Department newDep) {
+        int i = 0;
+        for (; i < studyDepartment.length && studyDepartment[i] != null; ) {
+            i++;
+        }
+        if (i >= studyDepartment.length) {
+            extendDep();
+        }
+        studyDepartment[i] = newDep;
+    }
+
+    private void extendDep() {
+        Department[] newArr = new Department[studyDepartment.length * 2];
+        for (int i = 0; i < studyDepartment.length; i++) {
+            newArr[i] = studyDepartment[i];
+        }
+        studyDepartment = newArr;
+    }
+
+    private String chooseDepName() {
+        String name;
+        while (true) {
+            System.out.println("choose department name: ");
+            name = scn.nextLine();
+            if (findDepIndex(name) == -1) {
+                return name;
+            } else {
+                System.out.println("name already exist");
+            }
+        }
     }
 
     public Department AddDepartmentToLecturer(String s) {
@@ -108,7 +215,7 @@ public class Collage {
 
     public int findDepIndex(String s) {
         for (int i = 0; i < studyDepartment.length; i++) {
-            if (studyDepartment[i] != null && studyDepartment[i].getDepartmentName() == s)
+            if (studyDepartment[i] != null && studyDepartment[i].getDepartmentName().equals(s))
                 return i;
         }
         return -1;
@@ -117,18 +224,16 @@ public class Collage {
     public double showAvgSalPerDep(Department department) {//option 7+8
         int counter = 0;
         double sum = 0;
-        if(department!=null) {
+        if (department != null) {
             for (int i = 0; i < department.getLecturers().length; i++) {
                 sum += department.getLecturers()[i].getSalary();
                 counter++;
             }
-        }
-        else{
-            for (int i = 0; i <lecturers.length; i++) {
-                sum+=lecturers[i].getSalary();
+        } else {
+            for (int i = 0; i < lecturers.length; i++) {
+                sum += lecturers[i].getSalary();
                 counter++;
             }
-
         }
         return sum / counter;
     }
@@ -144,8 +249,8 @@ public class Collage {
 
     public void showAllCommitees() {//option 10
         System.out.println("--------------");
-        for (int i = 0; i < committees.length && committees[i]!=null; i++) {
-                System.out.println(committees[i]);
+        for (int i = 0; i < committees.length && committees[i] != null; i++) {
+            System.out.println(committees[i]);
             System.out.println("--------------");
         }
     }
@@ -169,54 +274,12 @@ public class Collage {
         scn.nextLine();
         return res;
     }
-// old way to extand an array, not working now
-//    private static String[] addArrName(String[] arr, String type) {
-//        System.out.print("Enter your " + type + " name: ");
-//        String theName = scn.nextLine();
-//        if (checkForName(arr, theName)) {
-//            if (lastPlace(arr) >= arr.length) {
-//                arr = extendArray(arr);
-//            }
-//            arr[lastPlace(arr)] = theName;
-//        } else {
-//            System.out.println("the name " + theName + " is already in use, please try again");
-//            arr = addArrName(arr, type);
-//        }
-//        return arr;
-//    }
 
-    private int lastPlace(Objects[] arr) {
-        int i = 0;
-        for (; i < arr.length && arr[i] != null; ) {
-            i++;
-        }
-        return i;
-    }
-
-    private boolean checkForName(String[] arr, String name) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != null && arr[i].equals(name)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private Lecturer[] extendLecturer() {
-        Lecturer[] newArr = new Lecturer[lecturers.length * 2];
-        for (int i = 0; i < lecturers.length; i++) {
-            newArr[i] = lecturers[i];
+    private Lecturer[] extendLecturer(Lecturer[] oldArr) {
+        Lecturer[] newArr = new Lecturer[oldArr.length * 2];
+        for (int i = 0; i < oldArr.length; i++) {
+            newArr[i] = oldArr[i];
         }
         return newArr;
     }
-
-    private void printStringArray(String[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != null) {
-                System.out.print(arr[i] + " ");
-            }
-        }
-        System.out.println();
-    }
-
 }
