@@ -69,6 +69,15 @@ public class Department {
     public Lecturer[] getLecturers() {
         return lecturers;
     }
+    public String getNames() {
+        String res = "";
+        for (int i = 0; i < lecturers.length; i++) {
+            if (lecturers[i] != null) {
+                res += lecturers[i].getName() + " ";
+            }
+        }
+        return res;
+    }
 
     @Override
     public String toString() {

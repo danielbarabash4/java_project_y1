@@ -23,6 +23,9 @@ public class Lecturer {
     public String getName() {
         return name;
     }
+    public void setCommitees(){
+
+    }
 
     public String getCommittees() {
         String res = "";
@@ -33,6 +36,15 @@ public class Lecturer {
         }
         return res;
     }
+    public String getDep() {
+        String res = "";
+            if (department != null) {
+               return department.getDepartmentName();
+            }
+            else{
+                return null;
+            }
+        }
 
     public void setName(String name) {
         this.name = name;
@@ -80,14 +92,14 @@ public class Lecturer {
 
     @Override
     public String toString() {
-        return "lecturer{" +
-                "name=' " + name + '\'' +
+        return "|" +
+                "name= " + name  +
                 ", id= " + id +
-                ", degree=' " + degree + '\'' +
-                ", degreeName=' " + degreeName + '\'' +
-                ", salary=v" + salary +
-                ", department= " + department +
-                '}' + getCommittees();
+                ", degree= " + degree  +
+                ", degree name=  " + degreeName  +
+                ", salary= " + salary +
+                ", department= " + getDep() +
+                ' ' +"committees= "+ getCommittees()+ "|";
     }
 
     @Override

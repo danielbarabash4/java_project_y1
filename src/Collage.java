@@ -20,10 +20,18 @@ public class Collage {
                 stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer(stringInput("department name")));
         if (isLecturerExist(lecturer)) {
             System.out.println("Lecturer is already in the system");
-        } else {
+            //lecturerToCollage();
+        }
+        else if(lecturer.getSalary()<0){
+            System.out.println("Invalid salary input");
+
+        }
+        else {
             lecturers = addLecturerToLecArr(lecturer, lecturers);
             if (lecturer.getDepartment() != null) {
                 lecturer.getDepartment().AddNewLecturer(lecturer);
+                System.out.println("Lecturer was added");
+
             }
         }
     }
@@ -58,6 +66,7 @@ public class Collage {
             System.out.println("no head of committee");
         } else{
             addNewCommittee(committee);
+            System.out.println("Committee was added");
         }
     }
 
@@ -104,9 +113,9 @@ public class Collage {
         return null;
     }
 
-    public int findLecIndex(String lecName) {
+    public int findLecIndex(String lecID) {
         for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null && lecturers[i].getName().equals(lecName)) {
+            if (lecturers[i] != null && lecturers[i].getId().equals(lecID)) {
                 return i;
             }
         }
@@ -127,6 +136,7 @@ public class Collage {
         int lecIndex = findLecIndex(stringInput("lecturer id to add"));
         if (comIndex != -1 && lecIndex != -1) {
             committees[comIndex].setCommitteeMembers(addLecturerToLecArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers()));
+           // lecturers[lecIndex].A
         }
     }
 
@@ -134,9 +144,11 @@ public class Collage {
         int comIndex = findComIndex(stringInput("committee to update: "));
         Lecturer newHead = findLec(stringInput("new head of committee id: "));
         if (comIndex != -1 && newHead != null) {
-            committees[comIndex].setHeadOfCommittee(newHead);
-            if (hasLec(committees[comIndex], newHead) != -1) {
-                committees[comIndex].removeLecFromMembers(newHead);
+            if (newHead.getDegree().equals("dr") || newHead.getDegree().equals("prof")) {
+                committees[comIndex].setHeadOfCommittee(newHead);
+                if (hasLec(committees[comIndex], newHead) != -1) {
+                    committees[comIndex].removeLecFromMembers(newHead);
+                }
             }
         }
     }
@@ -151,7 +163,7 @@ public class Collage {
 
     private int hasLec(Committee checkCom, Lecturer checkHead) {
         for (int i = 0; i < checkCom.getCommitteeMembers().length; i++) {
-            if (checkCom.getCommitteeMembers()[i] != null & checkCom.getCommitteeMembers()[i].equals(checkHead)) {
+            if (checkCom.getCommitteeMembers()[i] != null && checkCom.getCommitteeMembers()[i].equals(checkHead)) {
                 return i;
             }
         }
@@ -226,8 +238,10 @@ public class Collage {
         double sum = 0;
         if (department != null) {
             for (int i = 0; i < department.getLecturers().length; i++) {
-                sum += department.getLecturers()[i].getSalary();
-                counter++;
+                if (department.getLecturers()[i] != null) {
+                    sum += department.getLecturers()[i].getSalary();
+                    counter++;
+                }
             }
         } else {
             for (int i = 0; i < lecturers.length; i++) {

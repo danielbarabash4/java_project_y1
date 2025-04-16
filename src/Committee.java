@@ -24,6 +24,7 @@ public class Committee {
     }
 
     public void setCommitteeMembers(Lecturer[] committeeMembers) {
+        System.out.println("   test  ");
         this.committeeMembers = committeeMembers;
     }
 
@@ -42,13 +43,31 @@ public class Committee {
     public Lecturer getHeadOfCommittee() {
         return headOfCommittee;
     }
+    public String getMembers() {
+        String res = "";
+        for (int i = 0; i < committeeMembers.length; i++) {
+            if (committeeMembers[i] != null) {
+                res += committeeMembers[i].getName() + " ";
+            }
+        }
+        return res;
+    }
+    public String getCommittees() {
+        String res = "";
+        for (int i = 0; i < committeeMembers.length; i++) {
+            if (committeeMembers[i] != null) {
+                res += committeeMembers[i].getName() + " ";
+            }
+        }
+        return res;
+    }
 
     @Override
     public String toString() {
         return "Committee{" +
                 "CommitteeName='" + CommitteeName + '\'' +
-                ", committeeMembers=" + Arrays.toString(committeeMembers) +
-                ", headOfCommittee=" + headOfCommittee +
+                ", committeeMembers=" + getCommittees() +
+                ", headOfCommittee=" + headOfCommittee.getName() +
                 '}';
     }
 

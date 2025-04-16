@@ -20,7 +20,6 @@ public class Main {
                     break;
                 case "1":
                     collage.lecturerToCollage();
-                    System.out.println("Lecturer was added");
                     break;
                 case "2":
                     collage.committeeToCollage();
@@ -38,16 +37,15 @@ public class Main {
                     collage.addDepToCollege();
                     break;
                 case "7":
+                    System.out.print("Average salary is: ");
                     System.out.println(collage.showAvgSalPerDep(null));
                     break;
                 case "8":
                     System.out.println("Choose a deparment");
                     String res=scn.nextLine();
                     if(collage.AddDepartmentToLecturer(res)!=null){
+                        System.out.print("Average department salary is: ");
                         System.out.println(collage.showAvgSalPerDep(collage.AddDepartmentToLecturer(res)));
-                    }
-                    else{
-                        System.out.println("Department name doesnt exist");
                     }
                     break;
                 case "9":
