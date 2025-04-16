@@ -5,10 +5,10 @@ public class Department {
     private int studentsNum;
     private Lecturer[] lecturers;
 
-    public Department(String departmentName, int studentsNum, Lecturer[] lecturers) {
+    public Department(String departmentName, int studentsNum) {
         setDepartmentName(departmentName);
         setStudentsNum(studentsNum);
-        setLecturers(lecturers);
+        this.lecturers=new Lecturer[1];
     }
     public void AddNewLecturer(Lecturer lecturer){
         if(isFull(lecturers)){

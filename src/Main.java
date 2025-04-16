@@ -23,7 +23,7 @@ public class Main {
                     System.out.println("Lecturer was added");
                     break;
                 case "2":
-                    //
+                    collage.committeeToCollage();
                     break;
                 case "3":
                     //
@@ -43,8 +43,12 @@ public class Main {
                 case "8":
                     System.out.println("Choose a deparment");
                     String res=scn.nextLine();
-                    //check if exists
-                    //collage.showAvgSalPerDep();
+                    if(collage.AddDepartmentToLecturer(res)!=null){
+                        collage.showAvgSalPerDep(collage.AddDepartmentToLecturer(res));
+                    }
+                    else{
+                        System.out.println("Department name doesnt exist");
+                    }
                     break;
                 case "9":
                     collage.showAllLecturers();
