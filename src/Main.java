@@ -60,7 +60,6 @@ public class Main {
         }
     }
 
-
     private static void printMenu() {
         System.out.println("0 - Exit");
         System.out.println("1- Add lecturer to the collage");
@@ -76,38 +75,37 @@ public class Main {
 
     }
 
-
-    private static int lastPlace(String[] arr) {
-        int i = 0;
-        for (; i < arr.length && arr[i] != null; ) {
-            i++;
-        }
-        return i;
-    }
-
-    private static boolean checkForName(String[] arr, String name) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != null && arr[i].equals(name)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static String[] extendArray(String[] arr) {
-        String[] newArr = new String[arr.length * 2];
-        for (int i = 0; i < arr.length; i++) {
-            newArr[i] = arr[i];
-        }
-        return newArr;
-    }
-
-    private static void printStringArray(String[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != null) {
-                System.out.print(arr[i] + " ");
-            }
-        }
-        System.out.println();
-    }
+//    private static int lastPlace(String[] arr) {
+//        int i = 0;
+//        for (; i < arr.length && arr[i] != null; ) {
+//            i++;
+//        }
+//        return i;
+//    }
+//
+//    private static boolean checkForName(String[] arr, String name) {
+//        for (int i = 0; i < arr.length; i++) {
+//            if (arr[i] != null && arr[i].equals(name)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+//
+//    private static String[] extendArray(String[] arr) {
+//        String[] newArr = new String[arr.length * 2];
+//        for (int i = 0; i < arr.length; i++) {
+//            newArr[i] = arr[i];
+//        }
+//        return newArr;
+//    }
+//
+//    private static void printStringArray(String[] arr) {
+//        for (int i = 0; i < arr.length; i++) {
+//            if (arr[i] != null) {
+//                System.out.print(arr[i] + " ");
+//            }
+//        }
+//        System.out.println();
+//    }
 }

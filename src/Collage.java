@@ -1,4 +1,3 @@
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Collage {
@@ -16,24 +15,31 @@ public class Collage {
     }
 
     public void lecturerToCollage() {
-        Lecturer lecturer = new Lecturer(stringInput("lecturer name"), stringInput("id"), stringInput("degree"),
+        Lecturer lecturer = new Lecturer(stringInput("name"), checkId(stringInput("id")), stringInput("degree"),
                 stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer(stringInput("department name")));
         if (isLecturerExist(lecturer)) {
             System.out.println("Lecturer is already in the system");
-            //lecturerToCollage();
-        }
-        else if(lecturer.getSalary()<0){
+            lecturerToCollage();
+        } else if (lecturer.getSalary() < 0) {
             System.out.println("Invalid salary input");
 
-        }
-        else {
+        } else {
             lecturers = addLecturerToLecArr(lecturer, lecturers);
             if (lecturer.getDepartment() != null) {
                 lecturer.getDepartment().AddNewLecturer(lecturer);
                 System.out.println("Lecturer was added");
-
             }
         }
+    }
+
+    private String checkId(String id) {
+        for (int i = 0; i < lecturers.length; i++) {
+            if (lecturers[i] != null && lecturers[i].getId().equals(id)) {
+                System.out.println("this id is already in use");
+                return checkId(stringInput("id"));
+            }
+        }
+        return id;
     }
 
     public boolean isLecturerExist(Lecturer lecturer) {
@@ -62,9 +68,9 @@ public class Collage {
         Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("head lecturer id")));
         if (committeeExist(committee)) {
             System.out.println("Committee is already in the system");
-        } else if( committee.getHeadOfCommittee() == null){
+        } else if (committee.getHeadOfCommittee() == null) {
             System.out.println("no head of committee");
-        } else{
+        } else {
             addNewCommittee(committee);
             System.out.println("Committee was added");
         }
@@ -135,8 +141,14 @@ public class Collage {
         int comIndex = findComIndex(stringInput("committee to add a lecturer"));
         int lecIndex = findLecIndex(stringInput("lecturer id to add"));
         if (comIndex != -1 && lecIndex != -1) {
-            committees[comIndex].setCommitteeMembers(addLecturerToLecArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers()));
-           // lecturers[lecIndex].A
+            if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
+                System.out.println("this lecturer is the head of the committee");
+            }else if(lecturers[lecIndex].existCommittee(committees[comIndex])){
+                System.out.println("this lecturer is already in the committee");
+            }else{
+                committees[comIndex].setCommitteeMembers(addLecturerToLecArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers()));
+                lecturers[lecIndex].addCommittee(committees[comIndex]);
+            }
         }
     }
 
@@ -158,6 +170,7 @@ public class Collage {
         Lecturer removeLec = findLec(stringInput("id of a lecturer to remove: "));
         if (comUpdate != -1 && removeLec != null) {
             committees[comUpdate].removeLecFromMembers(removeLec);
+            removeLec.removeCom(committees[comUpdate]);
         }
     }
 

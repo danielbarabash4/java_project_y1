@@ -24,7 +24,6 @@ public class Committee {
     }
 
     public void setCommitteeMembers(Lecturer[] committeeMembers) {
-        System.out.println("   test  ");
         this.committeeMembers = committeeMembers;
     }
 

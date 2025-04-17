@@ -23,7 +23,8 @@ public class Lecturer {
     public String getName() {
         return name;
     }
-    public void setCommitees(){
+
+    public void setCommitees() {
 
     }
 
@@ -36,15 +37,54 @@ public class Lecturer {
         }
         return res;
     }
+
     public String getDep() {
         String res = "";
-            if (department != null) {
-               return department.getDepartmentName();
-            }
-            else{
-                return null;
+        if (department != null) {
+            return department.getDepartmentName();
+        } else {
+            return null;
+        }
+    }
+
+    public void addCommittee(Committee newCom) {
+        int i = 0;
+        for (; i < commitees.length && commitees[i] != null; ) {
+            i++;
+        }
+        if (i >= commitees.length) {
+            extendCommittees();
+        }
+
+        commitees[i] = newCom;
+    }
+
+    public void extendCommittees() {
+        Committee[] newArr = new Committee[commitees.length * 2];
+        for (int i = 0; i < commitees.length; i++) {
+            newArr[i] = commitees[i];
+        }
+        commitees = newArr;
+    }
+
+    public boolean existCommittee(Committee checkCom) {
+        for (int i = 0; i < commitees.length; i++) {
+            if (commitees[i] != null && commitees[i].equals(checkCom)) {
+                return true;
             }
         }
+        return false;
+    }
+
+    public void removeCom(Committee committee) {
+        for (int i = 0; i < commitees.length; i++) {
+            if (commitees[i] != null && commitees[i].equals(committee)) {
+                commitees[i] = null;
+            } else {
+                System.out.println("lecturer is not a member of the committee");
+            }
+        }
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -93,13 +133,13 @@ public class Lecturer {
     @Override
     public String toString() {
         return "|" +
-                "name= " + name  +
+                "name= " + name +
                 ", id= " + id +
-                ", degree= " + degree  +
-                ", degree name=  " + degreeName  +
+                ", degree= " + degree +
+                ", degree name=  " + degreeName +
                 ", salary= " + salary +
                 ", department= " + getDep() +
-                ' ' +"committees= "+ getCommittees()+ "|";
+                ' ' + "committees= " + getCommittees() + "|";
     }
 
     @Override
@@ -113,6 +153,7 @@ public class Lecturer {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }
 
 
