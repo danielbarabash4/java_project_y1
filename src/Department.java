@@ -30,10 +30,10 @@ public class Department {
 
     private void lecturerAdd(Lecturer lecturer) {
         for (int i = 0; i < lecturers.length; i++) {
-            if(lecturers[i]==null)
-                lecturers[i]=lecturer;
+            if(lecturers[i]==null) {
+                lecturers[i] = lecturer;
                 break;
-
+            }
         }
     }
 
@@ -81,10 +81,8 @@ public class Department {
 
     @Override
     public String toString() {
-        return "Department{" +
-                "Department name:= '" + DepartmentName + '\'' +
+        return "Department name:= '" + DepartmentName +
                 ", Number of students= " + studentsNum +
-                ", lecturers: =" + Arrays.toString(lecturers) +
-                '}';
+                ", lecturers: =" + Arrays.toString(lecturers);
     }
 }

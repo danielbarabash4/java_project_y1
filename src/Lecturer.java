@@ -35,6 +35,9 @@ public class Lecturer {
                 res += commitees[i].getCommitteeName() + " ";
             }
         }
+        if(res.equals("")){
+            return null;
+        }
         return res;
     }
 
@@ -80,10 +83,9 @@ public class Lecturer {
         for (int i = 0; i < commitees.length; i++) {
             if (commitees[i] != null && commitees[i].equals(committee)) {
                 commitees[i] = null;
-            } else {
-                System.out.println("lecturer is not a member of the committee");
             }
         }
+        System.out.println("lecturer is not a member of the committee");
     }
 
     public void setName(String name) {
@@ -136,7 +138,7 @@ public class Lecturer {
                 "name= " + name +
                 ", id= " + id +
                 ", degree= " + degree +
-                ", degree name=  " + degreeName +
+                ", degree name= " + degreeName +
                 ", salary= " + salary +
                 ", department= " + getDep() +
                 ' ' + "committees= " + getCommittees() + "|";

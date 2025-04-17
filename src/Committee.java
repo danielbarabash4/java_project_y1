@@ -63,11 +63,10 @@ public class Committee {
 
     @Override
     public String toString() {
-        return "Committee{" +
-                "CommitteeName='" + CommitteeName + '\'' +
-                ", committeeMembers=" + getCommittees() +
-                ", headOfCommittee=" + headOfCommittee.getName() +
-                '}';
+        return "|Committee:" +
+                "name= " + CommitteeName +
+                ", members= " + getCommittees() +
+                ", head of committee= " + headOfCommittee.getName()+"|";
     }
 
     @Override
