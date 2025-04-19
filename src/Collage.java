@@ -194,6 +194,10 @@ public class Collage {
         return -1;
     }
 
+    public void lecturerToDep(){
+
+    };
+
 //    public Lecturer findLec(String lecId) {
 //        for (int i = 0; i < lecturers.length; i++) {
 //            if (lecturers[i] != null && lecturers[i].getId().equals(lecId)) {
