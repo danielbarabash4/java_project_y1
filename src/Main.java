@@ -54,6 +54,9 @@ public class Main {
                 case "10":
                     collage.showAllCommitees();
                     break;
+                case "11":
+                    collage.AddLecToDep();
+                    break;
                 default:
                     System.out.println("Wrong input");
             }
@@ -72,6 +75,8 @@ public class Main {
         System.out.println("8- Show average salaries of all lecturers at specific department");
         System.out.println("9- Show info about lecturers");
         System.out.println("10- Show info about all committees");
+        System.out.println("11- Add lecturer to department");
+
 
     }
 

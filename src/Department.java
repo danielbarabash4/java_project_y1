@@ -11,14 +11,27 @@ public class Department {
         this.lecturers=new Lecturer[1];
     }
     public void AddNewLecturer(Lecturer lecturer){
-        if(isFull(lecturers)){
-            lecturers=extendArr();
+        if(!lecInDep(lecturer)) {
+            if (isFull(lecturers)) {
+                lecturers = extendArr();
+            }
+            lecturerAdd(lecturer);
         }
-        lecturerAdd(lecturer);
-
+        else{
+            System.out.println("Lecturer is already a member of the department");
+        }
     }
 
-    private Lecturer[] extendArr() {
+    private boolean lecInDep(Lecturer lecturer) {
+        for (int i = 0; i <lecturers.length ; i++) {
+            if(lecturers[i]!=null && lecturers[i]==lecturer){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Lecturer[] extendArr() {
         Lecturer []newArr=new Lecturer[lecturers.length*2];
         for (int i = 0; i < lecturers.length; i++) {
             if(lecturers[i]!=null){
@@ -28,7 +41,7 @@ public class Department {
         return newArr;
     }
 
-    private void lecturerAdd(Lecturer lecturer) {
+    public void lecturerAdd(Lecturer lecturer) {
         for (int i = 0; i < lecturers.length; i++) {
             if(lecturers[i]==null) {
                 lecturers[i] = lecturer;
@@ -36,8 +49,17 @@ public class Department {
             }
         }
     }
+    public void removeLec(Lecturer lec){
+        if(lecInDep(lec)){
+            for (int i = 0; i <lecturers.length ; i++) {
+                if(lecturers[i]!=null && lecturers[i]==lec){
+                    lecturers[i]=null;
+                }
+            }
+        }
+    }
 
-    private boolean isFull(Lecturer[] lecturers) {
+    public boolean isFull(Lecturer[] lecturers) {
         for (int i = 0; i < lecturers.length; i++) {
             if(lecturers[i]==null){
                 return true;
