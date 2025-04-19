@@ -322,4 +322,24 @@ public class Collage {
         }
         return newArr;
     }
-}
+    public void AddLecToDep(){
+        System.out.println("Choose a department:");
+        String dep=scn.nextLine();
+        System.out.println("Choose a lecturer id:");
+        String lec=scn.nextLine();
+        if(findDepIndex(dep)!=-1 && findLecIndex(lec)!=-1) {
+            studyDepartment[findDepIndex(dep)].AddNewLecturer(lecturers[findLecIndex(lec)]);
+            lecturers[findLecIndex(lec)].setDepartment(studyDepartment[findDepIndex(dep)]);
+            studyDepartment[findDepIndex(dep)].removeLec(lecturers[findLecIndex(lec)]);
+            System.out.println("Lecturer was added to the department");
+        }
+         if(findLecIndex(lec)==-1){
+            System.out.println("Lecturer was not found");
+        }
+        if(findDepIndex(dep)==-1){
+            System.out.println("department was not found");
+        }
+        }
+    }
+
+
