@@ -62,7 +62,6 @@ public class Main {
                     break;
                 default:
                     System.out.println("Wrong input");
-
             }
         }
     }

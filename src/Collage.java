@@ -17,37 +17,26 @@ public class Collage {
     public void lecturerToCollage() {
         Lecturer lecturer = new Lecturer(stringInput("name"), checkId(stringInput("id")), stringInput("degree"),
                 stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer(stringInput("department name")));
-        if (isLecturerExist(lecturer)) {
-            System.out.println("Lecturer is already in the system");
-            lecturerToCollage();
-        } else if (lecturer.getSalary() < 0) {
+        if (lecturer.getSalary() < 0) {
             System.out.println("Invalid salary input");
 
         } else {
             lecturers = addLecturerToLecArr(lecturer, lecturers);
             if (lecturer.getDepartment() != null) {
                 lecturer.getDepartment().AddNewLecturer(lecturer);
-                System.out.println("Lecturer was added");
             }
         }
+        System.out.println("Lecturer was added");
     }
 
     private String checkId(String id) {
         for (int i = 0; i < lecturers.length; i++) {
             if (lecturers[i] != null && lecturers[i].getId().equals(id)) {
-                System.out.println("this id is already in use");
+                System.out.println("this id is already in the system");
                 return checkId(stringInput("id"));
             }
         }
         return id;
-    }
-
-    public boolean isLecturerExist(Lecturer lecturer) {
-        for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null && lecturers[i].equals(lecturer))
-                return true;
-        }
-        return false;
     }
 
     public Lecturer[] addLecturerToLecArr(Lecturer lecturer, Lecturer[] lecArr) {
@@ -277,7 +266,7 @@ public class Collage {
                 counter++;
             }
         }
-        return sum / counter;
+        return sum == 0 ? 0 : sum / counter;
     }
 
     public void showAllLecturers() {//option 9
@@ -328,27 +317,26 @@ public class Collage {
     }
 
     public void AddLecToDep() {
-        int departmentInt = findDepIndex(stringInput("department to update"));
-        int lecturerInt = findLecIndex(stringInput("lecturer id"));
-        if (departmentInt != -1 && lecturerInt != -1) {
-            Department prevDep = lecturers[lecturerInt].getDepartment();
-            if (prevDep.equals(studyDepartment[departmentInt])) {
-                System.out.println("lecturer already in the department");
-            } else {
-                Lecturer[] oldLecArr = prevDep.getLecturers();
-                oldLecArr = removeLecFromArr(oldLecArr, lecturers[lecturerInt]);
-                prevDep.setLecturers(oldLecArr);
-                Lecturer[] departmentLec = studyDepartment[departmentInt].getLecturers();
-                Lecturer newLecToDep = lecturers[lecturerInt];
-                studyDepartment[departmentInt].setLecturers(addLecturerToLecArr(newLecToDep, departmentLec));
-                lecturers[lecturerInt].setDepartment(studyDepartment[departmentInt]);
-                System.out.println("Lecturer was added to the department");
+        int depInt = findDepIndex(stringInput("department to update"));
+        int lecInt = findLecIndex(stringInput("lecturer id"));
+        if (depInt != -1 && lecInt != -1) {
+            if (lecturers[lecInt].getDepartment() != null) {
+                Department prevDep = lecturers[lecInt].getDepartment();
+                if (prevDep.equals(studyDepartment[depInt])) {
+                    System.out.println("lecturer already in the department");
+                } else {
+                    prevDep.setLecturers(removeLecFromArr(prevDep.getLecturers(), lecturers[lecInt]));
+                }
             }
+            studyDepartment[depInt].setLecturers(addLecturerToLecArr(lecturers[lecInt], studyDepartment[depInt].getLecturers()));
+            lecturers[lecInt].setDepartment(studyDepartment[depInt]);
+            System.out.println("Lecturer was added to the department");
+
         }
-        if (lecturerInt == -1) {
+        if (lecInt == -1) {
             System.out.println("Lecturer was not found");
         }
-        if (departmentInt == -1) {
+        if (depInt == -1) {
             System.out.println("department was not found");
         }
     }
