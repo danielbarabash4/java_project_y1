@@ -8,7 +8,7 @@ public class Lecturer {
     private String degreeName;
     private double salary;
     private Department department;
-    private Committee[] commitees;
+    private Committee[] committees;
 
     public Lecturer(String name, String id, String degree, String degreeName, double salary, Department department) {
         setId(id);
@@ -17,22 +17,22 @@ public class Lecturer {
         setDegreeName(degreeName);
         setSalary(salary);
         setDepartment(department);
-        commitees = new Committee[1];
+        committees = new Committee[1];
     }
 
     public String getName() {
         return name;
     }
 
-    public void setCommitees() {
+    public void setCommittees() {
 
     }
 
     public String getCommittees() {
         String res = "";
-        for (int i = 0; i < commitees.length; i++) {
-            if (commitees[i] != null) {
-                res += commitees[i].getCommitteeName() + " ";
+        for (int i = 0; i < committees.length; i++) {
+            if (committees[i] != null) {
+                res += committees[i].getCommitteeName() + " ";
             }
         }
         if(res.equals("")){
@@ -52,27 +52,27 @@ public class Lecturer {
 
     public void addCommittee(Committee newCom) {
         int i = 0;
-        for (; i < commitees.length && commitees[i] != null; ) {
+        for (; i < committees.length && committees[i] != null; ) {
             i++;
         }
-        if (i >= commitees.length) {
+        if (i >= committees.length) {
             extendCommittees();
         }
 
-        commitees[i] = newCom;
+        committees[i] = newCom;
     }
 
     public void extendCommittees() {
-        Committee[] newArr = new Committee[commitees.length * 2];
-        for (int i = 0; i < commitees.length; i++) {
-            newArr[i] = commitees[i];
+        Committee[] newArr = new Committee[committees.length * 2];
+        for (int i = 0; i < committees.length; i++) {
+            newArr[i] = committees[i];
         }
-        commitees = newArr;
+        committees = newArr;
     }
 
     public boolean existCommittee(Committee checkCom) {
-        for (int i = 0; i < commitees.length; i++) {
-            if (commitees[i] != null && commitees[i].equals(checkCom)) {
+        for (int i = 0; i < committees.length; i++) {
+            if (committees[i] != null && committees[i].equals(checkCom)) {
                 return true;
             }
         }
@@ -80,9 +80,9 @@ public class Lecturer {
     }
 
     public void removeCom(Committee committee) {
-        for (int i = 0; i < commitees.length; i++) {
-            if (commitees[i] != null && commitees[i].equals(committee)) {
-                commitees[i] = null;
+        for (int i = 0; i < committees.length; i++) {
+            if (committees[i] != null && committees[i].equals(committee)) {
+                committees[i] = null;
             }
         }
         System.out.println("lecturer is not a member of the committee");

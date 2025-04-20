@@ -52,13 +52,17 @@ public class Main {
                     collage.showAllLecturers();
                     break;
                 case "10":
-                    collage.showAllCommitees();
+                    collage.showAllCommittees();
                     break;
                 case "11":
                     collage.AddLecToDep();
                     break;
+                case  "12":
+                    collage.printDep();
+                    break;
                 default:
                     System.out.println("Wrong input");
+
             }
         }
     }

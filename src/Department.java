@@ -18,13 +18,13 @@ public class Department {
             lecturerAdd(lecturer);
         }
         else{
-            System.out.println("Lecturer is already a member of the department");
+            System.out.println("Lecturer is already a member of the department 111");
         }
     }
 
     private boolean lecInDep(Lecturer lecturer) {
         for (int i = 0; i <lecturers.length ; i++) {
-            if(lecturers[i]!=null && lecturers[i]==lecturer){
+            if(lecturers[i]!=null && lecturers[i].equals(lecturer)){
                 return true;
             }
         }

@@ -68,7 +68,7 @@ public class Collage {
         Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("head lecturer id")));
         if (committeeExist(committee)) {
             System.out.println("Committee is already in the system");
-        } else if(committee.getHeadOfCommittee()!=null){
+        } else if (committee.getHeadOfCommittee() != null) {
             addNewCommittee(committee);
             System.out.println("Committee was added");
         }
@@ -141,9 +141,9 @@ public class Collage {
         if (comIndex != -1 && lecIndex != -1) {
             if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
                 System.out.println("This lecturer already is the head of the committee");
-            }else if(lecturers[lecIndex].existCommittee(committees[comIndex])){
+            } else if (lecturers[lecIndex].existCommittee(committees[comIndex])) {
                 System.out.println("This lecturer is already a member of the committee");
-            }else{
+            } else {
                 committees[comIndex].setCommitteeMembers(addLecturerToLecArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers()));
                 lecturers[lecIndex].addCommittee(committees[comIndex]);
                 System.out.println("Lecturer was added to the committee");
@@ -162,8 +162,7 @@ public class Collage {
                     committees[comIndex].removeLecFromMembers(newHead);
                 }
                 System.out.println("Head of committee was updated");
-            }
-            else{
+            } else {
                 System.out.println("Lecturer degree is not high enough");
             }
         }
@@ -171,17 +170,18 @@ public class Collage {
 
     public void removeLecFromCom() {
         int comUpdate = findComIndex(stringInput("committee to update"));
-        Lecturer removeLec = lecturers[findLecIndex(stringInput("id of a lecturer to remove: "))];
-        if (comUpdate != -1 && removeLec != null) {
-            committees[comUpdate].removeLecFromMembers(removeLec);
-            removeLec.removeCom(committees[comUpdate]);
-            System.out.println("Lecturer was removed from the committee");
-        }
-        else if(comUpdate == -1){
-            System.out.println("Committee doesn't exist");
-        }
-        else{
-            System.out.println("Lecturer is not a member of the committee");
+        String id = stringInput("id of a lecturer to remove: ");
+        if (findLecIndex(id) != -1) {
+            Lecturer removeLec = lecturers[findLecIndex(stringInput("id of a lecturer to remove: "))];
+            if (comUpdate != -1 && removeLec != null) {
+                committees[comUpdate].removeLecFromMembers(removeLec);
+                removeLec.removeCom(committees[comUpdate]);
+                System.out.println("Lecturer was removed from the committee");
+            } else if (comUpdate == -1) {
+                System.out.println("Committee doesn't exist");
+            } else {
+                System.out.println("Lecturer is not a member of the committee");
+            }
         }
     }
 
@@ -194,9 +194,9 @@ public class Collage {
         return -1;
     }
 
-    public void lecturerToDep(){
+    public void lecturerToDep() {
+    }
 
-    };
 
 //    public Lecturer findLec(String lecId) {
 //        for (int i = 0; i < lecturers.length; i++) {
@@ -289,10 +289,10 @@ public class Collage {
         System.out.println("--------------");
     }
 
-    public void showAllCommitees() {//option 10
+    public void showAllCommittees() {//option 10
         System.out.println("--------------");
         for (int i = 0; i < committees.length && committees[i] != null; i++) {
-            if( committees[i].getHeadOfCommittee()!=null) {
+            if (committees[i].getHeadOfCommittee() != null) {
                 System.out.println(committees[i]);
                 System.out.println("--------------");
             }
@@ -326,24 +326,54 @@ public class Collage {
         }
         return newArr;
     }
-    public void AddLecToDep(){
-        System.out.println("Choose a department:");
-        String dep=scn.nextLine();
-        System.out.println("Choose a lecturer id:");
-        String lec=scn.nextLine();
-        if(findDepIndex(dep)!=-1 && findLecIndex(lec)!=-1) {
-            studyDepartment[findDepIndex(dep)].AddNewLecturer(lecturers[findLecIndex(lec)]);
-            lecturers[findLecIndex(lec)].setDepartment(studyDepartment[findDepIndex(dep)]);
-            studyDepartment[findDepIndex(dep)].removeLec(lecturers[findLecIndex(lec)]);
-            System.out.println("Lecturer was added to the department");
+
+    public void AddLecToDep() {
+        int departmentInt = findDepIndex(stringInput("department to update"));
+        int lecturerInt = findLecIndex(stringInput("lecturer id"));
+        if (departmentInt != -1 && lecturerInt != -1) {
+            Department prevDep = lecturers[lecturerInt].getDepartment();
+            if (prevDep.equals(studyDepartment[departmentInt])) {
+                System.out.println("lecturer already in the department");
+            } else {
+                Lecturer[] oldLecArr = prevDep.getLecturers();
+                oldLecArr = removeLecFromArr(oldLecArr, lecturers[lecturerInt]);
+                prevDep.setLecturers(oldLecArr);
+                Lecturer[] departmentLec = studyDepartment[departmentInt].getLecturers();
+                Lecturer newLecToDep = lecturers[lecturerInt];
+                studyDepartment[departmentInt].setLecturers(addLecturerToLecArr(newLecToDep, departmentLec));
+                lecturers[lecturerInt].setDepartment(studyDepartment[departmentInt]);
+                System.out.println("Lecturer was added to the department");
+            }
         }
-         if(findLecIndex(lec)==-1){
+        if (lecturerInt == -1) {
             System.out.println("Lecturer was not found");
         }
-        if(findDepIndex(dep)==-1){
+        if (departmentInt == -1) {
             System.out.println("department was not found");
         }
+    }
+
+    public Lecturer[] removeLecFromArr(Lecturer[] lecArr, Lecturer removeLec) {
+        for (int i = 0; i < lecArr.length && lecArr[i] != null; i++) {
+            if (lecArr[i].equals(removeLec)) {
+                lecArr[i] = null;
+            }
+        }
+        return lecArr;
+    }
+
+    public void printDep() {
+        Department dep = studyDepartment[findDepIndex(stringInput("choose department"))];
+        if (dep != null) {
+            Lecturer[] newArr = dep.getLecturers();
+            for (int i = 0; i < newArr.length; i++) {
+                if (newArr[i] != null) {
+                    System.out.print(newArr[i].getName() + " ");
+                }
+
+            }
         }
     }
+}
 
 
