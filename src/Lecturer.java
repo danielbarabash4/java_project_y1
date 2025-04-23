@@ -4,13 +4,13 @@ import java.util.Objects;
 public class Lecturer {
     private String name;
     private String id;
-    private String degree;
+    private Degree degree;
     private String degreeName;
     private double salary;
     private Department department;
     private Committee[] committees;
 
-    public Lecturer(String name, String id, String degree, String degreeName, double salary, Department department) {
+    public Lecturer(String name, String id, Degree degree, String degreeName, double salary, Department department) {
         setId(id);
         setName(name);
         setDegree(degree);
@@ -100,11 +100,11 @@ public class Lecturer {
         this.id = id;
     }
 
-    public String getDegree() {
+    public Degree getDegree() {
         return degree;
     }
 
-    public void setDegree(String degree) {
+    public void setDegree(Degree degree) {
         this.degree = degree;
     }
 

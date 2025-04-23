@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner scn = new Scanner(System.in);
-
     public static void main(String[] args) {
         System.out.println("Please Choose college name: ");
         String collageName = scn.nextLine();
@@ -79,8 +78,6 @@ public class Main {
         System.out.println("9- Show info about lecturers");
         System.out.println("10- Show info about all committees");
         System.out.println("11- Add lecturer to department");
-
-
     }
 
 //    private static int lastPlace(String[] arr) {

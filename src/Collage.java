@@ -15,11 +15,10 @@ public class Collage {
     }
 
     public void lecturerToCollage() {
-        Lecturer lecturer = new Lecturer(stringInput("name"), checkId(stringInput("id")), stringInput("degree"),
+        Lecturer lecturer = new Lecturer(stringInput("name"), checkId(stringInput("id")), Degree.degFromInt(intInput("degree")),
                 stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer(stringInput("department name")));
         if (lecturer.getSalary() < 0) {
             System.out.println("Invalid salary input");
-
         } else {
             lecturers = addLecturerToLecArr(lecturer, lecturers);
             if (lecturer.getDepartment() != null) {
@@ -94,7 +93,7 @@ public class Collage {
     public Lecturer addHeadOf(String s) {
         for (int i = 0; i < lecturers.length && lecturers[i] != null; i++) {
             if (lecturers[i].getId().equals(s)) {
-                if (lecturers[i].getDegree().equals("prof") || lecturers[i].getDegree().equals("dr")) {
+                if (lecturers[i].getDegree().equals(Degree.dr) || lecturers[i].getDegree().equals(Degree.prof)) {
                     return lecturers[i];
                 } else {
                     System.out.println("Lecturer doesn't meet the criterion");
@@ -145,7 +144,7 @@ public class Collage {
         int comIndex = findComIndex(stringInput("committee to update: "));
         Lecturer newHead = lecturers[findLecIndex(stringInput("new head of committee id: "))];
         if (comIndex != -1 && newHead != null) {
-            if (newHead.getDegree().equals("dr") || newHead.getDegree().equals("prof")) {
+            if (newHead.getDegree().equals(Degree.dr) || newHead.getDegree().equals(Degree.prof)) {
                 committees[comIndex].setHeadOfCommittee(newHead);
                 if (hasLec(committees[comIndex], newHead) != -1) {
                     committees[comIndex].removeLecFromMembers(newHead);
