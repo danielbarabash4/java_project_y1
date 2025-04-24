@@ -15,7 +15,7 @@ public class Collage {
     }
 
     public void lecturerToCollage() {
-        Lecturer lecturer = new Lecturer(stringInput("name"), checkId(stringInput("id")), Degree.degFromInt(intInput("degree")),
+        Lecturer lecturer = new Lecturer(stringInput("name"), checkId(stringInput("id")),Degree.degFromInt(intInput("degree")),
                 stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer(stringInput("department name")));
         if (lecturer.getSalary() < 0) {
             System.out.println("Invalid salary input");
