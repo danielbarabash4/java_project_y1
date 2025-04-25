@@ -14,39 +14,35 @@ public class Collage {
         studyDepartment = new Department[1];
     }
 
-    public void lecturerToCollage() {
-        Lecturer lecturer = new Lecturer(checkName(stringInput("name")), checkId(stringInput("id")),Degree.degFromInt(intInput("degree")),
-                stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer(stringInput("department name")));
-        if (lecturer.getSalary() < 0) {
-            System.out.println("Invalid salary input");
+    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName) {
+        Lecturer lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, addNewLecToDep(findDepIndex(depName)));
+        lecturers = addLecturerToLecArr(lecturer, lecturers);
+    }
+
+    public Department addNewLecToDep(int depInt){
+        if(depInt != -1){
+            return studyDepartment[depInt];
+        }else{
+            return null;
+        }
+    }
+
+    public boolean checkName(String checkLec) {
+        for (int i = 0; i < lecturers.length; i++) {
+            if (lecturers[i] != null && lecturers[i].getName().equals(checkLec)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public Department AddDepartmentToLecturer(String s) {
+        if (findDepIndex(s) != -1) {
+            return studyDepartment[findDepIndex(s)];
         } else {
-            lecturers = addLecturerToLecArr(lecturer, lecturers);
-            if (lecturer.getDepartment() != null) {
-                lecturer.getDepartment().AddNewLecturer(lecturer);
-            }
+            return null;
         }
-        System.out.println("Lecturer was added");
     }
-
-    private String checkId(String id) {
-        for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null && lecturers[i].getId().equals(id)) {
-                System.out.println("this id is already in the system");
-                return checkId(stringInput("id"));
-            }
-        }
-        return id;
-    }
-    private String checkName(String name) {
-        for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null && lecturers[i].getName().equals(name)) {
-                System.out.println("this name is already in the system");
-                return checkName(stringInput("name"));
-            }
-        }
-        return name;
-    }
-
 
     public Lecturer[] addLecturerToLecArr(Lecturer lecturer, Lecturer[] lecArr) {
         int temp = lecArr.length;
@@ -63,7 +59,7 @@ public class Collage {
     }
 
     public void committeeToCollage() {
-        Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("head lecturer name")));
+        Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("head lecturer id")));
         if (committeeExist(committee)) {
             System.out.println("Committee is already in the system");
         } else if (committee.getHeadOfCommittee() != null) {
@@ -102,7 +98,7 @@ public class Collage {
 
     public Lecturer addHeadOf(String s) {
         for (int i = 0; i < lecturers.length && lecturers[i] != null; i++) {
-            if (lecturers[i].getName().equals(s)) {
+            if (lecturers[i].getId().equals(s)) {
                 if (lecturers[i].getDegree().equals(Degree.dr) || lecturers[i].getDegree().equals(Degree.prof)) {
                     return lecturers[i];
                 } else {
@@ -115,9 +111,9 @@ public class Collage {
         return null;
     }
 
-    public int findLecIndex(String lecName) {
+    public int findLecIndex(String lecID) {
         for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null && lecturers[i].getName().equals(lecName)) {
+            if (lecturers[i] != null && lecturers[i].getName().equals(lecID)) {
                 return i;
             }
         }
@@ -135,7 +131,7 @@ public class Collage {
 
     public void lecturerToCommittee() {
         int comIndex = findComIndex(stringInput("committee to add a lecturer"));
-        int lecIndex = findLecIndex(stringInput("lecturer name to add"));
+        int lecIndex = findLecIndex(stringInput("lecturer id to add"));
         if (comIndex != -1 && lecIndex != -1) {
             if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
                 System.out.println("This lecturer already is the head of the committee");
@@ -152,7 +148,7 @@ public class Collage {
 
     public void updateComHead() {
         int comIndex = findComIndex(stringInput("committee to update: "));
-        Lecturer newHead = lecturers[findLecIndex(stringInput("new head of committee name: "))];
+        Lecturer newHead = lecturers[findLecIndex(stringInput("new head of committee id: "))];
         if (comIndex != -1 && newHead != null) {
             if (newHead.getDegree().equals(Degree.dr) || newHead.getDegree().equals(Degree.prof)) {
                 committees[comIndex].setHeadOfCommittee(newHead);
@@ -168,9 +164,9 @@ public class Collage {
 
     public void removeLecFromCom() {
         int comUpdate = findComIndex(stringInput("committee to update"));
-        String name = stringInput("name of a lecturer to remove: ");
-        if (findLecIndex(name) != -1) {
-            Lecturer removeLec = lecturers[findLecIndex(stringInput("name of a lecturer to remove: "))];
+        String id = stringInput("id of a lecturer to remove: ");
+        if (findLecIndex(id) != -1) {
+            Lecturer removeLec = lecturers[findLecIndex(stringInput("id of a lecturer to remove: "))];
             if (comUpdate != -1 && removeLec != null) {
                 committees[comUpdate].removeLecFromMembers(removeLec);
                 removeLec.removeCom(committees[comUpdate]);
@@ -239,15 +235,6 @@ public class Collage {
             } else {
                 System.out.println("name already exist");
             }
-        }
-    }
-
-    public Department AddDepartmentToLecturer(String s) {
-        if (findDepIndex(s) != -1) {
-            return studyDepartment[findDepIndex(s)];
-        } else {
-            System.out.println("Department doesn't exist");
-            return null;
         }
     }
 
@@ -325,28 +312,32 @@ public class Collage {
         return newArr;
     }
 
-    public void AddLecToDep() {
-        int depInt = findDepIndex(stringInput("department to update"));
-        int lecInt = findLecIndex(stringInput("lecturer id"));
+    public Department addLecToDep(int depInt, int lecInt) {
         if (depInt != -1 && lecInt != -1) {
             if (lecturers[lecInt].getDepartment() != null) {
                 Department prevDep = lecturers[lecInt].getDepartment();
                 if (prevDep.equals(studyDepartment[depInt])) {
-                    System.out.println("lecturer already in the department");
+                    addLecToDepMsg(1);
+                    return null;
                 } else {
                     prevDep.setLecturers(removeLecFromArr(prevDep.getLecturers(), lecturers[lecInt]));
+                    return studyDepartment[depInt];
                 }
+            } else {
+                studyDepartment[depInt].setLecturers(addLecturerToLecArr(lecturers[lecInt], studyDepartment[depInt].getLecturers()));
+                lecturers[lecInt].setDepartment(studyDepartment[depInt]);
+                return studyDepartment[depInt];
             }
-            studyDepartment[depInt].setLecturers(addLecturerToLecArr(lecturers[lecInt], studyDepartment[depInt].getLecturers()));
-            lecturers[lecInt].setDepartment(studyDepartment[depInt]);
-            System.out.println("Lecturer was added to the department");
+        } else {
+            return null;
+        }
+    }
 
-        }
-        if (lecInt == -1) {
-            System.out.println("Lecturer was not found");
-        }
-        if (depInt == -1) {
-            System.out.println("department was not found");
+    public String addLecToDepMsg(int msgType) {
+        if (msgType == 1) {
+            return "lecturer already in the department";
+        } else {
+            return "Lecturer was added to the department";
         }
     }
 

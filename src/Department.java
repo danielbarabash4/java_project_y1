@@ -18,7 +18,7 @@ public class Department {
             lecturerAdd(lecturer);
         }
         else{
-            System.out.println("Lecturer is already a member of the department 111");
+            System.out.println("Lecturer is already a member of the department");
         }
     }
 

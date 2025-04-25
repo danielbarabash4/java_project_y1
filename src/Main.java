@@ -2,14 +2,15 @@
 
 import java.util.Scanner;
 
- // small change
+// small change
 
 public class Main {
     static Scanner scn = new Scanner(System.in);
+
     public static void main(String[] args) {
         System.out.println("Please Choose college name: ");
         String collageName = scn.nextLine();
-        Collage collage=new Collage(collageName);
+        Collage collage = new Collage(collageName);
         boolean toContinue = true;
         String val;
         while (toContinue) {
@@ -20,7 +21,29 @@ public class Main {
                     toContinue = false;
                     break;
                 case "1":
-                    collage.lecturerToCollage();
+                    String name = stringInput("name");
+
+                    while (!collage.checkName(name)) {
+                        System.out.println("this name already exist");
+                        name = stringInput("name");
+                        collage.checkName(name);
+                    }
+
+                    String id = stringInput("id");
+                    System.out.println("1 - first degree ,2 - second degree ,3 - dr ,4 - professor");
+                    int degInt = intInput("degree");
+                    String degName = stringInput("degree name");
+                    double salary = doubleInput("salary");
+
+                    if(salary<0){
+                        System.out.println("invalid salary");
+                        continue;
+                    }
+
+                    String depName = stringInput("department name");
+
+                    collage.lecturerToCollage(name, id, degInt, degName, salary, depName);
+                    System.out.println("Lecturer was added");
                     break;
                 case "2":
                     collage.committeeToCollage();
@@ -42,12 +65,13 @@ public class Main {
                     System.out.println(collage.showAvgSalPerDep(null));
                     break;
                 case "8":
-                    System.out.println("Choose a deparment");
-                    String res=scn.nextLine();
-                    if(collage.AddDepartmentToLecturer(res)!=null){
+                    System.out.println("Choose a department");
+                    String res = scn.nextLine();
+                    if (collage.AddDepartmentToLecturer(res) != null) {
                         System.out.print("Average department salary is: ");
                         System.out.println(collage.showAvgSalPerDep(collage.AddDepartmentToLecturer(res)));
                     }
+                    System.out.println("Department doesn't exist");
                     break;
                 case "9":
                     collage.showAllLecturers();
@@ -56,15 +80,47 @@ public class Main {
                     collage.showAllCommittees();
                     break;
                 case "11":
-                    collage.AddLecToDep();
+                    int depInt = collage.findDepIndex(stringInput("department to update"));
+                    int lecInt = collage.findLecIndex(stringInput("lecturer name"));
+                    if (lecInt == -1) {
+                        System.out.println("Lecturer was not found");
+                    }
+                    if (depInt == -1) {
+                        System.out.println("department was not found");
+                    }
+                    if(collage.addLecToDep(depInt,lecInt) == null ){
+                        System.out.println("lecturer already in the department");
+                    }else{
+                        System.out.println("lecturer was added");
+                    };
                     break;
-                case  "12":
+                case "12":
                     collage.printDep();
                     break;
                 default:
                     System.out.println("Wrong input");
             }
         }
+    }
+
+
+    private static double doubleInput(String word) {
+        System.out.println("Choose a " + word + ":");
+        double res = scn.nextDouble();
+        scn.nextLine();
+        return res;
+    }
+
+    public static String stringInput(String word) {
+        System.out.println("Choose a " + word + ":");
+        return scn.nextLine();
+    }
+
+    public static int intInput(String word) {
+        System.out.println("Choose a " + word + ":");
+        int res = scn.nextInt();
+        scn.nextLine();
+        return res;
     }
 
     private static void printMenu() {
