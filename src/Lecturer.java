@@ -148,7 +148,7 @@ public class Lecturer {
     public boolean equals(Object o) {
         if (o == null) return false;
         Lecturer lecturer = (Lecturer) o;
-        return id.equals(lecturer.id);
+        return name.equals(lecturer.name);
     }
 
     @Override
