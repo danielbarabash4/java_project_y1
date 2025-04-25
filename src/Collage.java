@@ -26,6 +26,28 @@ public class Collage {
             return null;
         }
     }
+    public int updateLecDep(int lecInt,int depInt){
+        if(depInt==-1 && lecInt!=-1){
+            return 1;
+        }
+        if(lecInt==-1 && depInt!=-1){
+            return 2;
+        }
+        if(lecInt==-1 && depInt==-1){
+            return 3;
+        }
+        if(lecturers[lecInt].getDepartment()==studyDepartment[depInt]){
+            return 4;
+        }
+        else{
+            //Department prevDep=lecturers[lecInt].getDepartment();
+            if(lecturers[lecInt].getDepartment()!=null) {
+                lecturers[lecInt].getDepartment().removeLec(lecturers[lecInt]);
+            }
+            lecturers[lecInt].setDepartment(studyDepartment[depInt]);
+            return 0;
+        }
+    }
 
     public boolean checkName(String checkLec) {
         for (int i = 0; i < lecturers.length; i++) {
@@ -58,13 +80,19 @@ public class Collage {
         return lecArr;
     }
 
-    public void committeeToCollage() {
-        Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("head lecturer id")));
-        if (committeeExist(committee)) {
-            System.out.println("Committee is already in the system");
-        } else if (committee.getHeadOfCommittee() != null) {
+    public int committeeToCollage(String comName,String lecName) {
+        if(findLecIndex(lecName)==-1){
+            return 5;
+        }
+        Committee committee = new Committee(comName, addHeadOf(lecName));
+        if(committee.getHeadOfCommittee()==null){
+            return 1;
+        }
+        else if (committeeExist(committee)) {
+            return 2;
+        } else {
             addNewCommittee(committee);
-            System.out.println("Committee was added");
+            return 3;
         }
     }
 
@@ -98,16 +126,15 @@ public class Collage {
 
     public Lecturer addHeadOf(String s) {
         for (int i = 0; i < lecturers.length && lecturers[i] != null; i++) {
-            if (lecturers[i].getId().equals(s)) {
+            if (lecturers[i].getName().equals(s)) {
                 if (lecturers[i].getDegree().equals(Degree.dr) || lecturers[i].getDegree().equals(Degree.prof)) {
                     return lecturers[i];
                 } else {
-                    System.out.println("Lecturer doesn't meet the criterion");
+
                     return null;
                 }
             }
         }
-        System.out.println("Lecturer doesn't exit");
         return null;
     }
 
@@ -312,34 +339,6 @@ public class Collage {
         return newArr;
     }
 
-    public Department addLecToDep(int depInt, int lecInt) {
-        if (depInt != -1 && lecInt != -1) {
-            if (lecturers[lecInt].getDepartment() != null) {
-                Department prevDep = lecturers[lecInt].getDepartment();
-                if (prevDep.equals(studyDepartment[depInt])) {
-                    addLecToDepMsg(1);
-                    return null;
-                } else {
-                    prevDep.setLecturers(removeLecFromArr(prevDep.getLecturers(), lecturers[lecInt]));
-                    return studyDepartment[depInt];
-                }
-            } else {
-                studyDepartment[depInt].setLecturers(addLecturerToLecArr(lecturers[lecInt], studyDepartment[depInt].getLecturers()));
-                lecturers[lecInt].setDepartment(studyDepartment[depInt]);
-                return studyDepartment[depInt];
-            }
-        } else {
-            return null;
-        }
-    }
-
-    public String addLecToDepMsg(int msgType) {
-        if (msgType == 1) {
-            return "lecturer already in the department";
-        } else {
-            return "Lecturer was added to the department";
-        }
-    }
 
     public Lecturer[] removeLecFromArr(Lecturer[] lecArr, Lecturer removeLec) {
         for (int i = 0; i < lecArr.length && lecArr[i] != null; i++) {

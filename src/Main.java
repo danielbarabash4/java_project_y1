@@ -24,7 +24,7 @@ public class Main {
                     String name = stringInput("name");
 
                     while (!collage.checkName(name)) {
-                        System.out.println("this name already exist");
+                        System.out.println("this name already exists");
                         name = stringInput("name");
                         collage.checkName(name);
                     }
@@ -46,7 +46,19 @@ public class Main {
                     System.out.println("Lecturer was added");
                     break;
                 case "2":
-                    collage.committeeToCollage();
+                    int msg2=collage.committeeToCollage(stringInput("committee name"),stringInput("head lecturer id"));
+                    if(msg2==1){
+                        System.out.println("Lecturer doesn't meet the criterion");
+                    }
+                    else if(msg2==2){
+                        System.out.println("Committee is already in the system");
+                    }
+                    else if(msg2==5){
+                        System.out.println("Lecturer doesn't exist");
+                    }
+                    else{
+                        System.out.println("Committee was added");
+                    }
                     break;
                 case "3":
                     collage.lecturerToCommittee();
@@ -82,17 +94,22 @@ public class Main {
                 case "11":
                     int depInt = collage.findDepIndex(stringInput("department to update"));
                     int lecInt = collage.findLecIndex(stringInput("lecturer name"));
-                    if (lecInt == -1) {
-                        System.out.println("Lecturer was not found");
+                    int msg11=collage.updateLecDep(lecInt,depInt);
+                    if(msg11==1){
+                        System.out.println("Department doesn't exist");
                     }
-                    if (depInt == -1) {
-                        System.out.println("department was not found");
+                    else if(msg11==2){
+                        System.out.println("Lecturer doesn't exist");
                     }
-                    if(collage.addLecToDep(depInt,lecInt) == null ){
-                        System.out.println("lecturer already in the department");
-                    }else{
-                        System.out.println("lecturer was added");
-                    };
+                    else if(msg11==3){
+                        System.out.println("Department doesn't exist \n Lecturer doesn't exist");
+                    }
+                    else if(msg11==4){
+                        System.out.println("Lecturer is already a member of the department");
+                    }
+                    else{
+                        System.out.println("Lecturer was added to the department");
+                    }
                     break;
                 case "12":
                     collage.printDep();
