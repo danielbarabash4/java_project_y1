@@ -15,7 +15,7 @@ public class Collage {
     }
 
     public void lecturerToCollage() {
-        Lecturer lecturer = new Lecturer(stringInput("name"), checkId(stringInput("id")),Degree.degFromInt(intInput("degree")),
+        Lecturer lecturer = new Lecturer(checkName(stringInput("name")), checkId(stringInput("id")),Degree.degFromInt(intInput("degree")),
                 stringInput("degree name"), doubleInput("lecturer salary"), AddDepartmentToLecturer(stringInput("department name")));
         if (lecturer.getSalary() < 0) {
             System.out.println("Invalid salary input");
@@ -37,6 +37,16 @@ public class Collage {
         }
         return id;
     }
+    private String checkName(String name) {
+        for (int i = 0; i < lecturers.length; i++) {
+            if (lecturers[i] != null && lecturers[i].getName().equals(name)) {
+                System.out.println("this name is already in the system");
+                return checkName(stringInput("name"));
+            }
+        }
+        return name;
+    }
+
 
     public Lecturer[] addLecturerToLecArr(Lecturer lecturer, Lecturer[] lecArr) {
         int temp = lecArr.length;
@@ -53,7 +63,7 @@ public class Collage {
     }
 
     public void committeeToCollage() {
-        Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("head lecturer id")));
+        Committee committee = new Committee(stringInput("committee name"), addHeadOf(stringInput("head lecturer name")));
         if (committeeExist(committee)) {
             System.out.println("Committee is already in the system");
         } else if (committee.getHeadOfCommittee() != null) {
@@ -92,7 +102,7 @@ public class Collage {
 
     public Lecturer addHeadOf(String s) {
         for (int i = 0; i < lecturers.length && lecturers[i] != null; i++) {
-            if (lecturers[i].getId().equals(s)) {
+            if (lecturers[i].getName().equals(s)) {
                 if (lecturers[i].getDegree().equals(Degree.dr) || lecturers[i].getDegree().equals(Degree.prof)) {
                     return lecturers[i];
                 } else {
@@ -105,9 +115,9 @@ public class Collage {
         return null;
     }
 
-    public int findLecIndex(String lecID) {
+    public int findLecIndex(String lecName) {
         for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null && lecturers[i].getId().equals(lecID)) {
+            if (lecturers[i] != null && lecturers[i].getName().equals(lecName)) {
                 return i;
             }
         }
@@ -125,7 +135,7 @@ public class Collage {
 
     public void lecturerToCommittee() {
         int comIndex = findComIndex(stringInput("committee to add a lecturer"));
-        int lecIndex = findLecIndex(stringInput("lecturer id to add"));
+        int lecIndex = findLecIndex(stringInput("lecturer name to add"));
         if (comIndex != -1 && lecIndex != -1) {
             if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
                 System.out.println("This lecturer already is the head of the committee");
@@ -142,7 +152,7 @@ public class Collage {
 
     public void updateComHead() {
         int comIndex = findComIndex(stringInput("committee to update: "));
-        Lecturer newHead = lecturers[findLecIndex(stringInput("new head of committee id: "))];
+        Lecturer newHead = lecturers[findLecIndex(stringInput("new head of committee name: "))];
         if (comIndex != -1 && newHead != null) {
             if (newHead.getDegree().equals(Degree.dr) || newHead.getDegree().equals(Degree.prof)) {
                 committees[comIndex].setHeadOfCommittee(newHead);
@@ -158,9 +168,9 @@ public class Collage {
 
     public void removeLecFromCom() {
         int comUpdate = findComIndex(stringInput("committee to update"));
-        String id = stringInput("id of a lecturer to remove: ");
-        if (findLecIndex(id) != -1) {
-            Lecturer removeLec = lecturers[findLecIndex(stringInput("id of a lecturer to remove: "))];
+        String name = stringInput("name of a lecturer to remove: ");
+        if (findLecIndex(name) != -1) {
+            Lecturer removeLec = lecturers[findLecIndex(stringInput("name of a lecturer to remove: "))];
             if (comUpdate != -1 && removeLec != null) {
                 committees[comUpdate].removeLecFromMembers(removeLec);
                 removeLec.removeCom(committees[comUpdate]);
