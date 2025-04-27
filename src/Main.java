@@ -61,10 +61,44 @@ public class Main {
                     }
                     break;
                 case "3":
-                    collage.lecturerToCommittee();
+                    String com=stringInput("committee to add a lecturer");
+                    String lecName=stringInput("lecturer name to add");
+                    int msg3=collage.lecturerToCommittee(com,lecName);
+                    if (msg3==1){
+                        System.out.println("This lecturer already is the head of the committee");
+                    } else if (msg3==2) {
+                        System.out.println("This lecturer is already a member of the committee");
+                    }
+                    else if(msg3==3){
+                        System.out.println("Lecturer was added to the committee");
+                    }
+                    else if(msg3==4){
+                        System.out.println("Committee name was not found");
+                    }
+                    else if(msg3==5){
+                        System.out.println("Lecturer name was not found");
+                    }
+                    else {
+                        System.out.println("committee name was not found \n Lecturer name was not found");
+                    }
                     break;
                 case "4":
-                    collage.updateComHead();
+                    String comUp= stringInput("committee to update: ");
+                    String lecNameUpd=stringInput("Lecturer name");
+
+                    int msg4=collage.updateComHead(comUp,lecNameUpd);
+                    if(msg4==1){
+
+                    }
+                    else if(msg4==2){
+
+                    }
+                    else if(msg4==3){
+
+                    }
+                    else if(msg4==4){
+
+                    }
                     break;
                 case "5":
                     collage.removeLecFromCom();

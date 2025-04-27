@@ -156,35 +156,56 @@ public class Collage {
         return -1;
     }
 
-    public void lecturerToCommittee() {
-        int comIndex = findComIndex(stringInput("committee to add a lecturer"));
-        int lecIndex = findLecIndex(stringInput("lecturer id to add"));
+    public int lecturerToCommittee(String com,String lecName) {
+        int comIndex = findComIndex(com);
+        int lecIndex = findLecIndex(lecName);
         if (comIndex != -1 && lecIndex != -1) {
             if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
-                System.out.println("This lecturer already is the head of the committee");
+                return 1;
             } else if (lecturers[lecIndex].existCommittee(committees[comIndex])) {
-                System.out.println("This lecturer is already a member of the committee");
+                return 2;
             } else {
                 committees[comIndex].setCommitteeMembers(addLecturerToLecArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers()));
                 lecturers[lecIndex].addCommittee(committees[comIndex]);
-                System.out.println("Lecturer was added to the committee");
-
+                return 3;
+            }
+        }
+        else{
+            if(comIndex==-1 && lecIndex!=-1){
+                return 4;
+            }
+            if (comIndex!=-1 && lecIndex==-1){
+                return 5;
+            }
+            else{
+                return 6;
             }
         }
     }
 
-    public void updateComHead() {
-        int comIndex = findComIndex(stringInput("committee to update: "));
-        Lecturer newHead = lecturers[findLecIndex(stringInput("new head of committee id: "))];
+    public int updateComHead(String com, String lecName) {
+        int comIndex = findComIndex(com);
+        if(findLecIndex(lecName)==-1 && comIndex!=-1){
+            return 3;
+        }
+        else if(findLecIndex(lecName)!=-1 && comIndex==1){
+            return 4;
+        }
+        else if(findLecIndex(lecName)==-1 && comIndex==-1){
+            return 5;
+        }
+        Lecturer newHead = lecturers[findLecIndex(lecName)];
         if (comIndex != -1 && newHead != null) {
             if (newHead.getDegree().equals(Degree.dr) || newHead.getDegree().equals(Degree.prof)) {
                 committees[comIndex].setHeadOfCommittee(newHead);
                 if (hasLec(committees[comIndex], newHead) != -1) {
                     committees[comIndex].removeLecFromMembers(newHead);
                 }
-                System.out.println("Head of committee was updated");
+                return 1;
+               // System.out.println("Head of committee was updated");
             } else {
-                System.out.println("Lecturer degree is not high enough");
+                return 2;
+                //System.out.println("Lecturer degree is not high enough");
             }
         }
     }
