@@ -19,29 +19,29 @@ public class Collage {
         lecturers = addLecturerToLecArr(lecturer, lecturers);
     }
 
-    public Department addNewLecToDep(int depInt){
-        if(depInt != -1){
+    public Department addNewLecToDep(int depInt) {
+        if (depInt != -1) {
             return studyDepartment[depInt];
-        }else{
+        } else {
             return null;
         }
     }
-    public int updateLecDep(int lecInt,int depInt){
-        if(depInt==-1 && lecInt!=-1){
+
+    public int updateLecDep(int lecInt, int depInt) {
+        if (depInt == -1 && lecInt != -1) {
             return 1;
         }
-        if(lecInt==-1 && depInt!=-1){
+        if (lecInt == -1 && depInt != -1) {
             return 2;
         }
-        if(lecInt==-1 && depInt==-1){
+        if (lecInt == -1 && depInt == -1) {
             return 3;
         }
-        if(lecturers[lecInt].getDepartment()==studyDepartment[depInt]){
+        if (lecturers[lecInt].getDepartment() == studyDepartment[depInt]) {
             return 4;
-        }
-        else{
+        } else {
             //Department prevDep=lecturers[lecInt].getDepartment();
-            if(lecturers[lecInt].getDepartment()!=null) {
+            if (lecturers[lecInt].getDepartment() != null) {
                 lecturers[lecInt].getDepartment().removeLec(lecturers[lecInt]);
             }
             lecturers[lecInt].setDepartment(studyDepartment[depInt]);
@@ -80,15 +80,14 @@ public class Collage {
         return lecArr;
     }
 
-    public int committeeToCollage(String comName,String lecName) {
-        if(findLecIndex(lecName)==-1){
+    public int committeeToCollage(String comName, String lecName) {
+        if (findLecIndex(lecName) == -1) {
             return 5;
         }
         Committee committee = new Committee(comName, addHeadOf(lecName));
-        if(committee.getHeadOfCommittee()==null){
+        if (committee.getHeadOfCommittee() == null) {
             return 1;
-        }
-        else if (committeeExist(committee)) {
+        } else if (committeeExist(committee)) {
             return 2;
         } else {
             addNewCommittee(committee);
@@ -156,7 +155,7 @@ public class Collage {
         return -1;
     }
 
-    public int lecturerToCommittee(String com,String lecName) {
+    public int lecturerToCommittee(String com, String lecName) {
         int comIndex = findComIndex(com);
         int lecIndex = findLecIndex(lecName);
         if (comIndex != -1 && lecIndex != -1) {
@@ -169,15 +168,13 @@ public class Collage {
                 lecturers[lecIndex].addCommittee(committees[comIndex]);
                 return 3;
             }
-        }
-        else{
-            if(comIndex==-1 && lecIndex!=-1){
+        } else {
+            if (comIndex == -1 && lecIndex != -1) {
                 return 4;
             }
-            if (comIndex!=-1 && lecIndex==-1){
+            if (comIndex != -1 && lecIndex == -1) {
                 return 5;
-            }
-            else{
+            } else {
                 return 6;
             }
         }
@@ -185,44 +182,59 @@ public class Collage {
 
     public int updateComHead(String com, String lecName) {
         int comIndex = findComIndex(com);
-        if(findLecIndex(lecName)==-1 && comIndex!=-1){
-            return 3;
-        }
-        else if(findLecIndex(lecName)!=-1 && comIndex==1){
-            return 4;
-        }
-        else if(findLecIndex(lecName)==-1 && comIndex==-1){
-            return 5;
-        }
-        Lecturer newHead = lecturers[findLecIndex(lecName)];
-        if (comIndex != -1 && newHead != null) {
-            if (newHead.getDegree().equals(Degree.dr) || newHead.getDegree().equals(Degree.prof)) {
-                committees[comIndex].setHeadOfCommittee(newHead);
-                if (hasLec(committees[comIndex], newHead) != -1) {
-                    committees[comIndex].removeLecFromMembers(newHead);
+        int lecIndex = findLecIndex(lecName);
+
+
+        if (lecIndex != -1) { // lec
+            Lecturer newHead = lecturers[findLecIndex(lecName)];
+            if (comIndex != -1 && newHead != null) { //com
+                if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
+                    return 6;
                 }
-                return 1;
-               // System.out.println("Head of committee was updated");
-            } else {
-                return 2;
-                //System.out.println("Lecturer degree is not high enough");
+                if (newHead.getDegree().equals(Degree.dr) || newHead.getDegree().equals(Degree.prof)) {
+                    committees[comIndex].setHeadOfCommittee(newHead);
+                    if (hasLec(committees[comIndex], newHead) != -1) {
+                        committees[comIndex].removeLecFromMembers(newHead);
+                    }
+                    return 1;
+                } else {
+                    return 2;
+                }
+            } else { // no com
+                return 5;
+            }
+        } else { //no lec
+            if (comIndex != -1) { //com and no lec
+                return 3;
+            } else { //no com and no lecturer
+                return 4;
             }
         }
     }
 
-    public void removeLecFromCom() {
-        int comUpdate = findComIndex(stringInput("committee to update"));
-        String id = stringInput("id of a lecturer to remove: ");
-        if (findLecIndex(id) != -1) {
-            Lecturer removeLec = lecturers[findLecIndex(stringInput("id of a lecturer to remove: "))];
-            if (comUpdate != -1 && removeLec != null) {
-                committees[comUpdate].removeLecFromMembers(removeLec);
-                removeLec.removeCom(committees[comUpdate]);
-                System.out.println("Lecturer was removed from the committee");
-            } else if (comUpdate == -1) {
-                System.out.println("Committee doesn't exist");
-            } else {
-                System.out.println("Lecturer is not a member of the committee");
+    public int removeLecFromCom(String com, String name) {
+        int comUpdate = findComIndex(com);
+        int lecIndex = findLecIndex(name);
+        if (comUpdate == -1) {// no com
+            if (lecIndex == -1) { // no lec
+                return 5;
+            } else { // lec
+                return 2;
+            }
+        } else { // com
+            if (lecIndex == -1) { // com no lec
+                return 4;
+            } else {// lec and com
+                Lecturer removeLec = lecturers[lecIndex];
+                Committee comToRemove = committees[comUpdate];
+                int lecInCom = hasLec(comToRemove, removeLec);
+                if (lecInCom == -1) { // lec is not in com
+                    return 3;
+                } else {// lec is in com
+                    committees[comUpdate].removeLecFromMembers(removeLec);
+                    removeLec.removeCom(committees[comUpdate]);
+                    return 1;
+                }
             }
         }
     }
@@ -249,9 +261,15 @@ public class Collage {
 //        return null;
 //    }
 
-    public void addDepToCollege() {
-        Department newDep = new Department(chooseDepName(), intInput("number of students"));
-        addDepartment(newDep);
+    public int addDepToCollege(int numOf,String depName) {
+        String name;
+            if (findDepIndex(depName) == -1) {
+                Department newDep = new Department(depName, numOf);
+                addDepartment(newDep);
+                return 1;
+            }
+
+        return 2;
     }
 
     private void addDepartment(Department newDep) {
@@ -273,18 +291,6 @@ public class Collage {
         studyDepartment = newArr;
     }
 
-    private String chooseDepName() {
-        String name;
-        while (true) {
-            System.out.println("choose department name: ");
-            name = scn.nextLine();
-            if (findDepIndex(name) == -1) {
-                return name;
-            } else {
-                System.out.println("name already exist");
-            }
-        }
-    }
 
     public int findDepIndex(String s) {
         for (int i = 0; i < studyDepartment.length; i++) {
@@ -313,44 +319,25 @@ public class Collage {
         return sum == 0 ? 0 : sum / counter;
     }
 
-    public void showAllLecturers() {//option 9
-        System.out.println("--------------");
+    public String  showAllLecturers() {//option 9
+        String res="";
         for (int i = 0; i < lecturers.length; i++) {
             if (lecturers[i] != null)
-                System.out.println(lecturers[i]);
+               res+=lecturers[i].toString()+"\n";
         }
-        System.out.println("--------------");
+        return res;
     }
 
-    public void showAllCommittees() {//option 10
-        System.out.println("--------------");
+    public String showAllCommittees() {//option 10
+        String res="";
         for (int i = 0; i < committees.length && committees[i] != null; i++) {
             if (committees[i].getHeadOfCommittee() != null) {
-                System.out.println(committees[i]);
-                System.out.println("--------------");
-            }
+                res+=committees[i].toString()+ "\n";
+           }
         }
-    }
-
-    private double doubleInput(String word) {
-        System.out.println("Choose a " + word + ":");
-        double res = scn.nextDouble();
-        scn.nextLine();
         return res;
     }
 
-    public String stringInput(String word) {
-        System.out.println("Choose a " + word + ":");
-        String res = scn.nextLine();
-        return res;
-    }
-
-    public int intInput(String word) {
-        System.out.println("Choose a " + word + ":");
-        int res = scn.nextInt();
-        scn.nextLine();
-        return res;
-    }
 
     private Lecturer[] extendLecturer(Lecturer[] oldArr) {
         Lecturer[] newArr = new Lecturer[oldArr.length * 2];
@@ -370,18 +357,18 @@ public class Collage {
         return lecArr;
     }
 
-    public void printDep() {
-        Department dep = studyDepartment[findDepIndex(stringInput("choose department"))];
-        if (dep != null) {
-            Lecturer[] newArr = dep.getLecturers();
-            for (int i = 0; i < newArr.length; i++) {
-                if (newArr[i] != null) {
-                    System.out.print(newArr[i].getName() + " ");
-                }
-
-            }
-        }
-    }
+//    public void printDep() {
+//        Department dep = studyDepartment[findDepIndex(stringInput("choose department"))];
+//        if (dep != null) {
+//            Lecturer[] newArr = dep.getLecturers();
+//            for (int i = 0; i < newArr.length; i++) {
+//                if (newArr[i] != null) {
+//                    System.out.print(newArr[i].getName() + " ");
+//                }
+//
+//            }
+//        }
+//    }
 }
 
 

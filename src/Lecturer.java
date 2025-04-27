@@ -85,7 +85,7 @@ public class Lecturer {
                 committees[i] = null;
             }
         }
-        System.out.println("lecturer is not a member of the committee");
+        //System.out.println("lecturer is not a member of the committee");
     }
 
     public void setName(String name) {

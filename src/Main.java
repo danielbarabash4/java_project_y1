@@ -35,7 +35,7 @@ public class Main {
                     String degName = stringInput("degree name");
                     double salary = doubleInput("salary");
 
-                    if(salary<0){
+                    if (salary < 0) {
                         System.out.println("invalid salary");
                         continue;
                     }
@@ -46,65 +46,84 @@ public class Main {
                     System.out.println("Lecturer was added");
                     break;
                 case "2":
-                    int msg2=collage.committeeToCollage(stringInput("committee name"),stringInput("head lecturer id"));
-                    if(msg2==1){
+                    int msg2 = collage.committeeToCollage(stringInput("committee name"), stringInput("head lecturer name"));
+                    if (msg2 == 1) {
                         System.out.println("Lecturer doesn't meet the criterion");
-                    }
-                    else if(msg2==2){
+                    } else if (msg2 == 2) {
                         System.out.println("Committee is already in the system");
-                    }
-                    else if(msg2==5){
+                    } else if (msg2 == 5) {
                         System.out.println("Lecturer doesn't exist");
-                    }
-                    else{
+                    } else {
                         System.out.println("Committee was added");
                     }
                     break;
                 case "3":
-                    String com=stringInput("committee to add a lecturer");
-                    String lecName=stringInput("lecturer name to add");
-                    int msg3=collage.lecturerToCommittee(com,lecName);
-                    if (msg3==1){
+                    String com = stringInput("committee to add a lecturer");
+                    String lecName = stringInput("lecturer name to add");
+                    int msg3 = collage.lecturerToCommittee(com, lecName);
+                    if (msg3 == 1) {
                         System.out.println("This lecturer already is the head of the committee");
-                    } else if (msg3==2) {
+                    } else if (msg3 == 2) {
                         System.out.println("This lecturer is already a member of the committee");
-                    }
-                    else if(msg3==3){
+                    } else if (msg3 == 3) {
                         System.out.println("Lecturer was added to the committee");
-                    }
-                    else if(msg3==4){
+                    } else if (msg3 == 4) {
                         System.out.println("Committee name was not found");
-                    }
-                    else if(msg3==5){
+                    } else if (msg3 == 5) {
                         System.out.println("Lecturer name was not found");
-                    }
-                    else {
+                    } else {
                         System.out.println("committee name was not found \n Lecturer name was not found");
                     }
                     break;
                 case "4":
-                    String comUp= stringInput("committee to update: ");
-                    String lecNameUpd=stringInput("Lecturer name");
+                    String comUp = stringInput("committee to update: ");
+                    String lecNameUpd = stringInput("Lecturer name");
 
-                    int msg4=collage.updateComHead(comUp,lecNameUpd);
-                    if(msg4==1){
+                    int msg4 = collage.updateComHead(comUp, lecNameUpd);
+                    if (msg4 == 1) {
+                        System.out.println("Committee was updated");
+                    } else if (msg4 == 2) {
+                        System.out.println("Lecturer degree is not high enough");
 
-                    }
-                    else if(msg4==2){
+                    } else if (msg4 == 3) {
+                        System.out.println("Lecturer was not found");
 
-                    }
-                    else if(msg4==3){
-
-                    }
-                    else if(msg4==4){
-
+                    } else if (msg4 == 4) {
+                        System.out.println("Lecturer was not found \nCommittee was not found");
+                    } else if (msg4 == 5) {
+                        System.out.println("Committee was not found");
+                    } else {
+                        System.out.println("Lecturer is already the head of the committee");
                     }
                     break;
                 case "5":
-                    collage.removeLecFromCom();
+                    String comName = stringInput("committee to update");
+                    String removeLecName = stringInput("Lecturer to remove");
+                    int msg5 = collage.removeLecFromCom(comName, removeLecName);
+                    if (msg5 == 1) {
+                        System.out.println("Lecturer was removed");
+                    } else if (msg5 == 2) {
+                        System.out.println("Committee was not found");
+                    } else if (msg5 == 3) {
+                        System.out.println("Lecturer is not a member of the committee");
+                    } else if (msg5 == 4) {
+                        System.out.println("Lecturer was not found");
+                    } else {
+                        System.out.println("Lecturer was not found \nCommittee was not found");
+                    }
                     break;
                 case "6":
-                    collage.addDepToCollege();
+                    while (true) {
+                        System.out.println("choose department name: ");
+                        String newDep = scn.nextLine();
+                        int res6=collage.addDepToCollege(intInput("number of sutdents"), newDep);
+                        if(res6==2){
+                            System.out.println("Name already exists");
+                        }
+                        else{
+                            break;
+                        }
+                    }
                     break;
                 case "7":
                     System.out.print("Average salary is: ");
@@ -120,33 +139,31 @@ public class Main {
                     System.out.println("Department doesn't exist");
                     break;
                 case "9":
-                    collage.showAllLecturers();
+                    System.out.println("--------------");
+                    System.out.print(collage.showAllLecturers());
+                    System.out.println("--------------");
                     break;
                 case "10":
-                    collage.showAllCommittees();
+                    System.out.println("--------------");
+                    System.out.print(collage.showAllCommittees());
+                    System.out.println("--------------");
+
                     break;
                 case "11":
                     int depInt = collage.findDepIndex(stringInput("department to update"));
                     int lecInt = collage.findLecIndex(stringInput("lecturer name"));
-                    int msg11=collage.updateLecDep(lecInt,depInt);
-                    if(msg11==1){
+                    int msg11 = collage.updateLecDep(lecInt, depInt);
+                    if (msg11 == 1) {
                         System.out.println("Department doesn't exist");
-                    }
-                    else if(msg11==2){
+                    } else if (msg11 == 2) {
                         System.out.println("Lecturer doesn't exist");
-                    }
-                    else if(msg11==3){
+                    } else if (msg11 == 3) {
                         System.out.println("Department doesn't exist \n Lecturer doesn't exist");
-                    }
-                    else if(msg11==4){
+                    } else if (msg11 == 4) {
                         System.out.println("Lecturer is already a member of the department");
-                    }
-                    else{
+                    } else {
                         System.out.println("Lecturer was added to the department");
                     }
-                    break;
-                case "12":
-                    collage.printDep();
                     break;
                 default:
                     System.out.println("Wrong input");
@@ -188,6 +205,24 @@ public class Main {
         System.out.println("10- Show info about all committees");
         System.out.println("11- Add lecturer to department");
     }
+//    public static void showAllLecturers() {//option 9
+//        System.out.println("--------------");
+//        for (int i = 0; i < collage.lecturers.length; i++) {
+//            if (lecturers[i] != null)
+//                System.out.println(lecturers[i]);
+//        }
+//        System.out.println("--------------");
+//    }
+//
+//    public static void showAllCommittees() {//option 10
+//        System.out.println("--------------");
+//        for (int i = 0; i < committees.length && committees[i] != null; i++) {
+//            if (committees[i].getHeadOfCommittee() != null) {
+//                System.out.println(committees[i]);
+//                System.out.println("--------------");
+//            }
+//        }
+    }
 
 //    private static int lastPlace(String[] arr) {
 //        int i = 0;
@@ -222,4 +257,3 @@ public class Main {
 //        }
 //        System.out.println();
 //    }
-}
