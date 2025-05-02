@@ -152,7 +152,7 @@ public class Main {
                 case "11":
                     int depInt = collage.findDepIndex(stringInput("department to update"));
                     int lecInt = collage.findLecIndex(stringInput("lecturer name"));
-                    int msg11 = collage.updateLecDep(lecInt, depInt);
+                    int msg11 = collage.updateLecDep(lecInt,depInt);
                     if (msg11 == 1) {
                         System.out.println("Department doesn't exist");
                     } else if (msg11 == 2) {
@@ -164,6 +164,9 @@ public class Main {
                     } else {
                         System.out.println("Lecturer was added to the department");
                     }
+                    break;
+                case "12":
+                    collage.printDep();
                     break;
                 default:
                     System.out.println("Wrong input");
@@ -195,7 +198,7 @@ public class Main {
         System.out.println("0 - Exit");
         System.out.println("1- Add lecturer to the collage");
         System.out.println("2- Add committee to the collage");
-        System.out.println("3- Add member to committee");
+        System.out.println("3- Add a member to committee");
         System.out.println("4- Set head of committee");
         System.out.println("5- Remove member from committee");
         System.out.println("6- Add department to the collage");

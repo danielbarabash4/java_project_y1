@@ -6,6 +6,7 @@ public class Collage {
     private Lecturer[] lecturers;
     private Committee[] committees;
     private Department[] studyDepartment;
+    private int lecSize, comSize, depSize;
 
     public Collage(String name) {
         this.name = name;
@@ -15,23 +16,27 @@ public class Collage {
     }
 
     public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName) {
-        Lecturer lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, addNewLecToDep(findDepIndex(depName)));
-        lecturers = addLecturerToLecArr(lecturer, lecturers);
+        Lecturer lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, null);
+        lecturers = addLecToArr(lecturer, lecturers, lecSize);
+        updateLecDep(findLecIndex(name),findDepIndex(depName));
+        lecSize++;
     }
 
-    public Department addNewLecToDep(int depInt) {
-        if (depInt != -1) {
-            return studyDepartment[depInt];
-        } else {
-            return null;
-        }
-    }
+//    public Department addNewLecToDep(int depInt) {
+//        if (depInt != -1) {
+//            return studyDepartment[depInt];
+//        } else {
+//            return null;
+//        }
+//    }
 
     public int updateLecDep(int lecInt, int depInt) {
+        System.out.println(lecInt);
+        System.out.println(depInt);
         if (depInt == -1 && lecInt != -1) {
             return 1;
         }
-        if (lecInt == -1 && depInt != -1) {
+        if (depInt != -1 && lecInt == -1) {
             return 2;
         }
         if (lecInt == -1 && depInt == -1) {
@@ -40,12 +45,17 @@ public class Collage {
         if (lecturers[lecInt].getDepartment() == studyDepartment[depInt]) {
             return 4;
         } else {
+            Department updateDep = studyDepartment[depInt];
+            Lecturer updateLec = lecturers[lecInt];
             //Department prevDep=lecturers[lecInt].getDepartment();
-            if (lecturers[lecInt].getDepartment() != null) {
-                lecturers[lecInt].getDepartment().removeLec(lecturers[lecInt]);
+            if (updateLec.getDepartment() != null) {
+                updateDep.removeLec(updateLec);
             }
-            lecturers[lecInt].setDepartment(studyDepartment[depInt]);
-            return 0;
+            updateLec.setDepartment(updateDep);
+            updateDep.setLecturers(addLecToArr(updateLec,updateDep.getLecturers(),updateDep.getLecSize()));
+            updateDep.setLecSize(updateDep.getLecSize()+1);
+
+            return 5;
         }
     }
 
@@ -64,6 +74,14 @@ public class Collage {
         } else {
             return null;
         }
+    }
+
+    public Lecturer[] addLecToArr(Lecturer newLec, Lecturer[] lecArr, int size) {
+        if (lecArr.length <= size) {
+            lecArr = extendLecturer(lecArr);
+        }
+        lecArr[size] = newLec;
+        return lecArr;
     }
 
     public Lecturer[] addLecturerToLecArr(Lecturer lecturer, Lecturer[] lecArr) {
@@ -137,9 +155,9 @@ public class Collage {
         return null;
     }
 
-    public int findLecIndex(String lecID) {
+    public int findLecIndex(String lecName) {
         for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null && lecturers[i].getName().equals(lecID)) {
+            if (lecturers[i] != null && lecturers[i].getName().equals(lecName)) {
                 return i;
             }
         }
@@ -164,7 +182,8 @@ public class Collage {
             } else if (lecturers[lecIndex].existCommittee(committees[comIndex])) {
                 return 2;
             } else {
-                committees[comIndex].setCommitteeMembers(addLecturerToLecArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers()));
+                committees[comIndex].setCommitteeMembers(addLecToArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers(), committees[comIndex].getLecSize()));
+                committees[comIndex].setLecSize(committees[comIndex].getLecSize() + 1);
                 lecturers[lecIndex].addCommittee(committees[comIndex]);
                 return 3;
             }
@@ -172,7 +191,7 @@ public class Collage {
             if (comIndex == -1 && lecIndex != -1) {
                 return 4;
             }
-            if (comIndex != -1 && lecIndex == -1) {
+            if (comIndex != -1) {
                 return 5;
             } else {
                 return 6;
@@ -248,26 +267,13 @@ public class Collage {
         return -1;
     }
 
-    public void lecturerToDep() {
-    }
-
-
-//    public Lecturer findLec(String lecId) {
-//        for (int i = 0; i < lecturers.length; i++) {
-//            if (lecturers[i] != null && lecturers[i].getId().equals(lecId)) {
-//                return lecturers[i];
-//            }
-//        }
-//        return null;
-//    }
-
-    public int addDepToCollege(int numOf,String depName) {
+    public int addDepToCollege(int numOf, String depName) {
         String name;
-            if (findDepIndex(depName) == -1) {
-                Department newDep = new Department(depName, numOf);
-                addDepartment(newDep);
-                return 1;
-            }
+        if (findDepIndex(depName) == -1) {
+            Department newDep = new Department(depName, numOf);
+            addDepartment(newDep);
+            return 1;
+        }
 
         return 2;
     }
@@ -319,21 +325,21 @@ public class Collage {
         return sum == 0 ? 0 : sum / counter;
     }
 
-    public String  showAllLecturers() {//option 9
-        String res="";
+    public String showAllLecturers() {//option 9
+        String res = "";
         for (int i = 0; i < lecturers.length; i++) {
             if (lecturers[i] != null)
-               res+=lecturers[i].toString()+"\n";
+                res += lecturers[i].toString() + "\n";
         }
         return res;
     }
 
     public String showAllCommittees() {//option 10
-        String res="";
+        String res = "";
         for (int i = 0; i < committees.length && committees[i] != null; i++) {
             if (committees[i].getHeadOfCommittee() != null) {
-                res+=committees[i].toString()+ "\n";
-           }
+                res += committees[i].toString() + "\n";
+            }
         }
         return res;
     }
@@ -357,18 +363,21 @@ public class Collage {
         return lecArr;
     }
 
-//    public void printDep() {
-//        Department dep = studyDepartment[findDepIndex(stringInput("choose department"))];
-//        if (dep != null) {
-//            Lecturer[] newArr = dep.getLecturers();
-//            for (int i = 0; i < newArr.length; i++) {
-//                if (newArr[i] != null) {
-//                    System.out.print(newArr[i].getName() + " ");
-//                }
-//
-//            }
-//        }
-//    }
+    public void printDep() {
+        System.out.println("choose a department");
+        String depName = scn.nextLine();
+        Department dep = studyDepartment[findDepIndex(depName)];
+        if (dep != null) {
+            Lecturer[] newArr = dep.getLecturers();
+            System.out.println(newArr.length);
+            for (int i = 0; i < newArr.length; i++) {
+                if (newArr[i] != null) {
+                    System.out.print(newArr[i].getName() + " ");
+                }
+
+            }
+        }
+    }
 }
 
 

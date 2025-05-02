@@ -4,11 +4,13 @@ public class Department {
     private String DepartmentName;
     private int studentsNum;
     private Lecturer[] lecturers;
+    private int lecSize = 0;
 
     public Department(String departmentName, int studentsNum) {
         setDepartmentName(departmentName);
         setStudentsNum(studentsNum);
         this.lecturers=new Lecturer[1];
+        this.lecSize = 0;
     }
     public void AddNewLecturer(Lecturer lecturer){
         if(!lecInDep(lecturer)) {
@@ -20,6 +22,14 @@ public class Department {
         else{
             System.out.println("Lecturer is already a member of the department");
         }
+    }
+
+    public int getLecSize() {
+        return lecSize;
+    }
+
+    public void setLecSize(int lecSize) {
+        this.lecSize = lecSize;
     }
 
     private boolean lecInDep(Lecturer lecturer) {

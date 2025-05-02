@@ -2,14 +2,24 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Committee {
-    String CommitteeName;
-    Lecturer[] committeeMembers;
-    Lecturer headOfCommittee;
+    private String CommitteeName;
+    private Lecturer[] committeeMembers;
+    private Lecturer headOfCommittee;
+    private int lecSize = 0;
 
     public Committee(String committeeName, Lecturer headOfCommittee) {
         setCommitteeName(committeeName);
         this.committeeMembers = new Lecturer[1];
         setHeadOfCommittee(headOfCommittee);
+        this.lecSize = 0;
+    }
+
+    public int getLecSize() {
+        return lecSize;
+    }
+
+    public void setLecSize(int lecSize) {
+        this.lecSize = lecSize;
     }
 
     public void removeLecFromMembers(Lecturer removeLec) {

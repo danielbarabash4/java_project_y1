@@ -9,6 +9,7 @@ public class Lecturer {
     private double salary;
     private Department department;
     private Committee[] committees;
+    private static int size = 0;
 
     public Lecturer(String name, String id, Degree degree, String degreeName, double salary, Department department) {
         setId(id);
@@ -18,6 +19,7 @@ public class Lecturer {
         setSalary(salary);
         setDepartment(department);
         committees = new Committee[1];
+        size++;
     }
 
     public String getName() {
