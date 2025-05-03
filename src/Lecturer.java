@@ -9,7 +9,8 @@ public class Lecturer {
     private double salary;
     private Department department;
     private Committee[] committees;
-    private static int size = 0;
+    private int comSize = 0;
+
 
     public Lecturer(String name, String id, Degree degree, String degreeName, double salary, Department department) {
         setId(id);
@@ -19,7 +20,6 @@ public class Lecturer {
         setSalary(salary);
         setDepartment(department);
         committees = new Committee[1];
-        size++;
     }
 
     public String getName() {
@@ -52,16 +52,11 @@ public class Lecturer {
         }
     }
 
-    public void addCommittee(Committee newCom) {
-        int i = 0;
-        for (; i < committees.length && committees[i] != null; ) {
-            i++;
-        }
-        if (i >= committees.length) {
+    public void addCom(Committee newCom){
+        if(comSize>= committees.length){
             extendCommittees();
         }
-
-        committees[i] = newCom;
+        committees[comSize++] = newCom;
     }
 
     public void extendCommittees() {
@@ -81,10 +76,19 @@ public class Lecturer {
         return false;
     }
 
+    public void shiftCom(int comIndex){
+        for(int i = comIndex; i<committees.length-1; i++){
+            committees[i] = committees[i+1];
+        }
+        comSize--;
+    }
+
     public void removeCom(Committee committee) {
         for (int i = 0; i < committees.length; i++) {
             if (committees[i] != null && committees[i].equals(committee)) {
                 committees[i] = null;
+                shiftCom(i);
+                break;
             }
         }
         //System.out.println("lecturer is not a member of the committee");

@@ -12,17 +12,6 @@ public class Department {
         this.lecturers=new Lecturer[1];
         this.lecSize = 0;
     }
-    public void AddNewLecturer(Lecturer lecturer){
-        if(!lecInDep(lecturer)) {
-            if (isFull(lecturers)) {
-                lecturers = extendArr();
-            }
-            lecturerAdd(lecturer);
-        }
-        else{
-            System.out.println("Lecturer is already a member of the department");
-        }
-    }
 
     public int getLecSize() {
         return lecSize;
@@ -41,33 +30,25 @@ public class Department {
         return false;
     }
 
-    public Lecturer[] extendArr() {
-        Lecturer []newArr=new Lecturer[lecturers.length*2];
-        for (int i = 0; i < lecturers.length; i++) {
-            if(lecturers[i]!=null){
-                newArr[i]=lecturers[i];
-            }
-        }
-        return newArr;
-    }
-
-    public void lecturerAdd(Lecturer lecturer) {
-        for (int i = 0; i < lecturers.length; i++) {
-            if(lecturers[i]==null) {
-                lecturers[i] = lecturer;
-                break;
-            }
-        }
-    }
     public void removeLec(Lecturer lec){
         if(lecInDep(lec)){
             for (int i = 0; i <lecturers.length ; i++) {
                 if(lecturers[i]!=null && lecturers[i]==lec){
                     lecturers[i]=null;
+                    shiftLec(i);
+                    break;
                 }
             }
         }
     }
+
+    public void shiftLec(int lecIndex){
+        for(int i = lecIndex; i <lecturers.length-1;i++){
+            lecturers[i] =lecturers[i+1];
+        }
+        lecSize--;
+    }
+
 
     public boolean isFull(Lecturer[] lecturers) {
         for (int i = 0; i < lecturers.length; i++) {

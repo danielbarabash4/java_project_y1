@@ -6,7 +6,7 @@ public class Collage {
     private Lecturer[] lecturers;
     private Committee[] committees;
     private Department[] studyDepartment;
-    private int lecSize, comSize, depSize;
+    private int lecSize, comSize, depSize; //logical variables
 
     public Collage(String name) {
         this.name = name;
@@ -22,17 +22,7 @@ public class Collage {
         lecSize++;
     }
 
-//    public Department addNewLecToDep(int depInt) {
-//        if (depInt != -1) {
-//            return studyDepartment[depInt];
-//        } else {
-//            return null;
-//        }
-//    }
-
     public int updateLecDep(int lecInt, int depInt) {
-        System.out.println(lecInt);
-        System.out.println(depInt);
         if (depInt == -1 && lecInt != -1) {
             return 1;
         }
@@ -42,12 +32,11 @@ public class Collage {
         if (lecInt == -1 && depInt == -1) {
             return 3;
         }
-        if (lecturers[lecInt].getDepartment() == studyDepartment[depInt]) {
+        if (lecturers[lecInt].getDepartment().equals(studyDepartment[depInt])) {
             return 4;
         } else {
             Department updateDep = studyDepartment[depInt];
             Lecturer updateLec = lecturers[lecInt];
-            //Department prevDep=lecturers[lecInt].getDepartment();
             if (updateLec.getDepartment() != null) {
                 updateDep.removeLec(updateLec);
             }
@@ -84,20 +73,6 @@ public class Collage {
         return lecArr;
     }
 
-    public Lecturer[] addLecturerToLecArr(Lecturer lecturer, Lecturer[] lecArr) {
-        int temp = lecArr.length;
-        for (int i = 0; i < lecArr.length; i++) {
-            if (lecArr[i] == null) {
-                lecArr[i] = lecturer;
-                return lecArr;
-            }
-        }
-        lecArr = extendLecturer(lecArr);
-        lecArr[temp] = lecturer;
-
-        return lecArr;
-    }
-
     public int committeeToCollage(String comName, String lecName) {
         if (findLecIndex(lecName) == -1) {
             return 5;
@@ -108,20 +83,16 @@ public class Collage {
         } else if (committeeExist(committee)) {
             return 2;
         } else {
-            addNewCommittee(committee);
+            addNewCom(committee);
             return 3;
         }
     }
 
-    public void addNewCommittee(Committee committee) {
-        int i = 0;
-        for (; i < committees.length && committees[i] != null; ) {
-            i++;
-        }
-        if (i >= committees.length) {
+    public void addNewCom(Committee com){
+        if(committees.length <= comSize){
             extendCommittees();
         }
-        committees[i] = committee;
+        committees[comSize++] = com;
     }
 
     public void extendCommittees() {
@@ -184,7 +155,7 @@ public class Collage {
             } else {
                 committees[comIndex].setCommitteeMembers(addLecToArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers(), committees[comIndex].getLecSize()));
                 committees[comIndex].setLecSize(committees[comIndex].getLecSize() + 1);
-                lecturers[lecIndex].addCommittee(committees[comIndex]);
+                lecturers[lecIndex].addCom(committees[comIndex]);
                 return 3;
             }
         } else {
@@ -271,22 +242,18 @@ public class Collage {
         String name;
         if (findDepIndex(depName) == -1) {
             Department newDep = new Department(depName, numOf);
-            addDepartment(newDep);
+            addDep(newDep);
             return 1;
         }
 
         return 2;
     }
 
-    private void addDepartment(Department newDep) {
-        int i = 0;
-        for (; i < studyDepartment.length && studyDepartment[i] != null; ) {
-            i++;
-        }
-        if (i >= studyDepartment.length) {
+    private void addDep (Department dep){
+        if(depSize>=studyDepartment.length){
             extendDep();
         }
-        studyDepartment[i] = newDep;
+        studyDepartment[depSize++] = dep;
     }
 
     private void extendDep() {
@@ -296,7 +263,6 @@ public class Collage {
         }
         studyDepartment = newArr;
     }
-
 
     public int findDepIndex(String s) {
         for (int i = 0; i < studyDepartment.length; i++) {
@@ -344,7 +310,6 @@ public class Collage {
         return res;
     }
 
-
     private Lecturer[] extendLecturer(Lecturer[] oldArr) {
         Lecturer[] newArr = new Lecturer[oldArr.length * 2];
         for (int i = 0; i < oldArr.length; i++) {
@@ -352,7 +317,6 @@ public class Collage {
         }
         return newArr;
     }
-
 
     public Lecturer[] removeLecFromArr(Lecturer[] lecArr, Lecturer removeLec) {
         for (int i = 0; i < lecArr.length && lecArr[i] != null; i++) {

@@ -22,11 +22,21 @@ public class Committee {
         this.lecSize = lecSize;
     }
 
-    public void removeLecFromMembers(Lecturer removeLec) {
-        for (int i = 0; i < committeeMembers.length; i++) {
-            if (committeeMembers[i] != null && committeeMembers[i].equals(removeLec))
+    public void removeLecFromMembers(Lecturer lec){
+        for (int i=0; i <committeeMembers.length;i++){
+            if (committeeMembers[i]!= null && committeeMembers[i].equals(lec)){
                 committeeMembers[i] = null;
+                shiftLecMembers(i);
+                break;
+            }
         }
+    }
+
+    public void shiftLecMembers(int lecIndex){
+        for(int i = lecIndex; i<committeeMembers.length-1;i++){
+            committeeMembers[i] = committeeMembers[i+1];
+        }
+        lecSize--;
     }
 
     public void setCommitteeName(String committeeName) {
