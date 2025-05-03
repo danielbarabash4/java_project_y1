@@ -18,7 +18,7 @@ public class Collage {
     public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName) {
         Lecturer lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, null);
         lecturers = addLecToArr(lecturer, lecturers, lecSize);
-        updateLecDep(findLecIndex(name),findDepIndex(depName));
+        updateLecDep(findLecIndex(name), findDepIndex(depName));
         lecSize++;
     }
 
@@ -41,8 +41,8 @@ public class Collage {
                 updateDep.removeLec(updateLec);
             }
             updateLec.setDepartment(updateDep);
-            updateDep.setLecturers(addLecToArr(updateLec,updateDep.getLecturers(),updateDep.getLecSize()));
-            updateDep.setLecSize(updateDep.getLecSize()+1);
+            updateDep.setLecturers(addLecToArr(updateLec, updateDep.getLecturers(), updateDep.getLecSize()));
+            updateDep.setLecSize(updateDep.getLecSize() + 1);
 
             return 5;
         }
@@ -88,8 +88,8 @@ public class Collage {
         }
     }
 
-    public void addNewCom(Committee com){
-        if(committees.length <= comSize){
+    public void addNewCom(Committee com) {
+        if (committees.length <= comSize) {
             extendCommittees();
         }
         committees[comSize++] = com;
@@ -249,8 +249,8 @@ public class Collage {
         return 2;
     }
 
-    private void addDep (Department dep){
-        if(depSize>=studyDepartment.length){
+    private void addDep(Department dep) {
+        if (depSize >= studyDepartment.length) {
             extendDep();
         }
         studyDepartment[depSize++] = dep;
@@ -297,6 +297,7 @@ public class Collage {
             if (lecturers[i] != null)
                 res += lecturers[i].toString() + "\n";
         }
+
         return res;
     }
 
@@ -318,30 +319,6 @@ public class Collage {
         return newArr;
     }
 
-    public Lecturer[] removeLecFromArr(Lecturer[] lecArr, Lecturer removeLec) {
-        for (int i = 0; i < lecArr.length && lecArr[i] != null; i++) {
-            if (lecArr[i].equals(removeLec)) {
-                lecArr[i] = null;
-            }
-        }
-        return lecArr;
-    }
-
-    public void printDep() {
-        System.out.println("choose a department");
-        String depName = scn.nextLine();
-        Department dep = studyDepartment[findDepIndex(depName)];
-        if (dep != null) {
-            Lecturer[] newArr = dep.getLecturers();
-            System.out.println(newArr.length);
-            for (int i = 0; i < newArr.length; i++) {
-                if (newArr[i] != null) {
-                    System.out.print(newArr[i].getName() + " ");
-                }
-
-            }
-        }
-    }
 }
 
 

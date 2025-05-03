@@ -5,7 +5,7 @@ public class Committee {
     private String CommitteeName;
     private Lecturer[] committeeMembers;
     private Lecturer headOfCommittee;
-    private int lecSize = 0;
+    private int lecSize = 0; //logical variables
 
     public Committee(String committeeName, Lecturer headOfCommittee) {
         setCommitteeName(committeeName);
@@ -33,8 +33,13 @@ public class Committee {
     }
 
     public void shiftLecMembers(int lecIndex){
-        for(int i = lecIndex; i<committeeMembers.length-1;i++){
-            committeeMembers[i] = committeeMembers[i+1];
+        for(int i = lecIndex; i<committeeMembers.length;i++){
+            if(i==committeeMembers.length-1){
+                committeeMembers[i]=null;
+            }
+            else {
+                committeeMembers[i] = committeeMembers[i + 1];
+            }
         }
         lecSize--;
     }
@@ -62,15 +67,7 @@ public class Committee {
     public Lecturer getHeadOfCommittee() {
         return headOfCommittee;
     }
-    public String getMembers() {
-        String res = "";
-        for (int i = 0; i < committeeMembers.length; i++) {
-            if (committeeMembers[i] != null) {
-                res += committeeMembers[i].getName() + " ";
-            }
-        }
-        return res;
-    }
+
     public String getCommittees() {
         String res = "";
         for (int i = 0; i < committeeMembers.length; i++) {

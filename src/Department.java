@@ -4,7 +4,7 @@ public class Department {
     private String DepartmentName;
     private int studentsNum;
     private Lecturer[] lecturers;
-    private int lecSize = 0;
+    private int lecSize = 0; //logical variable
 
     public Department(String departmentName, int studentsNum) {
         setDepartmentName(departmentName);
@@ -43,20 +43,15 @@ public class Department {
     }
 
     public void shiftLec(int lecIndex){
-        for(int i = lecIndex; i <lecturers.length-1;i++){
-            lecturers[i] =lecturers[i+1];
-        }
-        lecSize--;
-    }
-
-
-    public boolean isFull(Lecturer[] lecturers) {
-        for (int i = 0; i < lecturers.length; i++) {
-            if(lecturers[i]==null){
-                return true;
+        for(int i = lecIndex; i <lecturers.length;i++){
+            if(i==lecturers.length-1){
+                lecturers[i]=null;
+            }
+            else {
+                lecturers[i] = lecturers[i + 1];
             }
         }
-        return false;
+        lecSize--;
     }
 
     public void setDepartmentName(String departmentName) {
@@ -75,21 +70,8 @@ public class Department {
         return DepartmentName;
     }
 
-    public int getStudentsNum() {
-        return studentsNum;
-    }
-
     public Lecturer[] getLecturers() {
         return lecturers;
-    }
-    public String getNames() {
-        String res = "";
-        for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null) {
-                res += lecturers[i].getName() + " ";
-            }
-        }
-        return res;
     }
 
     @Override

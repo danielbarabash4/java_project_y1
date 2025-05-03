@@ -165,9 +165,6 @@ public class Main {
                         System.out.println("Lecturer was added to the department");
                     }
                     break;
-                case "12":
-                    collage.printDep();
-                    break;
                 default:
                     System.out.println("Wrong input");
             }
@@ -208,55 +205,5 @@ public class Main {
         System.out.println("10- Show info about all committees");
         System.out.println("11- Add lecturer to department");
     }
-//    public static void showAllLecturers() {//option 9
-//        System.out.println("--------------");
-//        for (int i = 0; i < collage.lecturers.length; i++) {
-//            if (lecturers[i] != null)
-//                System.out.println(lecturers[i]);
-//        }
-//        System.out.println("--------------");
-//    }
-//
-//    public static void showAllCommittees() {//option 10
-//        System.out.println("--------------");
-//        for (int i = 0; i < committees.length && committees[i] != null; i++) {
-//            if (committees[i].getHeadOfCommittee() != null) {
-//                System.out.println(committees[i]);
-//                System.out.println("--------------");
-//            }
-//        }
-    }
+}
 
-//    private static int lastPlace(String[] arr) {
-//        int i = 0;
-//        for (; i < arr.length && arr[i] != null; ) {
-//            i++;
-//        }
-//        return i;
-//    }
-//
-//    private static boolean checkForName(String[] arr, String name) {
-//        for (int i = 0; i < arr.length; i++) {
-//            if (arr[i] != null && arr[i].equals(name)) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//
-//    private static String[] extendArray(String[] arr) {
-//        String[] newArr = new String[arr.length * 2];
-//        for (int i = 0; i < arr.length; i++) {
-//            newArr[i] = arr[i];
-//        }
-//        return newArr;
-//    }
-//
-//    private static void printStringArray(String[] arr) {
-//        for (int i = 0; i < arr.length; i++) {
-//            if (arr[i] != null) {
-//                System.out.print(arr[i] + " ");
-//            }
-//        }
-//        System.out.println();
-//    }

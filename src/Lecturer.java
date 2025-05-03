@@ -9,7 +9,7 @@ public class Lecturer {
     private double salary;
     private Department department;
     private Committee[] committees;
-    private int comSize = 0;
+    private int comSize = 0; //logical variables
 
 
     public Lecturer(String name, String id, Degree degree, String degreeName, double salary, Department department) {
@@ -24,10 +24,6 @@ public class Lecturer {
 
     public String getName() {
         return name;
-    }
-
-    public void setCommittees() {
-
     }
 
     public String getCommittees() {
@@ -77,8 +73,13 @@ public class Lecturer {
     }
 
     public void shiftCom(int comIndex){
-        for(int i = comIndex; i<committees.length-1; i++){
-            committees[i] = committees[i+1];
+        for(int i = comIndex; i<committees.length; i++){
+            if(i==committees.length-1){
+                committees[i]=null;
+            }
+            else{
+                committees[i] = committees[i+1];
+            }
         }
         comSize--;
     }
@@ -91,15 +92,10 @@ public class Lecturer {
                 break;
             }
         }
-        //System.out.println("lecturer is not a member of the committee");
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void setId(String id) {
@@ -112,10 +108,6 @@ public class Lecturer {
 
     public void setDegree(Degree degree) {
         this.degree = degree;
-    }
-
-    public String getDegreeName() {
-        return degreeName;
     }
 
     public void setDegreeName(String degreeName) {
