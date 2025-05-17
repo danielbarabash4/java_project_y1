@@ -28,10 +28,14 @@ public class Main {
                         name = stringInput("name");
                         collage.checkName(name);
                     }
-
+                    String academy = null;
                     String id = stringInput("id");
                     System.out.println("1 - first degree ,2 - second degree ,3 - dr ,4 - professor");
                     int degInt = intInput("degree");
+                    if(degInt == 4){
+                        academy = stringInput("academy");
+                    }
+
                     String degName = stringInput("degree name");
                     double salary = doubleInput("salary");
 
@@ -42,20 +46,17 @@ public class Main {
 
                     String depName = stringInput("department name");
 
-                    collage.lecturerToCollage(name, id, degInt, degName, salary, depName);
+                    collage.lecturerToCollage(name, id, degInt, degName, salary, depName,academy);
                     System.out.println("Lecturer was added");
                     break;
                 case "2":
-                    int msg2 = collage.committeeToCollage(stringInput("committee name"), stringInput("head lecturer name"));
-                    if (msg2 == 1) {
-                        System.out.println("Lecturer doesn't meet the criterion");
-                    } else if (msg2 == 2) {
-                        System.out.println("Committee is already in the system");
-                    } else if (msg2 == 5) {
-                        System.out.println("Lecturer doesn't exist");
-                    } else {
-                        System.out.println("Committee was added");
+                    try {
+                        collage.committeeToCollage(stringInput("committee name"), stringInput("head lecturer name"));
+                    } catch (CollageException e){
+                        System.out.println(e.getMessage());
+                        break;
                     }
+                    System.out.println("Committee was added");
                     break;
                 case "3":
                     String com = stringInput("committee to add a lecturer");

@@ -15,8 +15,16 @@ public class Collage {
         studyDepartment = new Department[1];
     }
 
-    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName) {
-        Lecturer lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, null);
+    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName, String academy) {
+        Lecturer lecturer;
+        if (degree == 3) {
+            lecturer = new Doctor(name, id, Degree.degFromInt(degree), degName, salary, null);
+
+        } else if (degree == 4) {
+            lecturer = new Professor(name, id, Degree.degFromInt(degree), degName, salary, null, academy);
+        } else {
+            lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, null);
+        }
         lecturers = addLecToArr(lecturer, lecturers, lecSize);
         updateLecDep(findLecIndex(name), findDepIndex(depName));
         lecSize++;
@@ -73,18 +81,23 @@ public class Collage {
         return lecArr;
     }
 
-    public int committeeToCollage(String comName, String lecName) {
+    public void committeeToCollage(String comName, String lecName) throws CollageException{
         if (findLecIndex(lecName) == -1) {
-            return 5;
+            throw new DoesntExistException();
         }
-        Committee committee = new Committee(comName, addHeadOf(lecName));
+        Lecturer headLec;
+        try {
+            headLec = addHeadOf(lecName);
+        } catch (CollageException e){
+            throw new NotProfDocException();
+        }
+        Committee committee = new Committee(comName, headLec);
         if (committee.getHeadOfCommittee() == null) {
-            return 1;
+            throw new NotProfDocException();
         } else if (committeeExist(committee)) {
-            return 2;
+            throw new ComExistException();
         } else {
             addNewCom(committee);
-            return 3;
         }
     }
 
@@ -112,14 +125,13 @@ public class Collage {
         return false;
     }
 
-    public Lecturer addHeadOf(String s) {
+    public Lecturer addHeadOf(String s) throws CollageException {
         for (int i = 0; i < lecturers.length && lecturers[i] != null; i++) {
             if (lecturers[i].getName().equals(s)) {
                 if (lecturers[i].getDegree().equals(Degree.dr) || lecturers[i].getDegree().equals(Degree.prof)) {
                     return lecturers[i];
                 } else {
-
-                    return null;
+                    throw new NotProfDocException();
                 }
             }
         }
