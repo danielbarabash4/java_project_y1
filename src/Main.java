@@ -195,6 +195,7 @@ public class Main {
                     String com2=stringInput("second committee");
                     System.out.println(collage.comByNumOfLec(com1,com2)+" has more members");
                 default:
+                    //test
                     System.out.println("Wrong input");
             }
         }
