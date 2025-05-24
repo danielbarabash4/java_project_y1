@@ -352,7 +352,7 @@ public class Collage {
 
     }
 
-    public String comByNumOfLec(String comFirst, String comSec) throws {
+    public String comByNumOfLec(String comFirst, String comSec) throws CollageException{
         Committee com1=committees[findComIndex(comFirst)];
         Committee com2=committees[findComIndex(comSec)];
         int res=new SortComByNumOfLec().compare(com1,com2);
