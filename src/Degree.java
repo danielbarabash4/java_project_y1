@@ -4,7 +4,7 @@ public enum Degree {
     dr,
     prof;
 
-    public static Degree degFromInt(int degNum){
+    public static Degree degFromInt(int degNum) {
         switch (degNum) {
             case 1:
                 return first;

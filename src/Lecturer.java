@@ -133,14 +133,14 @@ public class Lecturer implements Cloneable {
 
     @Override
     public String toString() {
-        return "|" +
+        return
                 "name= " + name +
                 ", id= " + id +
                 ", degree= " + degree +
                 ", degree name= " + degreeName +
-                ", salary= " + salary +
-                ", department= " + getDep() +
-                ' ' + "committees= " + getCommittees() + "|";
+                ", salary= " + salary +"\n"+
+                "department= " + getDep() +"\n"+
+                 "committees= " + getCommittees() +"\n";
     }
 
     @Override

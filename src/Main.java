@@ -167,11 +167,32 @@ public class Main {
                     String com1 = stringInput("first committee");
                     String com2 = stringInput("second committee");
                     try {
-                        System.out.println(collage.comByNumOfLec(com1, com2) + " has more members");
+                        System.out.println(collage.comByNumOfArt(com1, com2,false) + " has more members");
                     } catch (CollageException e) {
                         System.out.println(e.getMessage());
-                        break;
                     }
+                    break;
+
+                case "14":
+                    String firstCom = stringInput("first committee");
+                    String secCom = stringInput("second committee");
+                    try{
+                        System.out.println(collage.comByNumOfArt(firstCom,secCom,true)+" has more articles");
+                    }
+                    catch (CollageException e){
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case "15":
+                    String cloneCom = stringInput("committee");
+                    try {
+                        collage.cloneCom(cloneCom);
+                    } catch (CollageException e) {
+                        System.out.println(e.getMessage());;
+                    }
+                    break;
+
+
                 default:
                     System.out.println("Wrong input");
             }
@@ -237,6 +258,7 @@ public class Main {
         System.out.println("12- Compare Dr/prof by their number of articles");
         System.out.println("13- Compare committees by number of lecturers");
         System.out.println("14- Compare committees by number of articles written");
+        System.out.println("15- clone committee");
 
     }
 }
