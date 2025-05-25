@@ -1,5 +1,4 @@
-import javax.print.Doc;
-import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Collage {
@@ -17,33 +16,37 @@ public class Collage {
         studyDepartment = new Department[1];
     }
 
-    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName,int articleSize, String academy) {
+    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName, int articleSize, String academy, String[] artArray) {
         Lecturer lecturer;
         if (degree == 3) {
-            lecturer = new Doctor(name, id, Degree.degFromInt(degree), degName, salary, null,articleSize);
+            lecturer = new Doctor(name, id, Degree.degFromInt(degree), degName, salary, null, articleSize, artArray);
 
         } else if (degree == 4) {
-            lecturer = new Professor(name, id, Degree.degFromInt(degree), degName, salary, null,articleSize, academy);
+            lecturer = new Professor(name, id, Degree.degFromInt(degree), degName, salary, null, articleSize, academy, artArray);
         } else {
             lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, null);
         }
         lecturers = addLecToArr(lecturer, lecturers, lecSize);
-        updateLecDep(findLecIndex(name), findDepIndex(depName));
+        try {
+            updateLecDep(findLecIndex(name), findDepIndex(depName));
+        } catch (CollageException e) {
+
+        }
         lecSize++;
     }
 
-    public int updateLecDep(int lecInt, int depInt) {
+    public void updateLecDep(int lecInt, int depInt) throws CollageException {
         if (depInt == -1 && lecInt != -1) {
-            return 1;
+            throw new DepNotExistException();
         }
         if (depInt != -1 && lecInt == -1) {
-            return 2;
+            throw new LecNotExistException();
         }
         if (lecInt == -1 && depInt == -1) {
-            return 3;
+            throw new DepAndLecNotExistException();
         }
-        if (lecturers[lecInt].getDepartment().equals(studyDepartment[depInt])) {
-            return 4;
+        if (lecturers[lecInt].getDepartment() != null && lecturers[lecInt].getDepartment().equals(studyDepartment[depInt])) {
+            throw new AlreadyMemberException();
         } else {
             Department updateDep = studyDepartment[depInt];
             Lecturer updateLec = lecturers[lecInt];
@@ -53,8 +56,6 @@ public class Collage {
             updateLec.setDepartment(updateDep);
             updateDep.setLecturers(addLecToArr(updateLec, updateDep.getLecturers(), updateDep.getLecSize()));
             updateDep.setLecSize(updateDep.getLecSize() + 1);
-
-            return 5;
         }
     }
 
@@ -83,14 +84,14 @@ public class Collage {
         return lecArr;
     }
 
-    public void committeeToCollage(String comName, String lecName) throws CollageException{
+    public void committeeToCollage(String comName, String lecName) throws CollageException {
         if (findLecIndex(lecName) == -1) {
-            throw new DoesntExistException();
+            throw new LecNotExistException();
         }
         Lecturer headLec;
         try {
             headLec = addHeadOf(lecName);
-        } catch (CollageException e){
+        } catch (CollageException e) {
             throw new NotProfDocException();
         }
         Committee committee = new Committee(comName, headLec);
@@ -158,33 +159,32 @@ public class Collage {
         return -1;
     }
 
-    public int lecturerToCommittee(String com, String lecName) {
+    public void lecturerToCommittee(String com, String lecName) throws CollageException {
         int comIndex = findComIndex(com);
         int lecIndex = findLecIndex(lecName);
         if (comIndex != -1 && lecIndex != -1) {
             if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
-                return 1;
+                throw new HeadOfException();
             } else if (lecturers[lecIndex].existCommittee(committees[comIndex])) {
-                return 2;
+                throw new AlreadyMemberException();
             } else {
                 committees[comIndex].setCommitteeMembers(addLecToArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers(), committees[comIndex].getLecSize()));
                 committees[comIndex].setLecSize(committees[comIndex].getLecSize() + 1);
                 lecturers[lecIndex].addCom(committees[comIndex]);
-                return 3;
             }
         } else {
             if (comIndex == -1 && lecIndex != -1) {
-                return 4;
+                throw new ComNotExistException();
             }
             if (comIndex != -1) {
-                return 5;
+                throw new LecNotExistException();
             } else {
-                return 6;
+                throw new LecAndComNotExistException();
             }
         }
     }
 
-    public int updateComHead(String com, String lecName) {
+    public void updateComHead(String com, String lecName) throws CollageException {
         int comIndex = findComIndex(com);
         int lecIndex = findLecIndex(lecName);
 
@@ -193,51 +193,49 @@ public class Collage {
             Lecturer newHead = lecturers[findLecIndex(lecName)];
             if (comIndex != -1 && newHead != null) { //com
                 if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
-                    return 6;
+                    throw new HeadOfException();
                 }
                 if (newHead.getDegree().equals(Degree.dr) || newHead.getDegree().equals(Degree.prof)) {
                     committees[comIndex].setHeadOfCommittee(newHead);
                     if (hasLec(committees[comIndex], newHead) != -1) {
                         committees[comIndex].removeLecFromMembers(newHead);
                     }
-                    return 1;
                 } else {
-                    return 2;
+                    throw new NotProfDocException();
                 }
             } else { // no com
-                return 5;
+                throw new ComNotExistException();
             }
         } else { //no lec
             if (comIndex != -1) { //com and no lec
-                return 3;
+                throw new LecNotExistException();
             } else { //no com and no lecturer
-                return 4;
+                throw new LecAndComNotExistException();
             }
         }
     }
 
-    public int removeLecFromCom(String com, String name) {
+    public void removeLecFromCom(String com, String name) throws CollageException {
         int comUpdate = findComIndex(com);
         int lecIndex = findLecIndex(name);
         if (comUpdate == -1) {// no com
             if (lecIndex == -1) { // no lec
-                return 5;
+                throw new LecAndComNotExistException();
             } else { // lec
-                return 2;
+                throw new ComNotExistException();
             }
         } else { // com
             if (lecIndex == -1) { // com no lec
-                return 4;
+                throw new LecNotExistException();
             } else {// lec and com
                 Lecturer removeLec = lecturers[lecIndex];
                 Committee comToRemove = committees[comUpdate];
                 int lecInCom = hasLec(comToRemove, removeLec);
                 if (lecInCom == -1) { // lec is not in com
-                    return 3;
+                    throw new LecNotMemberException();
                 } else {// lec is in com
                     committees[comUpdate].removeLecFromMembers(removeLec);
                     removeLec.removeCom(committees[comUpdate]);
-                    return 1;
                 }
             }
         }
@@ -252,15 +250,13 @@ public class Collage {
         return -1;
     }
 
-    public int addDepToCollege(int numOf, String depName) {
-        String name;
+    public void addDepToCollege(int numOf, String depName) throws CollageException {
         if (findDepIndex(depName) == -1) {
             Department newDep = new Department(depName, numOf);
             addDep(newDep);
-            return 1;
+        } else {
+            throw new DepAlreadyExistException();
         }
-
-        return 2;
     }
 
     private void addDep(Department dep) {
@@ -333,30 +329,26 @@ public class Collage {
         return newArr;
     }
 
-    public Lecturer compareLec(String lecName1, String lecName2) throws DoesntExistException, NotProfDocException{
+    public Lecturer compareLec(String lecName1, String lecName2) throws CollageException {
         Lecturer lecturer1;
         Lecturer lecturer2;
         try {
-             lecturer1 =  lecturers[findLecIndex(lecName1)];
-             lecturer2 =  lecturers[findLecIndex(lecName2)];
-            if (!(lecturer1 instanceof Doctor)||!(lecturer2 instanceof Doctor)){
+            lecturer1 = lecturers[findLecIndex(lecName1)];
+            lecturer2 = lecturers[findLecIndex(lecName2)];
+            if (!(lecturer1 instanceof Doctor) || !(lecturer2 instanceof Doctor)) {
                 throw new NotProfDocException();
             }
-            return ((Doctor)lecturer1).compareTo((Doctor) lecturer2)>0?lecturer1:lecturer2;
+            return ((Doctor) lecturer1).compareTo((Doctor) lecturer2) > 0 ? lecturer1 : lecturer2;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new LecNotExistException(e.getMessage());
         }
-        catch (ArrayIndexOutOfBoundsException e){
-            throw new DoesntExistException(e.getMessage());
-        }
-
-
-
     }
 
-    public String comByNumOfLec(String comFirst, String comSec) throws CollageException{
-        Committee com1=committees[findComIndex(comFirst)];
-        Committee com2=committees[findComIndex(comSec)];
-        int res=new SortComByNumOfLec().compare(com1,com2);
-        return res>=0?com1.getCommitteeName():com2.getCommitteeName();
+    public String comByNumOfLec(String comFirst, String comSec) throws CollageException {
+        Committee com1 = committees[findComIndex(comFirst)];
+        Committee com2 = committees[findComIndex(comSec)];
+        int res = new SortComByNumOfLec().compare(com1, com2);
+        return res >= 0 ? com1.getCommitteeName() : com2.getCommitteeName();
     }
 }
 

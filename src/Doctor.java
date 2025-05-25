@@ -2,9 +2,10 @@ public class Doctor extends Lecturer implements Comparable<Doctor> {
     private String[] Articles;
     private int ArticlesSize;
 
-    public Doctor(String name, String id, Degree degree, String degreeName, double salary, Department department,int articlesSize) {
+    public Doctor(String name, String id, Degree degree, String degreeName, double salary, Department department,int articlesSize,String[] artArray) {
         super(name, id, degree, degreeName, salary, department);
         this.ArticlesSize=articlesSize;
+        setArticles(artArray);
         Articles = new String[articlesSize];
     }
 

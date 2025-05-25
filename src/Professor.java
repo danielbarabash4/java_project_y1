@@ -1,8 +1,8 @@
 public class Professor extends Doctor {
     private String academy;
 
-    public Professor(String name, String id, Degree degree, String degreeName, double salary, Department department,int articleSize ,String academy) {
-        super(name, id, degree, degreeName, salary, department,articleSize);
+    public Professor(String name, String id, Degree degree, String degreeName, double salary, Department department,int articleSize ,String academy,String[] artArray) {
+        super(name, id, degree, degreeName, salary, department,articleSize,artArray);
         setAcademy(academy);
     }
 
