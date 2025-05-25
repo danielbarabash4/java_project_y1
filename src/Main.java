@@ -29,9 +29,16 @@ public class Main {
                         collage.checkName(name);
                     }
                     String academy = null;
+                    int articleSize=0;
                     String id = stringInput("id");
                     System.out.println("1 - first degree ,2 - second degree ,3 - dr ,4 - professor");
                     int degInt = intInput("degree");
+                    if(degInt==3|| degInt==4){
+                        articleSize=intInput("articles amount");
+                        String artArray[]=new String[articleSize];
+                        artArray=fillArt(articleSize,artArray);
+
+                    }
                     if(degInt == 4){
                         academy = stringInput("academy");
                     }
@@ -46,7 +53,7 @@ public class Main {
 
                     String depName = stringInput("department name");
 
-                    collage.lecturerToCollage(name, id, degInt, degName, salary, depName,academy);
+                    collage.lecturerToCollage(name, id, degInt, degName, salary, depName,articleSize,academy);
                     System.out.println("Lecturer was added");
                     break;
                 case "2":
@@ -166,10 +173,42 @@ public class Main {
                         System.out.println("Lecturer was added to the department");
                     }
                     break;
+                case "12":
+                    System.out.println();
+                    String msg12=stringInput(" first lecturer (Dr/prof)");
+                    String msg13=stringInput(" second lecturer (Dr/prof)");
+                    try{
+                        Lecturer lec12=collage.compareLec(msg12,msg13);
+                        System.out.println(lec12.getName()+ " has more articles");
+                        break;
+                    }
+                    catch (DoesntExistException e){
+                        System.out.println("Lecturer was not found");
+                        break;
+                    }
+                    catch (NotProfDocException e){
+                        System.out.println("Lecturer degree is not high enough");
+                        break;
+                    }
+                case "13":
+                    String com1=stringInput("first committee");
+                    String com2=stringInput("second committee");
+                    System.out.println(collage.comByNumOfLec(com1,com2)+" has more members");
                 default:
+                    //test
                     System.out.println("Wrong input");
             }
         }
+    }
+
+    private static String[] fillArt(int articleSize,String[]arr) {
+        int num=1;
+        for (int i = 0; i <articleSize ; i++) {
+            arr[i]=stringInput("article num ["+num+"]" );
+            num++;
+
+        }
+        return arr;
     }
 
 
@@ -205,6 +244,10 @@ public class Main {
         System.out.println("9- Show info about lecturers");
         System.out.println("10- Show info about all committees");
         System.out.println("11- Add lecturer to department");
+        System.out.println("12- Compare Dr/prof by their number of articles");
+        System.out.println("13- Compare committees by number of lecturers");
+        System.out.println("14- Compare committees by number of articles written");
+
     }
 }
 

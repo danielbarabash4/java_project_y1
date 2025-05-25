@@ -1,3 +1,5 @@
+import javax.print.Doc;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Collage {
@@ -15,13 +17,13 @@ public class Collage {
         studyDepartment = new Department[1];
     }
 
-    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName, String academy) {
+    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName,int articleSize, String academy) {
         Lecturer lecturer;
         if (degree == 3) {
-            lecturer = new Doctor(name, id, Degree.degFromInt(degree), degName, salary, null);
+            lecturer = new Doctor(name, id, Degree.degFromInt(degree), degName, salary, null,articleSize);
 
         } else if (degree == 4) {
-            lecturer = new Professor(name, id, Degree.degFromInt(degree), degName, salary, null, academy);
+            lecturer = new Professor(name, id, Degree.degFromInt(degree), degName, salary, null,articleSize, academy);
         } else {
             lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, null);
         }
@@ -331,6 +333,31 @@ public class Collage {
         return newArr;
     }
 
+    public Lecturer compareLec(String lecName1, String lecName2) throws DoesntExistException, NotProfDocException{
+        Lecturer lecturer1;
+        Lecturer lecturer2;
+        try {
+             lecturer1 =  lecturers[findLecIndex(lecName1)];
+             lecturer2 =  lecturers[findLecIndex(lecName2)];
+            if (!(lecturer1 instanceof Doctor)||!(lecturer2 instanceof Doctor)){
+                throw new NotProfDocException();
+            }
+            return ((Doctor)lecturer1).compareTo((Doctor) lecturer2)>0?lecturer1:lecturer2;
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            throw new DoesntExistException(e.getMessage());
+        }
+
+
+
+    }
+
+    public String comByNumOfLec(String comFirst, String comSec) throws CollageException{
+        Committee com1=committees[findComIndex(comFirst)];
+        Committee com2=committees[findComIndex(comSec)];
+        int res=new SortComByNumOfLec().compare(com1,com2);
+        return res>=0?com1.getCommitteeName():com2.getCommitteeName();
+    }
 }
 
 

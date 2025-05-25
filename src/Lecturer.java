@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Lecturer {
+public class Lecturer implements Cloneable {
     private String name;
     private String id;
     private Degree degree;
@@ -21,6 +21,7 @@ public class Lecturer {
         setDepartment(department);
         committees = new Committee[1];
     }
+
 
     public String getName() {
         return name;

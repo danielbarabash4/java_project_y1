@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Committee {
+public class Committee implements Cloneable {
     private String CommitteeName;
     private Lecturer[] committeeMembers;
     private Lecturer headOfCommittee;
@@ -13,6 +13,19 @@ public class Committee {
         setHeadOfCommittee(headOfCommittee);
         this.lecSize = 0;
     }
+
+
+        public Object clone()throws CloneNotSupportedException {
+            Committee cloned = (Committee) super.clone();
+            cloned.CommitteeName = this.CommitteeName + "-new";
+            cloned.headOfCommittee = this.headOfCommittee;
+            cloned.committeeMembers = new Lecturer[this.lecSize];
+            for (int i = 0; i < this.lecSize; i++) {
+                cloned.committeeMembers[i] = this.committeeMembers[i];
+            }
+            return cloned;
+    }
+
 
     public int getLecSize() {
         return lecSize;
