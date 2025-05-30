@@ -5,7 +5,6 @@ public class SortComByArc implements Comparator<Committee> {
     public int compare(Committee o1, Committee o2) {
         int sum1 = runOnArray(o1);
         int sum2 = runOnArray(o2);
-
         return sum1-sum2;
 
     }

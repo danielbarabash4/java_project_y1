@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Objects;
+
 public class Doctor extends Lecturer implements Comparable<Doctor> {
     private String[] Articles;
     private int ArticlesSize;
@@ -6,7 +9,6 @@ public class Doctor extends Lecturer implements Comparable<Doctor> {
         super(name, id, degree, degreeName, salary, department);
         this.ArticlesSize=articlesSize;
         setArticles(artArray);
-        Articles = new String[articlesSize];
     }
 
 
@@ -30,4 +32,25 @@ public class Doctor extends Lecturer implements Comparable<Doctor> {
     public void setArticlesSize(int articlesSize) {
         ArticlesSize = articlesSize;
     }
+
+    @Override
+    public String toString() {
+        return super.toString()+
+                "amount of articles= " + ArticlesSize+"\n"+
+                "Articles= " + Arrays.toString(Articles) ;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Doctor doctor = (Doctor) o;
+        return ArticlesSize == doctor.ArticlesSize && Objects.deepEquals(Articles, doctor.Articles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), Arrays.hashCode(Articles), ArticlesSize);
+    }
 }
+
