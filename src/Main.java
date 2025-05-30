@@ -35,6 +35,10 @@ public class Main {
                     String id = stringInput("id");
                     System.out.println("1 - first degree ,2 - second degree ,3 - dr ,4 - professor");
                     int degInt = intInput("degree");
+                    while (degInt < 1 || degInt > 4) {
+                        System.out.println("this degree does not exist");
+                        degInt = intInput("degree");
+                    }
                     if (degInt == 3 || degInt == 4) {
                         articleSize = intInput("articles amount");
                         artArray = new String[articleSize];
@@ -102,7 +106,7 @@ public class Main {
                 case "6":
                     String newDep = stringInput("department name");
                     int studentNum = intInput("number of students");
-                    if(studentNum == -1){
+                    if (studentNum == -1) {
                         break;
                     }
                     while (true) {
@@ -189,7 +193,7 @@ public class Main {
 
     private static double doubleInput(String word) {
         double res = -1;
-        while(res == -1) {
+        while (res == -1) {
             try {
                 System.out.println("Choose a " + word + ":");
                 res = scn.nextInt();
@@ -208,11 +212,13 @@ public class Main {
 
     public static int intInput(String word) throws InputMismatchException {
 
-        int res = -1;
-        while(res == -1) {
+        int res = 0;
+        boolean running = true;
+        while (running) {
             try {
                 System.out.println("Choose a " + word + ":");
                 res = scn.nextInt();
+                running = false;
             } catch (InputMismatchException e) {
                 System.out.println("this is not a number");
             }
@@ -222,22 +228,21 @@ public class Main {
     }
 
     private static void printMenu() {
-        System.out.println("0 - Exit");
-        System.out.println("1- Add lecturer to the collage");
-        System.out.println("2- Add committee to the collage");
-        System.out.println("3- Add a member to committee");
-        System.out.println("4- Set head of committee");
-        System.out.println("5- Remove member from committee");
-        System.out.println("6- Add department to the collage");
-        System.out.println("7- Show average salaries of all lecturers");
-        System.out.println("8- Show average salaries of all lecturers at specific department");
-        System.out.println("9- Show info about lecturers");
-        System.out.println("10- Show info about all committees");
-        System.out.println("11- Add lecturer to department");
-        System.out.println("12- Compare Dr/prof by their number of articles");
-        System.out.println("13- Compare committees by number of lecturers");
-        System.out.println("14- Compare committees by number of articles written");
-
+        System.out.println("[0] Exit");
+        System.out.println("[1] Add lecturer to the collage");
+        System.out.println("[2] Add committee to the collage");
+        System.out.println("[3] Add a member to committee");
+        System.out.println("[4] Set head of committee");
+        System.out.println("[5] Remove member from committee");
+        System.out.println("[6] Add department to the collage");
+        System.out.println("[7] Show average salaries of all lecturers");
+        System.out.println("[8] Show average salaries of all lecturers at specific department");
+        System.out.println("[9] Show info about lecturers");
+        System.out.println("[10] Show info about all committees");
+        System.out.println("[11] Add lecturer to department");
+        System.out.println("[12] Compare Dr/prof by their number of articles");
+        System.out.println("[13] Compare committees by number of lecturers");
+        System.out.println("[14] Compare committees by number of articles written");
     }
 }
 

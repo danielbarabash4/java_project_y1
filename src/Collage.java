@@ -42,7 +42,7 @@ public class Collage {
         if (depInt != -1 && lecInt == -1) {
             throw new LecNotExistException();
         }
-        if (lecInt == -1 && depInt == -1) {
+        if (lecInt == -1) {
             throw new DepAndLecNotExistException();
         }
         if (lecturers[lecInt].getDepartment() != null && lecturers[lecInt].getDepartment().equals(studyDepartment[depInt])) {
