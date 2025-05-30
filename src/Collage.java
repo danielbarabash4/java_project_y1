@@ -345,24 +345,6 @@ public class Collage {
         }
     }
 
-//    public String comByNumOfLec(String comFirst, String comSec) throws CollageException {
-//       Committee com1;
-//       Committee com2;
-//        try {
-//            com1 = committees[findComIndex(comFirst)];
-//            com2 = committees[findComIndex(comSec)];
-//        }
-//        catch (ArrayIndexOutOfBoundsException e){
-//            throw new ComNotExistException();
-//
-//        }
-//        int res = new SortComByNumOfLec().compare(com1, com2);
-//        if(res==0){
-//            throw new EvenException();
-//        }
-//        return res > 0 ? com1.getCommitteeName() : com2.getCommitteeName();
-//    }
-
     public String comByNumOfArt(String firstCom, String secCom, boolean opt) throws CollageException {
         Committee com1;
         Committee com2;
