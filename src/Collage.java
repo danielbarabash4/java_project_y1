@@ -363,47 +363,44 @@ public class Collage {
 //        return res > 0 ? com1.getCommitteeName() : com2.getCommitteeName();
 //    }
 
-    public String comByNumOfArt(String firstCom, String secCom,boolean opt)throws CollageException {
+    public String comByNumOfArt(String firstCom, String secCom, boolean opt) throws CollageException {
         Committee com1;
         Committee com2;
         try {
-             com1 = committees[findComIndex(firstCom)];
-             com2 = committees[findComIndex(secCom)];
-        }
-        catch (ArrayIndexOutOfBoundsException e){
+            com1 = committees[findComIndex(firstCom)];
+            com2 = committees[findComIndex(secCom)];
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new ComNotExistException();
         }
         int res;
-        if(opt) {
-             res = new SortComByArc().compare(com1, com2);
-        }
-        else{
-             res = new SortComByNumOfLec().compare(com1, com2);
+        if (opt) {
+            res = new SortComByArc().compare(com1, com2);
+        } else {
+            res = new SortComByNumOfLec().compare(com1, com2);
 
         }
-        if(res==0){
+        if (res == 0) {
             throw new EvenException();
         }
-            return res > 0 ? com1.getCommitteeName() : com2.getCommitteeName();
+        return res > 0 ? com1.getCommitteeName() : com2.getCommitteeName();
 
     }
 
-    public void cloneCom(String com)throws CollageException {
+    public void cloneCom(String com) throws CollageException {
         Committee com1;
         try {
             com1 = committees[findComIndex(com)];
-        }
-        catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             throw new ComNotExistException();
         }
         try {
-            Committee newCom=(Committee) com1.clone();
+            Committee newCom = (Committee) com1.clone();
             addNewCom(newCom);
-            for (int i = 0; i <newCom.getLecSize() ; i++) {
-                    newCom.getCommitteeMembers()[i].addCom(newCom);
+            for (int i = 0; i < newCom.getLecSize(); i++) {
+                newCom.getCommitteeMembers()[i].addCom(newCom);
             }
         } catch (CloneNotSupportedException e) {
-
+            throw new CollageException(e.getMessage());
         }
     }
 }
