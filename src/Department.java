@@ -1,15 +1,16 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Department {
     private String DepartmentName;
     private int studentsNum;
-    private Lecturer[] lecturers;
+    private ArrayList<Lecturer> lecturers;
     private int lecSize = 0; //logical variable
 
     public Department(String departmentName, int studentsNum) {
         setDepartmentName(departmentName);
         setStudentsNum(studentsNum);
-        this.lecturers=new Lecturer[1];
+        this.lecturers=new ArrayList<>();
         this.lecSize = 0;
     }
 
@@ -22,37 +23,42 @@ public class Department {
     }
 
     private boolean lecInDep(Lecturer lecturer) {
-        for (int i = 0; i <lecturers.length ; i++) {
-            if(lecturers[i]!=null && lecturers[i].equals(lecturer)){
-                return true;
-            }
+        if(lecturers.contains(lecturer)){
+            return true;
         }
         return false;
+//        for (int i = 0; i <lecturers.size() ; i++) {
+//            if(lecturers.get(i)!=null && lecturers.get(i).equals(lecturer)){
+//                return true;
+//            }
+//        }
+//        return false;
     }
 
     public void removeLec(Lecturer lec){
-        if(lecInDep(lec)){
-            for (int i = 0; i <lecturers.length ; i++) {
-                if(lecturers[i]!=null && lecturers[i]==lec){
-                    lecturers[i]=null;
-                    shiftLec(i);
-                    break;
-                }
-            }
-        }
+        lecturers.remove(lec);
+//        if(lecInDep(lec)){
+//            for (int i = 0; i <lecturers.size() ; i++) {
+//                if(lecturers.get(i)!=null && lecturers.get(i)==lec){
+//                    lecturers.remove();
+//                    shiftLec(i);
+//                    break;
+//                }
+//            }
+//        }
     }
 
-    public void shiftLec(int lecIndex){
-        for(int i = lecIndex; i <lecturers.length;i++){
-            if(i==lecturers.length-1){
-                lecturers[i]=null;
-            }
-            else {
-                lecturers[i] = lecturers[i + 1];
-            }
-        }
-        lecSize--;
-    }
+//    public void shiftLec(int lecIndex){
+//        for(int i = lecIndex; i <lecturers.size();i++){
+//            if(i==lecturers.size()-1){
+//                lecturers.remove(i);
+//            }
+//            else {
+//                lecturers[i] = lecturers[i + 1];
+//            }
+//        }
+//        lecSize--;
+//    }
 
     public void setDepartmentName(String departmentName) {
         DepartmentName = departmentName;
@@ -62,7 +68,7 @@ public class Department {
         this.studentsNum = studentsNum;
     }
 
-    public void setLecturers(Lecturer[] lecturers) {
+    public void setLecturers(ArrayList<Lecturer> lecturers) {
         this.lecturers = lecturers;
     }
 
@@ -70,7 +76,7 @@ public class Department {
         return DepartmentName;
     }
 
-    public Lecturer[] getLecturers() {
+    public ArrayList<Lecturer> getLecturers() {
         return lecturers;
     }
 
