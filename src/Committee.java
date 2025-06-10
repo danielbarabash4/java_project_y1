@@ -1,28 +1,32 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Committee implements Cloneable {
+public class Committee<T> implements Cloneable {
     private String CommitteeName;
-    private Lecturer[] committeeMembers;
+    private ArrayList<T> committeeMembers;
     private Lecturer headOfCommittee;
     private int lecSize = 0; //logical variables
 
     public Committee(String committeeName, Lecturer headOfCommittee) {
         setCommitteeName(committeeName);
-        this.committeeMembers = new Lecturer[1];
+        this.committeeMembers= new ArrayList<T>();
         setHeadOfCommittee(headOfCommittee);
         this.lecSize = 0;
     }
 
 
-        public Object clone()throws CloneNotSupportedException {
-            Committee cloned = (Committee) super.clone();
+
+    public Object clone()throws CloneNotSupportedException {
+            Committee<T> cloned = (Committee<T>) super.clone();
             cloned.CommitteeName = this.CommitteeName + "-new";
             cloned.headOfCommittee = this.headOfCommittee;
-            cloned.committeeMembers = new Lecturer[this.lecSize];
-            for (int i = 0; i < this.lecSize; i++) {
-                cloned.committeeMembers[i] = this.committeeMembers[i];
-            }
+            cloned.committeeMembers=new ArrayList<>();
+            cloned.committeeMembers.addAll(committeeMembers);
+//            cloned.committeeMembers = new Lecturer[this.lecSize];
+//            for (int i = 0; i < this.lecSize; i++) {
+//                cloned.committeeMembers[i] = this.committeeMembers[i];
+//            }
             return cloned;
     }
 
@@ -36,32 +40,34 @@ public class Committee implements Cloneable {
     }
 
     public void removeLecFromMembers(Lecturer lec){
-        for (int i=0; i <committeeMembers.length;i++){
-            if (committeeMembers[i]!= null && committeeMembers[i].equals(lec)){
-                committeeMembers[i] = null;
-                shiftLecMembers(i);
-                break;
-            }
-        }
+            committeeMembers.remove(lec);
+
+//        for (int i=0; i <committeeMembers.length;i++){
+//            if (committeeMembers[i]!= null && committeeMembers[i].equals(lec)){
+//                committeeMembers[i] = null;
+//                shiftLecMembers(i);
+//                break;
+//            }
+//        }
     }
 
-    public void shiftLecMembers(int lecIndex){
-        for(int i = lecIndex; i<committeeMembers.length;i++){
-            if(i==committeeMembers.length-1){
-                committeeMembers[i]=null;
-            }
-            else {
-                committeeMembers[i] = committeeMembers[i + 1];
-            }
-        }
-        lecSize--;
-    }
+//    public void shiftLecMembers(int lecIndex){
+//        for(int i = lecIndex; i<committeeMembers.length;i++){
+//            if(i==committeeMembers.length-1){
+//                committeeMembers[i]=null;
+//            }
+//            else {
+//                committeeMembers[i] = committeeMembers[i + 1];
+//            }
+//        }
+//        lecSize--;
+//    }
 
     public void setCommitteeName(String committeeName) {
         CommitteeName = committeeName;
     }
 
-    public void setCommitteeMembers(Lecturer[] committeeMembers) {
+    public void setCommitteeMembers(ArrayList<T> committeeMembers) {
         this.committeeMembers = committeeMembers;
     }
 
@@ -73,7 +79,7 @@ public class Committee implements Cloneable {
         return CommitteeName;
     }
 
-    public Lecturer[] getCommitteeMembers() {
+    public ArrayList<T>  getCommitteeMembers() {
         return committeeMembers;
     }
 
@@ -83,9 +89,9 @@ public class Committee implements Cloneable {
 
     public String getCommittees() {
         String res = "";
-        for (int i = 0; i < committeeMembers.length; i++) {
-            if (committeeMembers[i] != null) {
-                res += committeeMembers[i].getName() + " ";
+        for (int i = 0; i < committeeMembers.size(); i++) {
+            if (committeeMembers.get(i) != null) {
+                res += ((Lecturer) committeeMembers.get(i)).getName() + " ";
             }
         }
         return res;
@@ -99,15 +105,16 @@ public class Committee implements Cloneable {
                 ", head of committee= " + headOfCommittee.getName()+"|";
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Committee committee = (Committee) o;
-        return Objects.equals(CommitteeName, committee.CommitteeName) && Objects.deepEquals(committeeMembers, committee.committeeMembers) && Objects.equals(headOfCommittee, committee.headOfCommittee);
+        Committee<?> committee = (Committee<?>) o;
+        return lecSize == committee.lecSize && Objects.equals(CommitteeName, committee.CommitteeName) && Objects.equals(committeeMembers, committee.committeeMembers) && Objects.equals(headOfCommittee, committee.headOfCommittee);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(CommitteeName, Arrays.hashCode(committeeMembers), headOfCommittee);
+        return Objects.hash(CommitteeName, committeeMembers, headOfCommittee, lecSize);
     }
 }
