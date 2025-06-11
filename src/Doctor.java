@@ -1,11 +1,12 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class Doctor extends Lecturer implements Comparable<Doctor> {
-    private String[] Articles;
+    private ArrayList<String> Articles;
     private int ArticlesSize;
 
-    public Doctor(String name, String id, Degree degree, String degreeName, double salary, Department department,int articlesSize,String[] artArray) {
+    public Doctor(String name, String id, Degree degree, String degreeName, double salary, Department department,int articlesSize,ArrayList<String> artArray) {
         super(name, id, degree, degreeName, salary, department);
         this.ArticlesSize=articlesSize;
         setArticles(artArray);
@@ -17,11 +18,11 @@ public class Doctor extends Lecturer implements Comparable<Doctor> {
         return this.ArticlesSize-o.ArticlesSize;
     }
 
-    public String[] getArticles() {
+    public ArrayList<String> getArticles() {
         return Articles;
     }
 
-    public void setArticles(String[] articles) {
+    public void setArticles(ArrayList<String> articles) {
         Articles = articles;
     }
 
@@ -37,7 +38,7 @@ public class Doctor extends Lecturer implements Comparable<Doctor> {
     public String toString() {
         return super.toString()+
                 "amount of articles= " + ArticlesSize+"\n"+
-                "Articles= " + Arrays.toString(Articles) ;
+                "Articles= " + Arrays.toString(Articles.toArray()) ;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class Doctor extends Lecturer implements Comparable<Doctor> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), Arrays.hashCode(Articles), ArticlesSize);
+        return Objects.hash(super.hashCode(), Arrays.hashCode(Articles.toArray()), ArticlesSize);
     }
 }
 

@@ -1,5 +1,10 @@
 //students names: Daniel Liser, Daniel Barabash
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -8,10 +13,13 @@ import java.util.Scanner;
 public class Main {
     static Scanner scn = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        ObjectOutputStream outFile=new ObjectOutputStream(new FileOutputStream("Collage.dat"));
+
         System.out.println("Please Choose college name: ");
         String collageName = scn.nextLine();
         Collage collage = new Collage(collageName);
+
         boolean toContinue = true;
         String val;
         while (toContinue) {
@@ -20,6 +28,8 @@ public class Main {
             switch (val) {
                 case "0":
                     toContinue = false;
+                    outFile.writeObject(collage);
+
                     break;
                 case "1":
                     String name = stringInput("name");
@@ -31,7 +41,7 @@ public class Main {
                     }
                     String academy = null;
                     int articleSize = 0;
-                    String[] artArray = new String[0];
+                    ArrayList<String> artArray = new ArrayList<>();
                     String id = stringInput("id");
                     System.out.println("1 - first degree ,2 - second degree ,3 - dr ,4 - professor");
                     int degInt = intInput("degree");
@@ -41,7 +51,7 @@ public class Main {
                     }
                     if (degInt == 3 || degInt == 4) {
                         articleSize = intInput("articles amount");
-                        artArray = new String[articleSize];
+                        artArray = new ArrayList<>();
                         fillArt(articleSize, artArray);
 
                     }
@@ -63,7 +73,10 @@ public class Main {
                     break;
                 case "2":
                     try {
-                        collage.committeeToCollage(stringInput("committee name"), stringInput("head lecturer name"));
+                        System.out.println("1 - first/second degree ,2 - dr ,3 - professor");
+                        int degTemp = intInput("committee degree level");
+                        scn.nextLine();
+                        collage.committeeToCollage(stringInput("committee name"), stringInput("head lecturer name"),degTemp);
                     } catch (CollageException e) {
                         System.out.println(e.getMessage());
                         break;
@@ -203,10 +216,11 @@ public class Main {
         }
     }
 
-    private static void fillArt(int articleSize, String[] arr) {
+    private static void fillArt(int articleSize, ArrayList<String> arr) {
         int num = 1;
         for (int i = 0; i < articleSize; i++) {
-            arr[i] = stringInput("article num [" + num + "]");
+            arr.add(stringInput("article num [" + num + "]"));
+            //arr[i] = stringInput("article num [" + num + "]");
             num++;
 
         }

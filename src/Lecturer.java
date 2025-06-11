@@ -1,3 +1,4 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -95,7 +96,7 @@ public class Lecturer implements Cloneable {
 //                break;
 //            }
 //        }
-        committees.remove(committees);
+        committees.remove(committee);
     }
 
     public void setName(String name) {

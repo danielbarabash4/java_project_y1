@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Collage {
+public class Collage  {
     private String name;
     static Scanner scn = new Scanner(System.in);
     private ArrayList<Lecturer> lecturers;
@@ -18,7 +19,7 @@ public class Collage {
         studyDepartment = new ArrayList<>();
     }
 
-    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName, int articleSize, String academy, String[] artArray) {
+    public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName, int articleSize, String academy,ArrayList<String> artArray) {
         Lecturer lecturer;
         if (degree == 3) {
             lecturer = new Doctor(name, id, Degree.degFromInt(degree), degName, salary, null, articleSize, artArray);
@@ -87,7 +88,7 @@ public class Collage {
         return lecArr;
     }
 
-    public void committeeToCollage(String comName, String lecName) throws CollageException {
+    public void committeeToCollage(String comName, String lecName,int lecLevel) throws CollageException {
         if (findLecIndex(lecName) == -1) {
             throw new LecNotExistException();
         }
@@ -97,7 +98,15 @@ public class Collage {
         } catch (CollageException e) {
             throw new NotProfDocException();
         }
-        Committee committee = new Committee(comName, headLec);
+        Committee committee;
+        if(lecLevel==1){
+            committee=new Committee<Lecturer>(comName, headLec,Lecturer.class);
+        } else if (lecLevel==2) {
+            committee=new Committee<Doctor>(comName, headLec,Doctor.class);
+        }
+        else{
+            committee=new Committee<Professor>(comName, headLec,Professor.class);
+        }
         if (committee.getHeadOfCommittee() == null) {
             throw new NotProfDocException();
         } else if (committeeExist(committee)) {
@@ -172,8 +181,9 @@ public class Collage {
             } else if (lecturers.get(lecIndex).existCommittee(committees.get(comIndex))) {
                 throw new AlreadyMemberException();
             } else {
-                committees.get(comIndex).setCommitteeMembers(addLecToArr(lecturers.get(lecIndex), committees.get(comIndex).getCommitteeMembers(), committees.get(comIndex).getLecSize()));
-                committees.get(comIndex).setLecSize(committees.get(comIndex).getLecSize() + 1);
+                committees.get(comIndex).addLecturer(lecturers.get(lecIndex));
+               // committees.get(comIndex).setCommitteeMembers(addLecToArr(lecturers.get(lecIndex), committees.get(comIndex).getCommitteeMembers(), committees.get(comIndex).getLecSize()));
+                //committees.get(comIndex).setLecSize(committees.get(comIndex).getLecSize() + 1);
                 lecturers.get(lecIndex).addCom(committees.get(comIndex));
             }
         } else {

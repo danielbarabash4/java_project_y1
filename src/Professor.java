@@ -1,9 +1,10 @@
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Professor extends Doctor {
     private String academy;
 
-    public Professor(String name, String id, Degree degree, String degreeName, double salary, Department department,int articleSize ,String academy,String[] artArray) {
+    public Professor(String name, String id, Degree degree, String degreeName, double salary, Department department, int articleSize , String academy, ArrayList<String> artArray) {
         super(name, id, degree, degreeName, salary, department,articleSize,artArray);
         setAcademy(academy);
     }

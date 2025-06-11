@@ -6,13 +6,16 @@ public class Committee<T> implements Cloneable {
     private String CommitteeName;
     private ArrayList<T> committeeMembers;
     private Lecturer headOfCommittee;
+    private Class<T> type;
     private int lecSize = 0; //logical variables
 
-    public Committee(String committeeName, Lecturer headOfCommittee) {
+    public Committee(String committeeName, Lecturer headOfCommittee,Class<T>type) {
         setCommitteeName(committeeName);
         this.committeeMembers= new ArrayList<T>();
         setHeadOfCommittee(headOfCommittee);
         this.lecSize = 0;
+        this.type=type;
+
     }
 
 
@@ -116,5 +119,12 @@ public class Committee<T> implements Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(CommitteeName, committeeMembers, headOfCommittee, lecSize);
+    }
+
+    public void addLecturer(T lecturer) {
+        T temp;
+        if(lecturer.getClass()==type ) {
+            committeeMembers.add(lecturer);
+        }
     }
 }
