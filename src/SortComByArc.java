@@ -13,8 +13,8 @@ public class SortComByArc implements Comparator<Committee> {
         int sum = 0;
         Doctor doc;
         for (int i = 0; i < o.getLecSize(); i++) {
-            if (o.getCommitteeMembers()[i] != null && o.getCommitteeMembers()[i] instanceof Doctor) {
-                doc=(Doctor)o.getCommitteeMembers()[i];
+            if (o.getCommitteeMembers().get(i) != null && o.getCommitteeMembers().get(i) instanceof Doctor) {
+                doc=(Doctor)o.getCommitteeMembers().get(i);
                 sum+=doc.getArticlesSize();
             }
         }
