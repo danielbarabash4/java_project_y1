@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Collage  {
+public class Collage implements Serializable  {
     private String name;
     static Scanner scn = new Scanner(System.in);
     private ArrayList<Lecturer> lecturers;

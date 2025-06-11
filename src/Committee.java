@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Committee<T> implements Cloneable {
+public class Committee<T> implements Cloneable, Serializable {
     private String CommitteeName;
     private ArrayList<T> committeeMembers;
     private Lecturer headOfCommittee;

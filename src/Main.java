@@ -1,9 +1,6 @@
 //students names: Daniel Liser, Daniel Barabash
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -13,12 +10,21 @@ import java.util.Scanner;
 public class Main {
     static Scanner scn = new Scanner(System.in);
 
-    public static void main(String[] args) throws IOException {
-        ObjectOutputStream outFile=new ObjectOutputStream(new FileOutputStream("Collage.dat"));
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        Collage collage;
+        ObjectInputStream inFile;
+        try {
+             inFile = new ObjectInputStream(new FileInputStream("Collage.dat"));
+            collage=(Collage)inFile.readObject();
+            inFile.close();
 
-        System.out.println("Please Choose college name: ");
-        String collageName = scn.nextLine();
-        Collage collage = new Collage(collageName);
+
+        } catch (IOException e) {
+            System.out.println("Please Choose college name: ");
+            String collageName = scn.nextLine();
+             collage = new Collage(collageName);
+
+        }
 
         boolean toContinue = true;
         String val;
@@ -28,7 +34,9 @@ public class Main {
             switch (val) {
                 case "0":
                     toContinue = false;
+                    ObjectOutputStream outFile=new ObjectOutputStream(new FileOutputStream("Collage.dat"));
                     outFile.writeObject(collage);
+                    outFile.close();
 
                     break;
                 case "1":

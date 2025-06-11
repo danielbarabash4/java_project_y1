@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Department {
+public class Department implements Serializable {
     private String DepartmentName;
     private int studentsNum;
     private ArrayList<Lecturer> lecturers;

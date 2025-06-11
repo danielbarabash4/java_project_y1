@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Lecturer implements Cloneable {
+public class Lecturer implements Cloneable,Serializable {
     private String name;
     private String id;
     private Degree degree;
