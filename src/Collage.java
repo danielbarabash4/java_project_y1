@@ -62,7 +62,7 @@ public class Collage {
     }
 
     public boolean checkName(String checkLec) {
-        for (int i = 0; i < lecturers.length; i++) {
+        for (int i = 0; i < lecturers.size(); i++) {
             if (lecturers.get(i) != null && lecturers.get(i).getName().equals(checkLec)) {
                 return false;
             }
@@ -167,14 +167,14 @@ public class Collage {
         int comIndex = findComIndex(com);
         int lecIndex = findLecIndex(lecName);
         if (comIndex != -1 && lecIndex != -1) {
-            if (committees[comIndex].getHeadOfCommittee().equals(lecturers.get(lecIndex))) {
+            if (committees.get(comIndex).getHeadOfCommittee().equals(lecturers.get(lecIndex))) {
                 throw new HeadOfException();
-            } else if (lecturers[lecIndex].existCommittee(committees.get(comIndex))) {
+            } else if (lecturers.get(lecIndex).existCommittee(committees.get(comIndex))) {
                 throw new AlreadyMemberException();
             } else {
-                committees[comIndex].setCommitteeMembers(addLecToArr(lecturers[lecIndex], committees[comIndex].getCommitteeMembers(), committees[comIndex].getLecSize()));
-                committees[comIndex].setLecSize(committees[comIndex].getLecSize() + 1);
-                lecturers[lecIndex].addCom(committees[comIndex]);
+                committees.get(comIndex).setCommitteeMembers(addLecToArr(lecturers.get(lecIndex), committees.get(comIndex).getCommitteeMembers(), committees.get(comIndex).getLecSize()));
+                committees.get(comIndex).setLecSize(committees.get(comIndex).getLecSize() + 1);
+                lecturers.get(lecIndex).addCom(committees.get(comIndex));
             }
         } else {
             if (comIndex == -1 && lecIndex != -1) {
@@ -194,15 +194,15 @@ public class Collage {
 
 
         if (lecIndex != -1) { // lec
-            Lecturer newHead = lecturers[findLecIndex(lecName)];
+            Lecturer newHead = lecturers.get(findLecIndex(lecName));
             if (comIndex != -1 && newHead != null) { //com
-                if (committees[comIndex].getHeadOfCommittee().equals(lecturers[lecIndex])) {
+                if (committees.get(comIndex).getHeadOfCommittee().equals(lecturers.get(lecIndex))) {
                     throw new HeadOfException();
                 }
                 if (newHead.getDegree().equals(Degree.dr) || newHead.getDegree().equals(Degree.prof)) {
-                    committees[comIndex].setHeadOfCommittee(newHead);
-                    if (hasLec(committees[comIndex], newHead) != -1) {
-                        committees[comIndex].removeLecFromMembers(newHead);
+                    committees.get(comIndex).setHeadOfCommittee(newHead);
+                    if (hasLec(committees.get(comIndex), newHead) != -1) {
+                        committees.get(comIndex).removeLecFromMembers(newHead);
                     }
                 } else {
                     throw new NotProfDocException();
@@ -232,14 +232,14 @@ public class Collage {
             if (lecIndex == -1) { // com no lec
                 throw new LecNotExistException();
             } else {// lec and com
-                Lecturer removeLec = lecturers[lecIndex];
-                Committee comToRemove = committees[comUpdate];
+                Lecturer removeLec = lecturers.get(lecIndex);
+                Committee comToRemove = committees.get(comUpdate);
                 int lecInCom = hasLec(comToRemove, removeLec);
                 if (lecInCom == -1) { // lec is not in com
                     throw new LecNotMemberException();
                 } else {// lec is in com
-                    committees[comUpdate].removeLecFromMembers(removeLec);
-                    removeLec.removeCom(committees[comUpdate]);
+                    committees.get(comUpdate).removeLecFromMembers(removeLec);
+                    removeLec.removeCom(committees.get(comUpdate));
                 }
             }
         }
@@ -264,23 +264,23 @@ public class Collage {
     }
 
     private void addDep(Department dep) {
-        if (depSize >= studyDepartment.length) {
-            extendDep();
-        }
-        studyDepartment[depSize++] = dep;
+//        if (depSize >= studyDepartment.size()) {
+//            extendDep();
+//        }
+        studyDepartment.add(dep);
     }
 
-    private void extendDep() {
-        Department[] newArr = new Department[studyDepartment.length * 2];
-        for (int i = 0; i < studyDepartment.length; i++) {
-            newArr[i] = studyDepartment[i];
-        }
-        studyDepartment = newArr;
-    }
+//    private void extendDep() {
+//        Department[] newArr = new Department[studyDepartment.size() * 2];
+//        for (int i = 0; i < studyDepartment.size(); i++) {
+//            newArr[i] = studyDepartment.get(i);
+//        }
+//        studyDepartment = newArr;
+//    }
 
     public int findDepIndex(String s) {
-        for (int i = 0; i < studyDepartment.length; i++) {
-            if (studyDepartment[i] != null && studyDepartment[i].getDepartmentName().equals(s))
+        for (int i = 0; i < studyDepartment.size(); i++) {
+            if (studyDepartment.get(i) != null && studyDepartment.get(i).getDepartmentName().equals(s))
                 return i;
         }
         return -1;
@@ -290,15 +290,15 @@ public class Collage {
         int counter = 0;
         double sum = 0;
         if (department != null) {
-            for (int i = 0; i < department.getLecturers().length; i++) {
-                if (department.getLecturers()[i] != null) {
-                    sum += department.getLecturers()[i].getSalary();
+            for (int i = 0; i < department.getLecturers().size(); i++) {
+                if (department.getLecturers().get(i) != null) {
+                    sum += department.getLecturers().get(i).getSalary();
                     counter++;
                 }
             }
         } else {
-            for (int i = 0; i < lecturers.length; i++) {
-                sum += lecturers[i].getSalary();
+            for (int i = 0; i < lecturers.size(); i++) {
+                sum += lecturers.get(i).getSalary();
                 counter++;
             }
         }
@@ -307,9 +307,9 @@ public class Collage {
 
     public String showAllLecturers() {//option 9
         String res = "";
-        for (int i = 0; i < lecturers.length; i++) {
-            if (lecturers[i] != null)
-                res += lecturers[i].toString() + "\n";
+        for (int i = 0; i < lecturers.size(); i++) {
+            if (lecturers.get(i) != null)
+                res += lecturers.get(i).toString() + "\n";
         }
 
         return res;
@@ -317,9 +317,9 @@ public class Collage {
 
     public String showAllCommittees() {//option 10
         String res = "";
-        for (int i = 0; i < committees.length && committees[i] != null; i++) {
-            if (committees[i].getHeadOfCommittee() != null) {
-                res += committees[i].toString() + "\n";
+        for (int i = 0; i < committees.size() && committees.get(i) != null; i++) {
+            if (committees.get(i).getHeadOfCommittee() != null) {
+                res += committees.get(i).toString() + "\n";
             }
         }
         return res;
@@ -331,14 +331,14 @@ public class Collage {
 //            newArr[i] = oldArr[i];
 //        }
 //        return newArr;
-    }
+//    }
 
     public Lecturer compareLec(String lecName1, String lecName2) throws CollageException {
         Lecturer lecturer1;
         Lecturer lecturer2;
         try {
-            lecturer1 = lecturers[findLecIndex(lecName1)];
-            lecturer2 = lecturers[findLecIndex(lecName2)];
+            lecturer1 = lecturers.get(findLecIndex(lecName1));
+            lecturer2 = lecturers.get(findLecIndex(lecName2));
             if (!(lecturer1 instanceof Doctor) || !(lecturer2 instanceof Doctor)) {
                 throw new NotProfDocException();
             }
@@ -352,8 +352,8 @@ public class Collage {
         Committee com1;
         Committee com2;
         try {
-            com1 = committees[findComIndex(firstCom)];
-            com2 = committees[findComIndex(secCom)];
+            com1 = committees.get(findComIndex(firstCom));
+            com2 = committees.get(findComIndex(secCom));
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ComNotExistException();
         }
@@ -374,7 +374,7 @@ public class Collage {
     public void cloneCom(String com) throws CollageException {
         Committee com1;
         try {
-            com1 = committees[findComIndex(com)];
+            com1 = committees.get(findComIndex(com));
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new ComNotExistException();
         }
@@ -382,7 +382,8 @@ public class Collage {
             Committee newCom = (Committee) com1.clone();
             addNewCom(newCom);
             for (int i = 0; i < newCom.getLecSize(); i++) {
-                newCom.getCommitteeMembers()[i].addCom(newCom);
+                Lecturer lec = (Lecturer) newCom.getCommitteeMembers().get(i);
+                lec.addCom(newCom);
             }
         } catch (CloneNotSupportedException e) {
             throw new CollageException(e.getMessage());

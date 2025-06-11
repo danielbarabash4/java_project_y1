@@ -84,6 +84,6 @@ public class Department {
     public String toString() {
         return "Department name:= '" + DepartmentName +
                 ", Number of students= " + studentsNum +
-                ", lecturers: =" + Arrays.toString(lecturers);
+                ", lecturers: =" + Arrays.toString(lecturers.toArray());
     }
 }
