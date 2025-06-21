@@ -83,7 +83,6 @@ public class Main {
                     try {
                         System.out.println("1 - first/second degree ,2 - dr ,3 - professor");
                         int degTemp = intInput("committee degree level");
-                        scn.nextLine();
                         collage.committeeToCollage(stringInput("committee name"), stringInput("head lecturer name"),degTemp);
                     } catch (CollageException e) {
                         System.out.println(e.getMessage());
@@ -289,7 +288,6 @@ public class Main {
         System.out.println("13- Compare committees by number of lecturers");
         System.out.println("14- Compare committees by number of articles written");
         System.out.println("15- clone committee");
-
     }
 }
 

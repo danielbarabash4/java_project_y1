@@ -19,6 +19,7 @@ public class Collage implements Serializable  {
         studyDepartment = new ArrayList<>();
     }
 
+    // option 1: add lecturer
     public void lecturerToCollage(String name, String id, int degree, String degName, double salary, String depName, int articleSize, String academy,ArrayList<String> artArray) {
         Lecturer lecturer;
         if (degree == 3) {
@@ -29,7 +30,7 @@ public class Collage implements Serializable  {
         } else {
             lecturer = new Lecturer(name, id, Degree.degFromInt(degree), degName, salary, null);
         }
-        lecturers = addLecToArr(lecturer, lecturers, lecSize);
+        addLecToArr(lecturer, lecturers, lecSize);
         try {
             updateLecDep(findLecIndex(name), findDepIndex(depName));
         } catch (CollageException e) {
@@ -37,7 +38,16 @@ public class Collage implements Serializable  {
         }
         lecSize++;
     }
+    public boolean checkName(String checkLec) {
+        for (int i = 0; i < lecturers.size(); i++) {
+            if (lecturers.get(i) != null && lecturers.get(i).getName().equals(checkLec)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    // option 11: add lecturer to department
     public void updateLecDep(int lecInt, int depInt) throws CollageException {
         if (depInt == -1 && lecInt != -1) {
             throw new DepNotExistException();
@@ -62,15 +72,6 @@ public class Collage implements Serializable  {
         }
     }
 
-    public boolean checkName(String checkLec) {
-        for (int i = 0; i < lecturers.size(); i++) {
-            if (lecturers.get(i) != null && lecturers.get(i).getName().equals(checkLec)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public Department AddDepartmentToLecturer(String s) {
         if (findDepIndex(s) != -1) {
             return studyDepartment.get(findDepIndex(s));
@@ -80,14 +81,11 @@ public class Collage implements Serializable  {
     }
 
     public ArrayList<Lecturer> addLecToArr(Lecturer newLec, ArrayList<Lecturer> lecArr, int size) {
-//        if (lecArr.size() <= size) {
-////            lecArr = extendLecturer(lecArr);
-//        }
-////        lecArr[size] = newLec;
         lecArr.add(newLec);
         return lecArr;
     }
 
+    //option 2 : committee to collage
     public void committeeToCollage(String comName, String lecName,int lecLevel) throws CollageException {
         if (findLecIndex(lecName) == -1) {
             throw new LecNotExistException();
@@ -118,19 +116,7 @@ public class Collage implements Serializable  {
 
     public void addNewCom(Committee com) {
         committees.add(com);
-//        if (committees.length <= comSize) {
-//            extendCommittees();
-//        }
-//        committees[comSize++] = com;
     }
-
-//    public void extendCommittees() {
-//        Committee[] newArr = new Committee[committees.length * 2];
-//        for (int i = 0; i < committees.length; i++) {
-//            newArr[i] = committees[i];
-//        }
-//        committees = newArr;
-//    }
 
     public boolean committeeExist(Committee c) {
         for (int i = 0; i < committees.size(); i++) {
@@ -171,20 +157,22 @@ public class Collage implements Serializable  {
         }
         return -1;
     }
-
+    // option 3: add member to committee
     public void lecturerToCommittee(String com, String lecName) throws CollageException {
         int comIndex = findComIndex(com);
         int lecIndex = findLecIndex(lecName);
         if (comIndex != -1 && lecIndex != -1) {
+            Lecturer lecToAdd = lecturers.get(lecIndex);
+            Committee updateCom = committees.get(comIndex);
             if (committees.get(comIndex).getHeadOfCommittee().equals(lecturers.get(lecIndex))) {
                 throw new HeadOfException();
             } else if (lecturers.get(lecIndex).existCommittee(committees.get(comIndex))) {
                 throw new AlreadyMemberException();
-            } else {
-                committees.get(comIndex).addLecturer(lecturers.get(lecIndex));
-               // committees.get(comIndex).setCommitteeMembers(addLecToArr(lecturers.get(lecIndex), committees.get(comIndex).getCommitteeMembers(), committees.get(comIndex).getLecSize()));
-                //committees.get(comIndex).setLecSize(committees.get(comIndex).getLecSize() + 1);
-                lecturers.get(lecIndex).addCom(committees.get(comIndex));
+            } else if(lecToAdd.getClass().equals(updateCom.getType())){
+                updateCom.addLecturer(lecToAdd);
+                lecToAdd.addCom(updateCom);
+            } else{
+                throw new CollageException("Lecturer Does not fit to the Committee type");
             }
         } else {
             if (comIndex == -1 && lecIndex != -1) {
@@ -198,11 +186,10 @@ public class Collage implements Serializable  {
         }
     }
 
+    //option 4 :update head of committee
     public void updateComHead(String com, String lecName) throws CollageException {
         int comIndex = findComIndex(com);
         int lecIndex = findLecIndex(lecName);
-
-
         if (lecIndex != -1) { // lec
             Lecturer newHead = lecturers.get(findLecIndex(lecName));
             if (comIndex != -1 && newHead != null) { //com
@@ -229,6 +216,7 @@ public class Collage implements Serializable  {
         }
     }
 
+    //option 5: remove a member form the committee
     public void removeLecFromCom(String com, String name) throws CollageException {
         int comUpdate = findComIndex(com);
         int lecIndex = findLecIndex(name);
@@ -264,6 +252,7 @@ public class Collage implements Serializable  {
         return -1;
     }
 
+    //option 6: add dep to collage
     public void addDepToCollege(int numOf, String depName) throws CollageException {
         if (findDepIndex(depName) == -1) {
             Department newDep = new Department(depName, numOf);
@@ -274,19 +263,8 @@ public class Collage implements Serializable  {
     }
 
     private void addDep(Department dep) {
-//        if (depSize >= studyDepartment.size()) {
-//            extendDep();
-//        }
         studyDepartment.add(dep);
     }
-
-//    private void extendDep() {
-//        Department[] newArr = new Department[studyDepartment.size() * 2];
-//        for (int i = 0; i < studyDepartment.size(); i++) {
-//            newArr[i] = studyDepartment.get(i);
-//        }
-//        studyDepartment = newArr;
-//    }
 
     public int findDepIndex(String s) {
         for (int i = 0; i < studyDepartment.size(); i++) {
@@ -296,6 +274,7 @@ public class Collage implements Serializable  {
         return -1;
     }
 
+    //options 7/8
     public double showAvgSalPerDep(Department department) {//option 7+8
         int counter = 0;
         double sum = 0;
@@ -315,6 +294,7 @@ public class Collage implements Serializable  {
         return sum == 0 ? 0 : sum / counter;
     }
 
+    //option 9
     public String showAllLecturers() {//option 9
         String res = "";
         for (int i = 0; i < lecturers.size(); i++) {
@@ -325,6 +305,7 @@ public class Collage implements Serializable  {
         return res;
     }
 
+    //option 10
     public String showAllCommittees() {//option 10
         String res = "";
         for (int i = 0; i < committees.size() && committees.get(i) != null; i++) {
@@ -335,14 +316,7 @@ public class Collage implements Serializable  {
         return res;
     }
 
-//    private Lecturer[] extendLecturer(Lecturer[] oldArr) {
-//        Lecturer[] newArr = new Lecturer[oldArr.length * 2];
-//        for (int i = 0; i < oldArr.length; i++) {
-//            newArr[i] = oldArr[i];
-//        }
-//        return newArr;
-//    }
-
+// option 12: compare by number of lecturers
     public Lecturer compareLec(String lecName1, String lecName2) throws CollageException {
         Lecturer lecturer1;
         Lecturer lecturer2;
@@ -357,7 +331,7 @@ public class Collage implements Serializable  {
             throw new LecNotExistException(e.getMessage());
         }
     }
-
+// options 13: compare by number of articles
     public String comByNumOfArt(String firstCom, String secCom, boolean opt) throws CollageException {
         Committee com1;
         Committee com2;
@@ -372,7 +346,6 @@ public class Collage implements Serializable  {
             res = new SortComByArc().compare(com1, com2);
         } else {
             res = new SortComByNumOfLec().compare(com1, com2);
-
         }
         if (res == 0) {
             throw new EvenException();

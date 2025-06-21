@@ -27,45 +27,20 @@ public class Committee<T> implements Cloneable, Serializable {
             cloned.headOfCommittee = this.headOfCommittee;
             cloned.committeeMembers=new ArrayList<>();
             cloned.committeeMembers.addAll(committeeMembers);
-//            cloned.committeeMembers = new Lecturer[this.lecSize];
-//            for (int i = 0; i < this.lecSize; i++) {
-//                cloned.committeeMembers[i] = this.committeeMembers[i];
-//            }
             return cloned;
     }
 
+    public Class<T> getType() {
+        return type;
+    }
 
     public int getLecSize() {
         return lecSize;
     }
 
-    public void setLecSize(int lecSize) {
-        this.lecSize = lecSize;
-    }
-
     public void removeLecFromMembers(Lecturer lec){
             committeeMembers.remove(lec);
-
-//        for (int i=0; i <committeeMembers.length;i++){
-//            if (committeeMembers[i]!= null && committeeMembers[i].equals(lec)){
-//                committeeMembers[i] = null;
-//                shiftLecMembers(i);
-//                break;
-//            }
-//        }
     }
-
-//    public void shiftLecMembers(int lecIndex){
-//        for(int i = lecIndex; i<committeeMembers.length;i++){
-//            if(i==committeeMembers.length-1){
-//                committeeMembers[i]=null;
-//            }
-//            else {
-//                committeeMembers[i] = committeeMembers[i + 1];
-//            }
-//        }
-//        lecSize--;
-//    }
 
     public void setCommitteeName(String committeeName) {
         CommitteeName = committeeName;
