@@ -63,4 +63,16 @@ public class Department implements Serializable {
                 ", Number of students= " + studentsNum +
                 ", lecturers: =" + lecStr;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        Department dep = (Department) o;
+        return DepartmentName.equals(dep.DepartmentName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(DepartmentName);
+    }
 }

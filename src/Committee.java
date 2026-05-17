@@ -33,7 +33,7 @@ public class Committee<T> implements Cloneable, Serializable {
     }
 
     public int getLecSize() {
-        return lecSize;
+        return committeeMembers.size();
     }
 
     public void removeLecFromMembers(Lecturer lec) {

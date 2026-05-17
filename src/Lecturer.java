@@ -99,6 +99,6 @@ public class Lecturer implements Cloneable, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(name);
     }
 }
