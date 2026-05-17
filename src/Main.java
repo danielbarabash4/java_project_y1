@@ -145,8 +145,9 @@ public class Main {
                     if (collage.AddDepartmentToLecturer(res) != null) {
                         System.out.print("Average department salary is: ");
                         System.out.println(collage.showAvgSalPerDep(collage.AddDepartmentToLecturer(res)));
+                    } else {
+                        System.out.println("Department doesn't exist");
                     }
-                    System.out.println("Department doesn't exist");
                     break;
 
                 case "9":
