@@ -1,28 +1,28 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
+import java.util.Set;
 
 public class Doctor extends Lecturer implements Comparable<Doctor> {
-    private ArrayList<String> Articles;
+    private HashSet<String> Articles;
     private int ArticlesSize;
 
-    public Doctor(String name, String id, Degree degree, String degreeName, double salary, Department department,int articlesSize,ArrayList<String> artArray) {
+    public Doctor(String name, String id, Degree degree, String degreeName, double salary, Department department, int articlesSize, HashSet<String> artSet) {
         super(name, id, degree, degreeName, salary, department);
-        this.ArticlesSize=articlesSize;
-        setArticles(artArray);
+        this.ArticlesSize = articlesSize;
+        this.Articles = artSet;
     }
-
 
     @Override
     public int compareTo(Doctor o) {
-        return this.ArticlesSize-o.ArticlesSize;
+        return this.ArticlesSize - o.ArticlesSize;
     }
 
-    public ArrayList<String> getArticles() {
+    public HashSet<String> getArticles() {
         return Articles;
     }
 
-    public void setArticles(ArrayList<String> articles) {
+    public void setArticles(HashSet<String> articles) {
         Articles = articles;
     }
 
@@ -36,9 +36,14 @@ public class Doctor extends Lecturer implements Comparable<Doctor> {
 
     @Override
     public String toString() {
-        return super.toString()+
-                "amount of articles= " + ArticlesSize+"\n"+
-                "Articles= " + Arrays.toString(Articles.toArray()) ;
+        String articlesStr = "";
+        Iterator<String> it = Articles.iterator();
+        while (it.hasNext()) {
+            articlesStr += it.next() + " ";
+        }
+        return super.toString() +
+                "amount of articles= " + ArticlesSize + "\n" +
+                "Articles= " + articlesStr;
     }
 
     @Override
@@ -46,12 +51,11 @@ public class Doctor extends Lecturer implements Comparable<Doctor> {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Doctor doctor = (Doctor) o;
-        return ArticlesSize == doctor.ArticlesSize && Objects.deepEquals(Articles, doctor.Articles);
+        return ArticlesSize == doctor.ArticlesSize && Objects.equals(Articles, doctor.Articles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), Arrays.hashCode(Articles.toArray()), ArticlesSize);
+        return Objects.hash(super.hashCode(), Articles, ArticlesSize);
     }
 }
-

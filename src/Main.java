@@ -1,11 +1,8 @@
-//students names: Daniel Liser, Daniel Barabash
-
 import java.io.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.InputMismatchException;
+import java.util.Comparator;
 import java.util.Scanner;
-
-// small change
 
 public class Main {
     static Scanner scn = new Scanner(System.in);
@@ -14,16 +11,13 @@ public class Main {
         Collage collage;
         ObjectInputStream inFile;
         try {
-             inFile = new ObjectInputStream(new FileInputStream("Collage.dat"));
-            collage=(Collage)inFile.readObject();
+            inFile = new ObjectInputStream(new FileInputStream("Collage.dat"));
+            collage = (Collage) inFile.readObject();
             inFile.close();
-
-
         } catch (IOException e) {
             System.out.println("Please Choose college name: ");
             String collageName = scn.nextLine();
-             collage = new Collage(collageName);
-
+            collage = new Collage(collageName);
         }
 
         boolean toContinue = true;
@@ -34,22 +28,20 @@ public class Main {
             switch (val) {
                 case "0":
                     toContinue = false;
-                    ObjectOutputStream outFile=new ObjectOutputStream(new FileOutputStream("Collage.dat"));
+                    ObjectOutputStream outFile = new ObjectOutputStream(new FileOutputStream("Collage.dat"));
                     outFile.writeObject(collage);
                     outFile.close();
-
                     break;
+
                 case "1":
                     String name = stringInput("name");
-
                     while (!collage.checkName(name)) {
                         System.out.println("this name already exists");
                         name = stringInput("name");
-                        collage.checkName(name);
                     }
                     String academy = null;
                     int articleSize = 0;
-                    ArrayList<String> artArray = new ArrayList<>();
+                    HashSet<String> artSet = new HashSet<>();
                     String id = stringInput("id");
                     System.out.println("1 - first degree ,2 - second degree ,3 - dr ,4 - professor");
                     int degInt = intInput("degree");
@@ -59,37 +51,35 @@ public class Main {
                     }
                     if (degInt == 3 || degInt == 4) {
                         articleSize = intInput("articles amount");
-                        artArray = new ArrayList<>();
-                        fillArt(articleSize, artArray);
-
+                        artSet = new HashSet<>();
+                        fillArt(articleSize, artSet);
                     }
                     if (degInt == 4) {
                         academy = stringInput("academy");
                     }
-
                     String degName = stringInput("degree name");
                     double salary = doubleInput("salary");
-
                     while (salary < 0) {
                         System.out.println("invalid salary");
                         salary = doubleInput("salary");
                     }
                     String depName = stringInput("department name");
-
-                    collage.lecturerToCollage(name, id, degInt, degName, salary, depName, articleSize, academy, artArray);
+                    collage.lecturerToCollage(name, id, degInt, degName, salary, depName, articleSize, academy, artSet);
                     System.out.println("Lecturer was added");
                     break;
+
                 case "2":
                     try {
                         System.out.println("1 - first/second degree ,2 - dr ,3 - professor");
                         int degTemp = intInput("committee degree level");
-                        collage.committeeToCollage(stringInput("committee name"), stringInput("head lecturer name"),degTemp);
+                        collage.committeeToCollage(stringInput("committee name"), stringInput("head lecturer name"), degTemp);
                     } catch (CollageException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
                     System.out.println("Committee was added");
                     break;
+
                 case "3":
                     String com = stringInput("committee to add a lecturer");
                     String lecName = stringInput("lecturer name to add");
@@ -101,6 +91,7 @@ public class Main {
                     }
                     System.out.println("Lecturer was added to the Committee");
                     break;
+
                 case "4":
                     String comUp = stringInput("committee to update: ");
                     String lecNameUpd = stringInput("Lecturer name");
@@ -112,6 +103,7 @@ public class Main {
                     }
                     System.out.println("Committee was updated");
                     break;
+
                 case "5":
                     String comName = stringInput("committee to update");
                     String removeLecName = stringInput("Lecturer to remove");
@@ -123,6 +115,7 @@ public class Main {
                     }
                     System.out.println("lecturer was removed");
                     break;
+
                 case "6":
                     String newDep = stringInput("department name");
                     int studentNum = intInput("number of students");
@@ -140,10 +133,12 @@ public class Main {
                     }
                     System.out.println("Department was added");
                     break;
+
                 case "7":
                     System.out.print("Average salary is: ");
                     System.out.println(collage.showAvgSalPerDep(null));
                     break;
+
                 case "8":
                     System.out.println("Choose a department");
                     String res = scn.nextLine();
@@ -153,40 +148,79 @@ public class Main {
                     }
                     System.out.println("Department doesn't exist");
                     break;
+
                 case "9":
                     System.out.println("--------------");
-                    System.out.print(collage.showAllLecturers());
+                    System.out.println("1 - unsorted  2 - sort by name  3 - sort by salary  4 - sort by degree");
+                    int sortLec = intInput("sort option");
+                    switch (sortLec) {
+                        case 1:
+                            System.out.print(collage.showAllLecturers());
+                            break;
+                        case 2:
+                            System.out.print(collage.showAllLecturersSorted(
+                                    Comparator.comparing(Lecturer::getName)));
+                            break;
+                        case 3:
+                            System.out.print(collage.showAllLecturersSorted(
+                                    Comparator.comparingDouble(Lecturer::getSalary)));
+                            break;
+                        case 4:
+                            System.out.print(collage.showAllLecturersSorted(
+                                    Comparator.comparing(Lecturer::getDegree)));
+                            break;
+                        default:
+                            System.out.println("Wrong input");
+                    }
                     System.out.println("--------------");
                     break;
+
                 case "10":
                     System.out.println("--------------");
-                    System.out.print(collage.showAllCommittees());
+                    System.out.println("1 - unsorted  2 - sort by name  3 - sort by number of members");
+                    int sortCom = intInput("sort option");
+                    switch (sortCom) {
+                        case 1:
+                            System.out.print(collage.showAllCommittees());
+                            break;
+                        case 2:
+                            System.out.print(collage.showAllCommitteesSorted(
+                                    Comparator.comparing(Committee::getCommitteeName)));
+                            break;
+                        case 3:
+                            System.out.print(collage.showAllCommitteesSorted(
+                                    Comparator.comparingInt(c -> c.getCommitteeMembers().size())));
+                            break;
+                        default:
+                            System.out.println("Wrong input");
+                    }
                     System.out.println("--------------");
-
                     break;
+
                 case "11":
-                    int depInt = collage.findDepIndex(stringInput("department to update"));
-                    int lecInt = collage.findLecIndex(stringInput("lecturer name"));
                     try {
-                        collage.updateLecDep(lecInt, depInt);
+                        collage.updateLecDep(
+                                collage.findLec(stringInput("lecturer name")),
+                                collage.findDep(stringInput("department to update"))
+                        );
                     } catch (CollageException e) {
                         System.out.println(e.getMessage());
                         break;
                     }
                     System.out.println("lecturer was added to the department");
                     break;
+
                 case "12":
-                    System.out.println();
-                    String msg12 = stringInput(" first lecturer (Dr/prof)");
-                    String msg13 = stringInput(" second lecturer (Dr/prof)");
+                    String msg12 = stringInput("first lecturer (Dr/prof)");
+                    String msg13 = stringInput("second lecturer (Dr/prof)");
                     try {
                         Lecturer lec12 = collage.compareLec(msg12, msg13);
                         System.out.println(lec12.getName() + " has more articles");
-                        break;
                     } catch (CollageException e) {
                         System.out.println(e.getMessage());
-                        break;
                     }
+                    break;
+
                 case "13":
                     String com1 = stringInput("first committee");
                     String com2 = stringInput("second committee");
@@ -206,16 +240,15 @@ public class Main {
                         System.out.println(e.getMessage());
                     }
                     break;
+
                 case "15":
                     String cloneCom = stringInput("committee");
                     try {
                         collage.cloneCom(cloneCom);
                     } catch (CollageException e) {
                         System.out.println(e.getMessage());
-                        ;
                     }
                     break;
-
 
                 default:
                     System.out.println("Wrong input");
@@ -223,13 +256,11 @@ public class Main {
         }
     }
 
-    private static void fillArt(int articleSize, ArrayList<String> arr) {
+    private static void fillArt(int articleSize, HashSet<String> set) {
         int num = 1;
         for (int i = 0; i < articleSize; i++) {
-            arr.add(stringInput("article num [" + num + "]"));
-            //arr[i] = stringInput("article num [" + num + "]");
+            set.add(stringInput("article num [" + num + "]"));
             num++;
-
         }
     }
 
@@ -254,8 +285,7 @@ public class Main {
         return scn.nextLine();
     }
 
-    public static int intInput(String word) throws InputMismatchException {
-
+    public static int intInput(String word) {
         int res = 0;
         boolean running = true;
         while (running) {
@@ -290,4 +320,3 @@ public class Main {
         System.out.println("15- clone committee");
     }
 }
-
