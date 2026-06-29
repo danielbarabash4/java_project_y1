@@ -1,0 +1,173 @@
+Version: 261011903
+Course: Java Programming
+Exercise: College Management System
+Students: Daniel Liser, Daniel Barabash
+================================================================
+----------------------------------------------------------------
+CHANGES / UPDATES
+----------------------------------------------------------------
+
+Change #1 - Doctor: ArrayList to HashSet
+File: Doctor.java
+Lines affected: 1, 7, 9, 11, 19, 23, 33-37, 48
+Description: Replaced ArrayList<String> Articles with HashSet<String> Articles.
+Constructor parameter changed from ArrayList<String> artArray to HashSet<String> artSet.
+toString() now uses Iterator instead of Arrays.toString().
+Removed import java.util.ArrayList, import java.util.Arrays.
+Added import java.util.HashSet, import java.util.Iterator.
+
+Change #2 - Lecturer: ArrayList to HashSet
+File: Lecturer.java
+Lines affected: 1, 9, 17, 22-28, 45-51
+Description: Replaced ArrayList<Committee> committees with HashSet<Committee>.
+Constructor now initializes committees as new HashSet<>().
+getCommittees() and existCommittee() now use Iterator instead of indexed for loop.
+Removed import java.util.ArrayList, import java.util.Arrays.
+Added import java.util.HashSet, import java.util.Iterator.
+hashCode() changed from Objects.hashCode(id) to Objects.hashCode(name)
+to be consistent with equals() which compares by name.
+
+Change #3 - Department: ArrayList to HashSet
+File: Department.java
+Lines affected: 1, 8, 14, 20, 22, 24-28
+Description: Replaced ArrayList<Lecturer> lecturers with HashSet<Lecturer>.
+Constructor now initializes lecturers as new HashSet<>().
+setLecturers() and getLecturers() now use HashSet<Lecturer>.
+toString() now uses Iterator instead of Arrays.toString().
+Added equals() and hashCode() by DepartmentName (required for HashSet correctness).
+Removed import java.util.ArrayList, import java.util.Arrays.
+Added import java.util.HashSet, import java.util.Iterator.
+
+Change #4 - Committee: ArrayList to HashSet
+File: Committee.java
+Lines affected: 1, 8, 14, 20, 28, 32, 35-41, 55-60
+Description: Replaced ArrayList<T> committeeMembers with HashSet<T>.
+Constructor now initializes committeeMembers as new HashSet<T>().
+clone() now initializes cloned.committeeMembers as new HashSet<>().
+setCommitteeMembers() and getCommitteeMembers() now use HashSet<T>.
+getCommittees() now uses Iterator instead of indexed for loop.
+addLecturer() cleaned up (removed unused variable T temp).
+Removed import java.util.ArrayList, import java.util.Arrays.
+Added import java.util.HashSet, import java.util.Iterator.
+
+Change #5 - Collage: ArrayList to HashSet
+File: Collage.java
+Lines affected: 1, 8, 9, 10, 16-18, 22, 30-31, 42, 45, 60
+Description: Replaced ArrayList<Lecturer> lecturers, ArrayList<Committee> committees,
+ArrayList<Department> studyDepartment with HashSet equivalents.
+Constructor now initializes all three as new HashSet<>().
+lecturerToCollage() parameter changed from ArrayList<String> to HashSet<String>.
+Removed addLecToArr() method (no longer needed).
+findLecIndex(), findComIndex(), findDepIndex() replaced with findLec(), findCom(), findDep()
+which return the object itself instead of an int index (HashSet has no index).
+updateLecDep() now receives Lecturer and Department objects instead of int indexes.
+checkName(), committeeExist(), addHeadOf(), showAvgSalPerDep(),
+showAllLecturers(), showAllCommittees(), cloneCom() now use Iterator.
+Added showAllLecturersSorted(int criterion) and showAllCommitteesSorted(int criterion)
+using TreeSet with lambda Comparator for sorted printing via Iterator.
+Removed import java.util.ArrayList, import java.util.Arrays.
+Added import java.util.HashSet, import java.util.Iterator, import java.util.TreeSet.
+
+Change #6 - Professor: ArrayList to HashSet
+File: Professor.java
+Lines affected: 1, 9
+Description: Constructor parameter changed from ArrayList<String> artArray
+to HashSet<String> artSet, passed to super (Doctor).
+Removed import java.util.ArrayList.
+Added import java.util.HashSet.
+
+Change #7 - SortComByArc: indexed for loop to Iterator
+File: SortComByArc.java
+Lines affected: 8-15
+Description: runOnArray() now uses Iterator instead of indexed for loop with getLecSize(),
+since getLecSize() always returned 0 after migration to HashSet.
+Added import java.util.Iterator.
+
+Change #8 - Main: ArrayList to HashSet + sorting options
+File: Main.java
+Lines affected: 1, case "1", case "9", case "10", case "11", fillArt()
+Description: artArray changed from ArrayList<String> to HashSet<String>.
+fillArt() now receives HashSet<String> instead of ArrayList<String>.
+case "11" updated to use findLec() and findDep() instead of findLecIndex()/findDepIndex().
+case "9" now asks user to choose sort criterion (1-unsorted, 2-name, 3-salary, 4-degree)
+and calls showAllLecturersSorted(int) accordingly.
+case "10" now asks user to choose sort criterion (1-unsorted, 2-name, 3-members)
+and calls showAllCommitteesSorted(int) accordingly.
+case "8" fixed: "Department doesn't exist" moved inside else block.
+Removed import java.util.ArrayList.
+Added import java.util.HashSet.
+
+================================================================
+SOLID PRINCIPLES REFACTORING
+================================================================
+
+Change #9 - Collage: extracted createLecturer() factory method [SRP / OCP]
+File: Collage.java
+Description: Extracted private createLecturer(name, id, degree, degName, salary,
+articleSize, academy, artSet) method. The if/else chain that decided which
+Lecturer subclass to instantiate was moved out of lecturerToCollage() into
+this dedicated private method. lecturerToCollage() now only orchestrates.
+Principle: SRP (one method, one job) and OCP (creation logic is isolated;
+adding a new degree type means changing only createLecturer).
+
+Change #10 - Collage: extracted createCommittee() factory method [SRP / OCP]
+File: Collage.java
+Description: Extracted private createCommittee(comName, headLec, lecLevel) method.
+The if/else chain selecting the Committee generic type was moved out of
+committeeToCollage() into this method. committeeToCollage() now only orchestrates.
+Principle: SRP and OCP, same rationale as Change #9.
+
+Change #11 - Collage: removed dead static Scanner field [SRP]
+File: Collage.java
+Description: Removed static Scanner scn field that was declared but never used
+inside Collage. Main.java already owns its own Scanner for all user input.
+Principle: SRP - Collage should not own I/O concerns.
+Also removed the now-unused import java.util.Scanner.
+
+Change #12 - Lecturer: fixed equals() unsafe cast [LSP]
+File: Lecturer.java
+Description: Added instanceof check before casting in equals(Object o).
+The original code cast directly without checking, which would throw a
+ClassCastException when comparing a Lecturer to a non-Lecturer object.
+Principle: LSP - a class must honor the contract of Object.equals(),
+which must handle any Object without throwing.
+
+Change #13 - Department: fixed equals() unsafe cast [LSP]
+File: Department.java
+Description: Same instanceof fix as Change #12 applied to Department.equals().
+Also removed the private lecInDep(Lecturer) method that was declared but
+never called anywhere in the codebase.
+Principle: LSP (equals contract), ISP (remove unused surface).
+
+Change #14 - Committee: removed dead lecSize field, fixed equals() [LSP / ISP]
+File: Committee.java
+Description: Removed private int lecSize field. getLecSize() already derived
+its value from committeeMembers.size(); the field was set to 0 in the constructor
+and never incremented, making it permanently 0. The equals() method included
+lecSize == committee.lecSize which was always 0 == 0 - a meaningless check that
+gave a false sense of correctness in the equals contract.
+Fixed equals() to use instanceof instead of getClass() comparison for proper
+substitutability, and removed the lecSize term from both equals() and hashCode().
+Principle: LSP (correct equals contract), ISP (remove dead state).
+
+Change #15 - Lecturer: removed dead comSize field [ISP]
+File: Lecturer.java
+Description: Removed private int comSize field. It was declared and initialized
+to 0 but never read or modified anywhere in the class or the project.
+Principle: ISP - classes should not carry state that serves no interface or consumer.
+
+Change #16 - SortComByArc: made sumArticles() private, renamed [SRP]
+File: SortComByArc.java
+Description: Renamed public runOnArray() to private sumArticles(). A Comparator
+exposes one contract: compare(). The helper that sums articles is an internal
+detail and must not leak into the public API of the class.
+Principle: SRP - the class has one public responsibility (comparing); the helper
+is an implementation detail.
+
+Change #17 - StringBuilder adoption across all toString/display methods [quality]
+Files: Lecturer.java, Department.java, Committee.java, Doctor.java, Collage.java
+Description: Replaced string concatenation inside Iterator loops with StringBuilder
+across all display and toString methods. String concatenation inside loops creates
+a new String object on every iteration; StringBuilder accumulates into one buffer.
+All loops still use explicit Iterator as required by the project.
+================================================================
